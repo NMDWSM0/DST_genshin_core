@@ -28,6 +28,12 @@ local Refineable = Class(function(self, inst)
     self.ingredient = self.inst.prefab
     self.overrideimage = self.inst.components.inventoryitem.imagename
     self.overrideatlas = self.inst.components.inventoryitem.atlasname
+
+    self.inst.displaynamefn = function (inst)
+        local level = self:GetCurrentLevel()
+        local refinetext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..level.."阶" or "Rank "..level
+        return STRINGS.NAMES[string.upper(inst.prefab)].." "..refinetext
+    end
 end,
 nil,
 {

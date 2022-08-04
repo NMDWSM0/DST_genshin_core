@@ -393,13 +393,6 @@ local function OnTimerDone(inst, data)
     end
 end
 
-local function DisplayNameFn(inst)
-    local refineable = TheWorld.ismastersim and inst.components.refineable or inst.replica.refineable
-    local level = refineable:GetCurrentLevel()
-    local refinetext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..level.."阶" or "Rank "..level
-    return STRINGS.NAMES[string.upper(inst.prefab)].." "..refinetext
-end
-
 ---------------------------------------------------------------------------------
 
 local function fn()
@@ -427,8 +420,6 @@ local function fn()
     inst.subtext = "crit_rate"
     inst.subnumber = "22.1%"
     inst.description = TUNING.WEAPONEFFECT_ELEMENT_SPEAR
-
-    inst.displaynamefn = DisplayNameFn
 
     MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9)
 

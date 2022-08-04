@@ -31,13 +31,25 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
 	end)
     
     --武器名字
-    self.name_text = self:AddChild(Text("genshinfont", 36, nil, {211/255, 188/255, 142/255, 1}))
+    self.name_text = self:AddChild(Text("genshinfont", 32, nil, {211/255, 188/255, 142/255, 1}))
     self.name_text:SetHAlign(ANCHOR_LEFT)
     self.name_text:SetVAlign(ANCHOR_MIDDLE)
     self.name_text:SetRegionSize(300, 80)
     self.name_text:EnableWordWrap(true)
     self.name_text:SetPosition(-530, 310, 0)
 
+    --左侧按钮，实际上是摆设因为只有精炼这一项哈哈哈哈哈
+    if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
+	    self.button_refine = self:AddChild(ImageButton("images/ui/button_refine.xml", "button_refine_selected.tex", "button_refine_selected.tex", nil, "button_refine_selected.tex", "button_profile_selected.tex"))
+	else
+	    self.button_refine = self:AddChild(ImageButton("images/ui/button_refine.xml", "button_refine_selected_en.tex", "button_refine_selected_en.tex", nil, "button_refine_selected_en.tex", "button_refine_selected_en.tex"))
+	end
+    self.button_refine:SetPosition(-600, 220, 0)
+    self.button_refine:SetScale(0.8, 0.8, 0.8)
+    self.button_refine.scale_on_focus = false
+	self.button_refine.move_on_click = false
+
+    --等级提示
     self.refine_level_text = self:AddChild(Text("genshinfont",46, nil, {1, 1, 1, 1}))
     self.refine_level_text:SetHAlign(ANCHOR_MIDDLE)
     self.refine_level_text:SetVAlign(ANCHOR_MIDDLE)
@@ -81,7 +93,7 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.effect_text2:EnableWordWrap(true)
     self.effect_text2:SetPosition(0, 0, 0)
 
-    self.detail_list:SetItemAutoPadding({-20, 14, -14})
+    self.detail_list:SetItemAutoPadding({-20, 10, -4})
 
     --
     local maxstr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前已达到精炼等级上限" or "Max Refinement Level reached"
@@ -198,6 +210,8 @@ function weapon_refine_screen:OnUpdate(dt)
     self.previous_weapon = weapon.prefab
     self.previous_level = current_level
 
+    self:UpdateIngredient()
+
     local level_text = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and current_level.."阶" or "Rank "..current_level
     self.refine_level_text:SetString(level_text)
 
@@ -236,7 +250,7 @@ function weapon_refine_screen:OnUpdate(dt)
         self.effect_text2:Show()
     end
 
-    self.detail_list:SetItemAutoPadding({-20, 14, -14})
+    self.detail_list:SetItemAutoPadding({-20, 10, -4})
 end
 
 return weapon_refine_screen

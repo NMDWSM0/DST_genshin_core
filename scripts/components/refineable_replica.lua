@@ -8,6 +8,12 @@ local Refineable = Class(function(self, inst)
     self._ingredient = net_string(inst.GUID, "refineable._ingredient", "refineingredientdirty")
     self._overrideimage = net_string(inst.GUID, "refineable._overrideimage", "refineingredientdirty")
     self._overrideatlas = net_string(inst.GUID, "refineable._overrideatlas", "refineingredientdirty")
+
+    self.inst.displaynamefn = function (inst)
+        local level = self:GetCurrentLevel()
+        local refinetext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..level.."阶" or "Rank "..level
+        return STRINGS.NAMES[string.upper(inst.prefab)].." "..refinetext
+    end
 end)
 
 function Refineable:GetCurrentLevel()

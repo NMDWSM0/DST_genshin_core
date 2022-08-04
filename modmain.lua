@@ -253,6 +253,9 @@ Assets = {
 	Asset( "IMAGE", "images/ui/weapon_refine_bg.tex"),
     Asset( "ATLAS", "images/ui/weapon_refine_bg.xml"),
 
+	Asset( "IMAGE", "images/ui/button_refine.tex"),
+    Asset( "ATLAS", "images/ui/button_refine.xml"),
+
 	--Artifacts界面（第三个界面）
 	Asset( "IMAGE", "images/ui/button_arttype.tex"),
     Asset( "ATLAS", "images/ui/button_arttype.xml"),

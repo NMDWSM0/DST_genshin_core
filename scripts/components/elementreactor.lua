@@ -290,6 +290,10 @@ function ElementReactor:CutOffElement(first)
             self.element_stack[ele].value = 0
         end
     end
+
+    for i = 1, 7 do
+        self.element_stack[i].value = math.min(2.5, self.element_stack[i].value)
+    end
 end
 
 function ElementReactor:NewElementFromPersist()
