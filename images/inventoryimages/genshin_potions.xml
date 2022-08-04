@@ -1,0 +1,19 @@
+<Atlas>
+	<Texture filename="genshin_potions.tex"/>
+	<Elements>
+		<Element name="windbarrier_potion.tex" u1="0.250000" u2="0.492424" v1="0.007576" v2="0.250000"/>
+		<Element name="flaming_essential_oil.tex" u1="0.000000" u2="0.242424" v1="0.007576" v2="0.250000"/>
+		<Element name="desiccant_potion.tex" u1="0.250000" u2="0.492424" v1="0.257576" v2="0.500000"/>
+		<Element name="frosting_essential_oil.tex" u1="0.500000" u2="0.742424" v1="0.257576" v2="0.500000"/>
+		<Element name="insulation_potion.tex" u1="0.750000" u2="0.992424" v1="0.757576" v2="1.000000"/>
+		<Element name="gushing_essential_oil.tex" u1="0.500000" u2="0.742424" v1="0.757576" v2="1.000000"/>
+		<Element name="dustproof_potion.tex" u1="0.750000" u2="0.992424" v1="0.257576" v2="0.500000"/>
+		<Element name="frostshield_potion.tex" u1="0.750000" u2="0.992424" v1="0.507576" v2="0.750000"/>
+		<Element name="shocking_essential_oil.tex" u1="0.250000" u2="0.492424" v1="0.507576" v2="0.750000"/>
+		<Element name="forest_essential_oil.tex" u1="0.000000" u2="0.242424" v1="0.257576" v2="0.500000"/>
+		<Element name="dendrocide_potion.tex" u1="0.000000" u2="0.242424" v1="0.757576" v2="1.000000"/>
+		<Element name="unmoving_essential_oil.tex" u1="0.500000" u2="0.742424" v1="0.507576" v2="0.750000"/>
+		<Element name="streaming_essential_oil.tex" u1="0.000000" u2="0.242424" v1="0.507576" v2="0.750000"/>
+		<Element name="heatshield_potion.tex" u1="0.250000" u2="0.492424" v1="0.757576" v2="1.000000"/>
+	</Elements>
+</Atlas>

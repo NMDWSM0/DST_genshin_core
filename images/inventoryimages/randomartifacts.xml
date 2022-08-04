@@ -1,0 +1,15 @@
+<Atlas>
+	<Texture filename="randomartifacts.tex"/>
+	<Elements>
+		<Element name="randomartifacts_bfmt.tex" u1="0.673469" u2="1.000000" v1="0.257576" v2="0.500000"/>
+		<Element name="randomartifacts_jyqy.tex" u1="0.336735" u2="0.663265" v1="0.757576" v2="1.000000"/>
+		<Element name="randomartifacts_rlsn.tex" u1="0.673469" u2="1.000000" v1="0.757576" v2="1.000000"/>
+		<Element name="randomartifacts_ygpy.tex" u1="0.336735" u2="0.663265" v1="0.507576" v2="0.750000"/>
+		<Element name="randomartifacts_sljy.tex" u1="0.000000" u2="0.326531" v1="0.507576" v2="0.750000"/>
+		<Element name="randomartifacts_yzmn.tex" u1="0.000000" u2="0.326531" v1="0.007576" v2="0.250000"/>
+		<Element name="randomartifacts_cbzh.tex" u1="0.000000" u2="0.326531" v1="0.257576" v2="0.500000"/>
+		<Element name="randomartifacts_clzy.tex" u1="0.673469" u2="1.000000" v1="0.507576" v2="0.750000"/>
+		<Element name="randomartifacts.tex" u1="0.000000" u2="0.326531" v1="0.757576" v2="1.000000"/>
+		<Element name="randomartifacts_clzx.tex" u1="0.336735" u2="0.663265" v1="0.257576" v2="0.500000"/>
+	</Elements>
+</Atlas>

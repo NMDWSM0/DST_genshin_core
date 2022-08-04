@@ -1,0 +1,8 @@
+<Atlas>
+	<Texture filename="talentattr_btn_en.tex"/>
+	<Elements>
+		<Element name="talentattr_btn_normal_en.tex" u1="0.000000" u2="1.000000" v1="0.336066" v2="0.663934"/>
+		<Element name="talentattr_btn_selected_en.tex" u1="0.000000" u2="1.000000" v1="0.000000" v2="0.327869"/>
+		<Element name="talentattr_btn_focus_en.tex" u1="0.000000" u2="1.000000" v1="0.672131" v2="1.000000"/>
+	</Elements>
+</Atlas>

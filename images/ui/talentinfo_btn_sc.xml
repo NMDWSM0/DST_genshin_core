@@ -1,0 +1,8 @@
+<Atlas>
+	<Texture filename="talentinfo_btn_sc.tex"/>
+	<Elements>
+		<Element name="talentinfo_btn_normal_sc.tex" u1="0.000000" u2="0.996411" v1="0.336066" v2="0.663934"/>
+		<Element name="talentinfo_btn_focus_sc.tex" u1="0.000000" u2="0.996411" v1="0.672131" v2="1.000000"/>
+		<Element name="talentinfo_btn_selected_sc.tex" u1="0.000000" u2="0.996411" v1="0.000000" v2="0.327869"/>
+	</Elements>
+</Atlas>

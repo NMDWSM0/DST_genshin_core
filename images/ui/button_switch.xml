@@ -1,0 +1,11 @@
+<Atlas>
+	<Texture filename="button_switch.tex"/>
+	<Elements>
+		<Element name="button_equip_en.tex" u1="0.000000" u2="1.000000" v1="0.171717" v2="0.333333"/>
+		<Element name="button_switch.tex" u1="0.000000" u2="1.000000" v1="0.505051" v2="0.666667"/>
+		<Element name="button_remove.tex" u1="0.000000" u2="1.000000" v1="0.338384" v2="0.500000"/>
+		<Element name="button_equip.tex" u1="0.000000" u2="1.000000" v1="0.838384" v2="1.000000"/>
+		<Element name="button_switch_en.tex" u1="0.000000" u2="1.000000" v1="0.005051" v2="0.166667"/>
+		<Element name="button_remove_en.tex" u1="0.000000" u2="1.000000" v1="0.671717" v2="0.833333"/>
+	</Elements>
+</Atlas>

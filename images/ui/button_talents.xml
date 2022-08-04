@@ -1,0 +1,13 @@
+<Atlas>
+	<Texture filename="button_talents.tex"/>
+	<Elements>
+		<Element name="button_talents_selected_en.tex" u1="0.000000" u2="1.000000" v1="0.004808" v2="0.125000"/>
+		<Element name="button_talents_normal_en.tex" u1="0.000000" u2="1.000000" v1="0.629808" v2="0.750000"/>
+		<Element name="button_talents_focus.tex" u1="0.000000" u2="1.000000" v1="0.129808" v2="0.250000"/>
+		<Element name="button_talents_down.tex" u1="0.000000" u2="1.000000" v1="0.879808" v2="1.000000"/>
+		<Element name="button_talents_down_en.tex" u1="0.000000" u2="1.000000" v1="0.254808" v2="0.375000"/>
+		<Element name="button_talents_selected.tex" u1="0.000000" u2="1.000000" v1="0.504808" v2="0.625000"/>
+		<Element name="button_talents_focus_en.tex" u1="0.000000" u2="1.000000" v1="0.379808" v2="0.500000"/>
+		<Element name="button_talents_normal.tex" u1="0.000000" u2="1.000000" v1="0.754808" v2="0.875000"/>
+	</Elements>
+</Atlas>

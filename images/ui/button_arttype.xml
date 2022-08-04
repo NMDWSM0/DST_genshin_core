@@ -1,0 +1,15 @@
+<Atlas>
+	<Texture filename="button_arttype.tex"/>
+	<Elements>
+		<Element name="circlet_normal.tex" u1="0.000000" u2="0.326531" v1="0.757576" v2="1.000000"/>
+		<Element name="plume_selected.tex" u1="0.000000" u2="0.326531" v1="0.507576" v2="0.750000"/>
+		<Element name="flower_normal.tex" u1="0.000000" u2="0.326531" v1="0.257576" v2="0.500000"/>
+		<Element name="sands_selected.tex" u1="0.000000" u2="0.326531" v1="0.007576" v2="0.250000"/>
+		<Element name="circlet_selected.tex" u1="0.673469" u2="1.000000" v1="0.257576" v2="0.500000"/>
+		<Element name="sands_normal.tex" u1="0.336735" u2="0.663265" v1="0.507576" v2="0.750000"/>
+		<Element name="goblet_normal.tex" u1="0.673469" u2="1.000000" v1="0.507576" v2="0.750000"/>
+		<Element name="goblet_selected.tex" u1="0.336735" u2="0.663265" v1="0.757576" v2="1.000000"/>
+		<Element name="flower_selected.tex" u1="0.336735" u2="0.663265" v1="0.257576" v2="0.500000"/>
+		<Element name="plume_normal.tex" u1="0.673469" u2="1.000000" v1="0.757576" v2="1.000000"/>
+	</Elements>
+</Atlas>
