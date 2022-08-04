@@ -3,9 +3,22 @@ local Text = require "widgets/text"
 local Image = require "widgets/image"
 local UIAnim = require "widgets/uianim"
 local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
 local ScrollArea = require "widgets/scrollarea"
 local IngredientUI = require "widgets/ingredientui"
+
+local function removeskinstring(str)
+    local pos = 0
+	local lastpos = 0
+    while true do
+        pos = string.find(str, "_", pos + 1)  -- 查找下一个
+        if pos == nil then 
+		    break 
+		end
+        lastpos = pos
+    end
+	local copedstr = string.sub(str, 1, lastpos - 1)
+	return copedstr
+end
 
 local weapon_refine_screen = Class(Widget, function(self, owner)
     Widget._ctor(self, nil)
@@ -49,8 +62,15 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.button_refine.scale_on_focus = false
 	self.button_refine.move_on_click = false
 
+    --武器动画
+    self.weaponanim = self:AddChild(UIAnim())
+    self.weaponanim:SetPosition(-280, -60, 0)
+	self.weaponanim:SetScale(1.3, 1.3, 1.3)
+	self.weaponanim:GetAnimState():SetBank("weapon_show")
+	self.weaponanim:GetAnimState():SetBuild("weapon_show")
+
     --等级提示
-    self.refine_level_text = self:AddChild(Text("genshinfont",46, nil, {1, 1, 1, 1}))
+    self.refine_level_text = self:AddChild(Text("genshinfont", 46, nil, {1, 1, 1, 1}))
     self.refine_level_text:SetHAlign(ANCHOR_MIDDLE)
     self.refine_level_text:SetVAlign(ANCHOR_MIDDLE)
     self.refine_level_text:SetRegionSize(400, 80)
@@ -133,6 +153,11 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
 end)
 
 function weapon_refine_screen:UpdateIngredient()
+    for k, v in pairs(self.ingredient_items) do
+        v:Kill()
+    end
+    self.ingredient_items = {}
+
     local weapon = self.weapon
     if weapon == nil or weapon:HasTag("player") then
         return
@@ -141,11 +166,6 @@ function weapon_refine_screen:UpdateIngredient()
     if refineable == nil then
         return
     end
-    
-    for k, v in pairs(self.ingredient_items) do
-        v:Kill()
-    end
-    self.ingredient_items = {}
 
     local ingredient = refineable:GetIngredient()
     local Inventory = self.owner.replica.inventory
@@ -168,6 +188,82 @@ function weapon_refine_screen:UpdateIngredient()
     table.insert(self.ingredient_items, ing)
 end
 
+function weapon_refine_screen:UpdateWeapon(weapon)
+	--获取build并判断皮肤
+	local weaponbuild = weapon and weapon.AnimState:GetBuild() or ""
+	local skin_build = weapon.AnimState:GetSkinBuild() ~= "" and weapon.AnimState:GetSkinBuild() or nil--weapon:GetSkinBuild()
+	
+	--处理皮肤(字符串操作)  (也处理吹箭)
+	if skin_build ~= nil then
+	    weaponbuild = removeskinstring(weaponbuild)
+	end
+
+	--还有火腿棒你是个奇葩
+	if weaponbuild == "hambat" then
+	    weaponbuild = "ham_bat"
+	elseif weaponbuild == "oceanfishingrod" then
+	--海钓竿你也是
+	    weaponbuild = "fishingrod_ocean"
+	elseif weaponbuild == "nightsword" then
+	--影刀？？？
+	    weaponbuild = "nightmaresword"
+	elseif string.find(weaponbuild, "blow_dart") ~= nil then
+	    weaponbuild = "blowdart"
+	end
+
+	--处理swap
+	local swap_weaponbuild = weaponbuild
+	if string.find(weaponbuild, "swap") == nil then
+	    swap_weaponbuild = "swap_"..weaponbuild
+	end
+
+	--设置build
+	if skin_build ~= nil then
+		if string.find(weaponbuild, "staff") ~= nil then
+		    if weapon.prefab == "firestaff" then
+			    swap_weaponbuild = "swap_redstaff"
+			elseif weapon.prefab == "icestaff" then
+			    swap_weaponbuild = "swap_bluestaff"
+			elseif weapon.prefab == "telestaff" then
+			    swap_weaponbuild = "swap_purplestaff"
+	        else
+		        swap_weaponbuild = "swap_"..weapon.prefab
+			end
+		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild, weapon.GUID, "swap_staffs")
+		elseif weaponbuild == "multitool_axe_pickaxe" then
+		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, "swap_object", weapon.GUID, swap_weaponbuild)
+		else
+		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild, weapon.GUID, swap_weaponbuild)
+		end
+    else
+		if string.find(weaponbuild, "staff") ~= nil then
+		    if weapon.prefab == "firestaff" then
+			    swap_weaponbuild = "swap_redstaff"
+			elseif weapon.prefab == "icestaff" then
+			    swap_weaponbuild = "swap_bluestaff"
+			elseif weapon.prefab == "telestaff" then
+			    swap_weaponbuild = "swap_purplestaff"
+	        else
+		        swap_weaponbuild = "swap_"..weapon.prefab
+			end
+		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", "swap_staffs", swap_weaponbuild)
+		elseif weaponbuild == "multitool_axe_pickaxe" then
+		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, "swap_object")
+		else
+		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, swap_weaponbuild)
+		end
+    end
+	
+    local ispolearm = false
+    for k, v in pairs(TUNING.POLEARM_WEAPONS) do
+        if weapon.prefab == v then
+            ispolearm = true
+            break
+        end
+    end
+    self.weaponanim:GetAnimState():PlayAnimation(ispolearm and "idle_polearm" or "idle_sword")
+end
+
 function weapon_refine_screen:OnUpdate(dt)
     --获取数据
 	local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
@@ -180,6 +276,7 @@ function weapon_refine_screen:OnUpdate(dt)
     if weapon == nil or weapon:HasTag("player") then
         self.previous_weapon = nil
         self.previous_level = 0
+        self.weaponanim:GetAnimState():ClearOverrideSymbol("swap_object")
         self:Hide()  --强制关闭
         return
     end
@@ -210,20 +307,22 @@ function weapon_refine_screen:OnUpdate(dt)
     self.previous_weapon = weapon.prefab
     self.previous_level = current_level
 
-    self:UpdateIngredient()
-
-    local level_text = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and current_level.."阶" or "Rank "..current_level
-    self.refine_level_text:SetString(level_text)
-
     if not weapon:HasTag("subtextweapon") then
         self.effect_text1:Hide()
         self.effect_text2:Hide()
         self.effect_title:Hide()
+        self:Hide()  --强制关闭
         return
     else
         self.effect_title:Show()
         self.effect_text1:Show()
     end
+
+    self:UpdateWeapon(weapon)
+    self:UpdateIngredient()
+
+    local level_text = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and current_level.."阶" or "Rank "..current_level
+    self.refine_level_text:SetString(level_text)
 
     if refineable == nil or current_level == max_level then
         local oridesc = refineable ~= nil and type(weapon.description) == "table" and weapon.description[current_level]

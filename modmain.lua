@@ -256,6 +256,8 @@ Assets = {
 	Asset( "IMAGE", "images/ui/button_refine.tex"),
     Asset( "ATLAS", "images/ui/button_refine.xml"),
 
+	Asset( "ANIM", "anim/weapon_show.zip"),
+
 	--Artifacts界面（第三个界面）
 	Asset( "IMAGE", "images/ui/button_arttype.tex"),
     Asset( "ATLAS", "images/ui/button_arttype.xml"),
@@ -627,6 +629,11 @@ TUNING.DEFAULT_TALENTS_INGREDIENTS =
     {Ingredient("cutgrass", 1), Ingredient("log", 1), Ingredient("goldnugget", 1)},  --7~8
     {Ingredient("cutgrass", 1), Ingredient("log", 1), Ingredient("goldnugget", 1)},  --8~9
     {Ingredient("cutgrass", 1), Ingredient("log", 1), Ingredient("goldnugget", 1)},  --9~10
+}
+
+TUNING.POLEARM_WEAPONS = {
+	"spear",
+	"element_spear",
 }
 
 ----------------------------------------------------

@@ -66,6 +66,12 @@ end
 
 function Refineable:Refine(level)
     self.current_level = math.min(self.current_level + (level or 1), self.max_level)
+    if self.inst.components.equippable ~= nil and self.inst.components.equippable:IsEquipped() then
+        local owner = self.inst.components.inventoryitem.owner
+        if owner.components.inventory then
+            owner.components.inventory:Equip(self.inst)
+        end
+    end
 end
 
 function Refineable:OnSave()

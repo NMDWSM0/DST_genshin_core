@@ -82,6 +82,15 @@ local weapon_screen = Class(Widget, function(self, owner)
     self.stars:SetPosition(-125, -215, 0)
     self.stars:SetScale(0.8, 0.8, 0.8)
 
+    --精炼等级，没有的显示1
+    self.refine_text = Text("genshinfont", 34, nil, {245/255, 225/255, 153/255, 1})
+    self.detail_list:AddItem(self.refine_text)
+    self.refine_text:SetHAlign(ANCHOR_LEFT)
+    self.refine_text:SetVAlign(ANCHOR_MIDDLE)
+    self.refine_text:SetRegionSize(300, 60)
+    self.refine_text:EnableWordWrap(true)
+    self.refine_text:SetPosition(-45, -270, 0)
+
     --特效文字
     self.effect_text = Text("genshinfont", 32, nil, {1, 1, 1, 1})
     self.detail_list:AddItem(self.effect_text)
@@ -89,7 +98,7 @@ local weapon_screen = Class(Widget, function(self, owner)
     self.effect_text:SetVAlign(ANCHOR_TOP)
     self.effect_text:SetRegionSize(300, 700)
     self.effect_text:EnableWordWrap(true)
-    self.effect_text:SetPosition(-45, -600, 0)
+    self.effect_text:SetPosition(-45, -640, 0)
 
     self.detail_list:UpdateContentHeight()
 
@@ -137,6 +146,7 @@ function weapon_screen:OnUpdate(dt)
         self.sub_text:Hide()
         self.sub_number:Hide()
         self.stars:Hide()
+        self.refine_text:Hide()
         self.effect_text:Hide()
         self.refineopen:Hide()
         self.previous_name = nil
@@ -170,18 +180,22 @@ function weapon_screen:OnUpdate(dt)
     if weapon:HasTag("subtextweapon") then
         local desc = refineable ~= nil and type(weapon.description) == "table" and weapon.description[current_level]
             or (type(weapon.description) == "string" and weapon.description or "")
+        local refinestr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..current_level.."阶" or "Refinement Rank "..current_level
         self.sub_text:SetString(TUNING.ARTIFACTS_TYPE[weapon.subtext])
         self.sub_number:SetString(weapon.subnumber)
+        self.refine_text:SetString(refinestr)
         self.effect_text:SetString(desc)
         self.sub_textbar:Show()
         self.sub_text:Show()
         self.sub_number:Show()
+        self.refine_text:Show()
         self.effect_text:Show()
         self.refineopen:Show()
     else
         self.sub_textbar:Hide()
         self.sub_text:Hide()
         self.sub_number:Hide()
+        self.refine_text:Hide()
         self.effect_text:Hide()
         self.refineopen:Hide()
     end
