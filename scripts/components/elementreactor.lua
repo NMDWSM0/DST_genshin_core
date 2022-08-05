@@ -192,7 +192,7 @@ function ElementReactor:HasElement()
     return false
 end
 
-function ElementReactor:NewElement(stimuli, value, attacker, ignorecd)
+function ElementReactor:NewElement(stimuli, value, attacker, ignorecd, changepriority)  --changepriority默认为true
     if stimuli == nil or stimuli == 8 then
         return
     end
@@ -229,10 +229,15 @@ function ElementReactor:NewElement(stimuli, value, attacker, ignorecd)
 
     self.element_stack[stimuli].value = self.element_stack[stimuli].value + value
     self.element_stack[stimuli].attacker = attacker
-    self.element_stack[stimuli].priority = 0
-    for i = 1, 7 do
-        if i ~= stimuli and self.element_stack[i].value > 0 then
-            self.element_stack[i].priority = self.element_stack[i].priority + 1
+    if changepriority == nil then
+        changepriority = true
+    end 
+    if changepriority then
+        self.element_stack[stimuli].priority = 0
+        for i = 1, 7 do
+            if i ~= stimuli and self.element_stack[i].value > 0 then
+                self.element_stack[i].priority = self.element_stack[i].priority + 1
+            end
         end
     end
     self:UpdateReaction()
@@ -297,12 +302,13 @@ function ElementReactor:CutOffElement(first)
 end
 
 function ElementReactor:NewElementFromPersist()
+    --不会改变priority
     --但是我还是感觉一直把ignorecd设为true服务器会有很大压力，1.5秒内直接给满配合元素保持机制基本可以一样的效果
     if self.persist_element ~= 0 then
-        self:NewElement(self.persist_element, 2.5, nil, false)  --加满
+        self:NewElement(self.persist_element, 2.5, nil, false, false)  --加满
         return
     elseif self.half_persist_element ~= 0 then
-        self:NewElement(self.half_persist_element, 2.5, nil, false)  --加满
+        self:NewElement(self.half_persist_element, 2.5, nil, false, false)  --加满
         return
     end
     --只能同时有一种元素保持生效（否则会自动触发反应吧）（下雨天冰史莱姆也不会因为潮湿一直挂水冻结？）
@@ -809,7 +815,8 @@ function ElementReactor:OnUpdate(dt)
 
         --被烧时的火元素就没有保持机制
         if self.inst.components.burnable and self.inst.components.burnable:IsBurning() then
-            self:NewElement(1, 1, nil, false)  --一直尝试添加火元素附着，每个1.5秒附着1点火元素
+            self:NewElement(1, 1, nil, false, true)  --一直尝试添加火元素附着，每个1.5秒附着1点火元素
+            --改变priority，防止草史莱姆这种能被一直烧
         end
     --
     end

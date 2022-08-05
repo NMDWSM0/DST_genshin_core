@@ -633,7 +633,15 @@ TUNING.DEFAULT_TALENTS_INGREDIENTS =
 
 TUNING.POLEARM_WEAPONS = {
 	"spear",
+	"spear_wathgrithr",
 	"element_spear",
+	"trident",
+}
+
+TUNING.SWORD_WEAPONS = {
+	"nightsword",
+	"glasscutter",
+	"ruins_bat",
 }
 
 ----------------------------------------------------

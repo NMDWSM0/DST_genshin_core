@@ -463,7 +463,7 @@ AddComponentPostInit("combat", function(self)
 		local reaction_addnumber = 0
 		local ignorecd = (attacker and attacker.components.combat and attacker.components.combat.ignorecdfn ~= nil )and attacker.components.combat.ignorecdfn(attacker, weapon, atk_elements, ele_value_copied, attackkey_copied) or IsIgnoreCD(attacker, weapon, atk_elements, ele_value_copied, attackkey_copied)
 		if self.inst.components.elementreactor ~= nil and ele_value_copied > 0 and atk_elements ~= 8 then --物理伤害无需参与元素反应
-		    self.inst.components.elementreactor:NewElement(atk_elements, ele_value_copied, attacker, ignorecd)
+		    self.inst.components.elementreactor:NewElement(atk_elements, ele_value_copied, attacker, ignorecd, true)
 		    reaction_rate, reaction_addnumber = self.inst.components.elementreactor:CalcReaction()
 		end
 
