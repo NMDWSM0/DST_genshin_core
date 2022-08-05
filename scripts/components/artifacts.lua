@@ -123,7 +123,7 @@ local NUMBER_SUB = {
     crit_dmg = {0.054, 0.062, 0.070, 0.078},     --暴伤
 }
 
-if KnownModIndex:IsModEnabled("genshin_raiden") or KnownModIndex:IsModEnabled("workshop-????????") or TUNING.ENERGY_RECHARGE_ENABLE then
+if KnownModIndex:IsModEnabled("genshin_raiden") or KnownModIndex:IsModEnabled("workshop-2845021470") or TUNING.ENERGY_RECHARGE_ENABLE then
     table.insert(TYPES_ALL, "recharge")
     table.insert(TYPES_MAIN.sands, "recharge")
     NUMBER_MAIN["recharge"] = 0.518
