@@ -386,7 +386,7 @@ end)
 --------------------------------------Update-------------------------------------------
 
 function property_main:UpdatePlayer()
-    local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+    local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
 
 	--在命之座界面不显示人物
 	if self.button_constellation.selected == true then
@@ -417,7 +417,7 @@ function property_main:UpdatePlayer()
 end
 
 function property_main:UpdateWeapon()
-    local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+    local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
 
     if combatstatus == nil then
 		return

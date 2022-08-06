@@ -161,7 +161,7 @@ function talents_upgrade_widget:UpdateTalentLevel(talent)
     if talent < 1 or talent > 3 then
         return
     end
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     local previouslevel = TalentsComponent and TalentsComponent:GetTalentLevel(talent) or 1
     if previouslevel < 1 then
         previouslevel = 1
@@ -186,7 +186,7 @@ function talents_upgrade_widget:UpdateTalentText(talent)
     if talent < 1 or talent > 3 then
         return
     end
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     local previouslevel = TalentsComponent and TalentsComponent:GetTalentLevel(talent) or 1
     if previouslevel < 1 then
         previouslevel = 1
@@ -255,7 +255,7 @@ function talents_upgrade_widget:UpdateTalentIngredients(talent)
 
     local Builder = self.owner.replica.builder
     local Inventory = self.owner.replica.inventory
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     local baselevel = TalentsComponent and TalentsComponent:GetBaseTalentLevel(talent) or 1
     local ingredients = self.ingredients[baselevel]
     if ingredients == nil then

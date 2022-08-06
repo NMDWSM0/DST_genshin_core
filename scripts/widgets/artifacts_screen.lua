@@ -302,7 +302,7 @@ end
 
 function artifacts_screen:OnUpdate(dt)
     --获取数据
-	local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     local inventory = self.owner.replica.inventory
 
 	if inventory == nil or combatstatus == nil then
@@ -333,7 +333,7 @@ function artifacts_screen:OnUpdate(dt)
 		artinumber[k] = 0
 	end
     for k,v in pairs(items) do
-		local articomponent = v and (TheNet:GetIsServer() and v.components.artifacts or v.replica.artifacts) or nil
+		local articomponent = v and (TheWorld.ismastersim and v.components.artifacts or v.replica.artifacts) or nil
 		if articomponent ~= nil then 
 		    artinumber[(articomponent:GetMain()).type] = artinumber[(articomponent:GetMain()).type] + (articomponent:GetMain()).number
 		    artinumber[(articomponent:GetSub1()).type] = artinumber[(articomponent:GetSub1()).type] + (articomponent:GetSub1()).number
@@ -364,35 +364,35 @@ function artifacts_screen:OnUpdate(dt)
 	--显示圣遗物图片(以及套装计数)
     if flower_item ~= nil then
         self.artifacts_slots_flower:SetTile(ItemTile(flower_item))
-		local sets = TheNet:GetIsServer() and flower_item.components.artifacts:GetSets() or flower_item.replica.artifacts:GetSets()
+		local sets = TheWorld.ismastersim and flower_item.components.artifacts:GetSets() or flower_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_flower:SetTile(nil)
     end
     if plume_item ~= nil then
         self.artifacts_slots_plume:SetTile(ItemTile(plume_item))
-		local sets = TheNet:GetIsServer() and plume_item.components.artifacts:GetSets() or plume_item.replica.artifacts:GetSets()
+		local sets = TheWorld.ismastersim and plume_item.components.artifacts:GetSets() or plume_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_plume:SetTile(nil)
     end
     if sands_item ~= nil then
         self.artifacts_slots_sands:SetTile(ItemTile(sands_item))
-		local sets = TheNet:GetIsServer() and sands_item.components.artifacts:GetSets() or sands_item.replica.artifacts:GetSets()
+		local sets = TheWorld.ismastersim and sands_item.components.artifacts:GetSets() or sands_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_sands:SetTile(nil)
     end
     if goblet_item ~= nil then
         self.artifacts_slots_goblet:SetTile(ItemTile(goblet_item))
-		local sets = TheNet:GetIsServer() and goblet_item.components.artifacts:GetSets() or goblet_item.replica.artifacts:GetSets()
+		local sets = TheWorld.ismastersim and goblet_item.components.artifacts:GetSets() or goblet_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_goblet:SetTile(nil)
     end
     if circlet_item ~= nil then
         self.artifacts_slots_circlet:SetTile(ItemTile(circlet_item))
-		local sets = TheNet:GetIsServer() and circlet_item.components.artifacts:GetSets() or circlet_item.replica.artifacts:GetSets()
+		local sets = TheWorld.ismastersim and circlet_item.components.artifacts:GetSets() or circlet_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_circlet:SetTile(nil)

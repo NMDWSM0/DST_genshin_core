@@ -130,7 +130,7 @@ end)
 
 function weapon_screen:OnUpdate(dt)
     --获取数据
-	local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     if combatstatus == nil then
         return
     end
@@ -154,7 +154,7 @@ function weapon_screen:OnUpdate(dt)
         return
     end
 
-    local refineable = TheNet:GetIsServer() and weapon.components.refineable or weapon.replica.refineable
+    local refineable = TheWorld.ismastersim and weapon.components.refineable or weapon.replica.refineable
     local current_level = refineable and refineable:GetCurrentLevel() or 1
     if self.previous_name == weapon.prefab and self.previous_level == current_level then
         return

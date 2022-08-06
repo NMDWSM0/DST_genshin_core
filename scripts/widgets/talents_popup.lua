@@ -198,7 +198,7 @@ function talents_popup:SetAttritubeList(num)
     if num < 1 or num > 3 then
         return
     end
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     local talentlevel = TalentsComponent and TalentsComponent:GetTalentLevel(num) or 1
 
     self.attributelist_items = {}
@@ -269,7 +269,7 @@ function talents_popup:ShowLevel(num)
 end
 
 function talents_popup:UpdateTalentsLevel()
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     if self.current_show > 3 and self.current_show < 1 then
         self.level:SetString("Lv. 1")
         self.level:SetColour(234/255, 228/255, 214/255, 1)

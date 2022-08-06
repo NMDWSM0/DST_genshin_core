@@ -162,8 +162,8 @@ local elementalburst_badge = Class(Button, function(self, owner, bank, build, an
 end)
 
 function elementalburst_badge:OnUpdate(dt)
-    local energyrecharge = TheNet:GetIsServer() and self.owner.components.energyrecharge or self.owner.replica.energyrecharge
-    local elementalcaster = TheNet:GetIsServer() and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
+    local energyrecharge = TheWorld.ismastersim and self.owner.components.energyrecharge or self.owner.replica.energyrecharge
+    local elementalcaster = TheWorld.ismastersim and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
     if energyrecharge == nil then
         return
     end

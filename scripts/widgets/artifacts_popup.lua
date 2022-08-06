@@ -250,7 +250,7 @@ end
 function artifacts_popup:SetType(type)
     --当前显示的是什么位置的圣遗物
     self.currenttype = table.contains(TYPES, type) and type or "flower"
-    local componentname = TheNet:GetIsServer() and "components" or "replica"
+    local componentname = TheWorld.ismastersim and "components" or "replica"
     --物品栏和背包，还有圣遗物箱子
     local inventory = self.owner.replica.inventory
     local overflow = inventory:GetOverflowContainer()
@@ -381,7 +381,7 @@ function artifacts_popup:ShowDetail(item)
     self.noartifacts_text:Hide()
 
     --当前圣遗物基本信息
-    local artifacts = TheNet:GetIsServer() and item.components.artifacts or item.replica.artifacts
+    local artifacts = TheWorld.ismastersim and item.components.artifacts or item.replica.artifacts
     local name = STRINGS.NAMES[string.upper(item.prefab)]
     local type = TUNING.ARTIFACTS_TAG[artifacts:GetTag()]
     local sets = TUNING.ARTIFACTS_SETS[artifacts:GetSets()]
@@ -396,7 +396,7 @@ function artifacts_popup:ShowDetail(item)
             if v == artifacts:GetTag() then
                 hasequip = true
             end
-            local anotherartifacts = TheNet:GetIsServer() and anotheritem.components.artifacts or anotheritem.replica.artifacts
+            local anotherartifacts = TheWorld.ismastersim and anotheritem.components.artifacts or anotheritem.replica.artifacts
             if anotherartifacts:GetSets() == artifacts:GetSets() then  --那个圣遗物的套装和当前显示居然一样诶
                 setsnumber = setsnumber + 1
             end
@@ -517,7 +517,7 @@ function artifacts_popup:SwitchorRemove(item)
     if item == nil then
         return
     end
-    local type = TheNet:GetIsServer() and item.components.artifacts:GetTag() or item.replica.artifacts:GetTag()
+    local type = TheWorld.ismastersim and item.components.artifacts:GetTag() or item.replica.artifacts:GetTag()
     local nowitem = self.owner.replica.inventory:GetEquippedItem(EQUIPSLOTS[string.upper(type)])
     if item == nowitem then
         --卸下装备

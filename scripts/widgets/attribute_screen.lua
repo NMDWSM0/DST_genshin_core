@@ -646,7 +646,7 @@ end)
 
 function attribute_screen:OnUpdate(dt)
     --获取数据
-	local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
 
 	if combatstatus == nil then
 		return

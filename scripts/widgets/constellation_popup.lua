@@ -129,7 +129,7 @@ function constellation_popup:ShowLevel(level)
 end
 
 function constellation_popup:Refresh()
-    local ConstellationComponent = TheNet:GetIsServer() and self.owner.components.constellation or self.owner.replica.constellation
+    local ConstellationComponent = TheWorld.ismastersim and self.owner.components.constellation or self.owner.replica.constellation
     if ConstellationComponent == nil then
         return
     end

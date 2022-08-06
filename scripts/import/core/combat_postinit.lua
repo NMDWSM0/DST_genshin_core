@@ -6,6 +6,8 @@ local function tryconvert(str)
 		return 8
 	elseif type(str) == "number" then
 		return (str >= 1 and str <= 8) and str or 8
+	elseif type(str) ~= "string" then
+		return 8
 	end
 
 	if str == "fire" or str:lower() == "pyro" then

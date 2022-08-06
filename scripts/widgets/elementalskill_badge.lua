@@ -157,7 +157,7 @@ local elementalskill_badge = Class(Button, function(self, owner, atlas, tex, tot
 end)
 
 function elementalskill_badge:OnUpdate(dt)
-    local elementalcaster = TheNet:GetIsServer() and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
+    local elementalcaster = TheWorld.ismastersim and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
     local cd = math.max(0, self.totalcd - (elementalcaster.CDTime - elementalcaster.elementalskill))
     --print(cd)
     --print("GetTime:"..self.owner.CDTime.."  ,Bursttime:"..self.owner.elementalskill)

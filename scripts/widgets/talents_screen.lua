@@ -41,7 +41,7 @@ local talents_screen = Class(Widget, function(self, owner)
     
     -----------------------------------------------------------------------
     self.inst:ListenForEvent("talentsleveldirty", function() 
-        local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+        local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
         if TalentsComponent == nil then
             return
         end
@@ -140,7 +140,7 @@ function talents_screen:ShowUpgradeWidget(talent)
 end
 
 function talents_screen:UpdateTalentsLevel()
-    local TalentsComponent = TheNet:GetIsServer() and self.owner.components.talents or self.owner.replica.talents
+    local TalentsComponent = TheWorld.ismastersim and self.owner.components.talents or self.owner.replica.talents
     self.talents_button1:SetLevel(TalentsComponent:GetTalentLevel(1), TalentsComponent:IsWithExtension(1))
     self.talents_button2:SetLevel(TalentsComponent:GetTalentLevel(2), TalentsComponent:IsWithExtension(2))
     self.talents_button3:SetLevel(TalentsComponent:GetTalentLevel(3), TalentsComponent:IsWithExtension(3))

@@ -59,7 +59,7 @@ local constellation_screen = Class(Widget, function(self, owner)
 
 -------------------------------------------------------------------------
     self.inst:ListenForEvent("constellationleveldirty", function() 
-        local ConstellationComponent = TheNet:GetIsServer() and self.owner.components.constellation or self.owner.replica.constellation
+        local ConstellationComponent = TheWorld.ismastersim and self.owner.components.constellation or self.owner.replica.constellation
         if ConstellationComponent == nil then
             return
         end

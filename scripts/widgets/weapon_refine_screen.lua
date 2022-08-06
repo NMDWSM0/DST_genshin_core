@@ -162,7 +162,7 @@ function weapon_refine_screen:UpdateIngredient()
     if weapon == nil or weapon:HasTag("player") then
         return
     end
-    local refineable = TheNet:GetIsServer() and weapon.components.refineable or weapon.replica.refineable
+    local refineable = TheWorld.ismastersim and weapon.components.refineable or weapon.replica.refineable
     if refineable == nil then
         return
     end
@@ -266,7 +266,7 @@ end
 
 function weapon_refine_screen:OnUpdate(dt)
     --获取数据
-	local combatstatus = TheNet:GetIsServer() and self.owner.components.combatstatus or self.owner.replica.combatstatus
+	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     if combatstatus == nil then
         return
     end
@@ -283,7 +283,7 @@ function weapon_refine_screen:OnUpdate(dt)
 
     self.name_text:SetString(STRINGS.NAMES[string.upper(weapon.prefab)])
 
-    local refineable = TheNet:GetIsServer() and weapon.components.refineable or weapon.replica.refineable
+    local refineable = TheWorld.ismastersim and weapon.components.refineable or weapon.replica.refineable
     local current_level = refineable and refineable:GetCurrentLevel() or 1
     local max_level = refineable and refineable:GetMaxLevel() or 1
 
