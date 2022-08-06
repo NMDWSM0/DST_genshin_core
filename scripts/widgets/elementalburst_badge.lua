@@ -4,6 +4,7 @@ local Widget = require "widgets/widget"
 local Text = require "widgets/text"
 local Button = require "widgets/button"
 local ImageButton = require "widgets/imagebutton"
+local Draggable_GenshinBtn = require "widgets/draggable_genshinbtn"
 
 local keys = {
     KEY_TAB = 9,
@@ -113,8 +114,8 @@ local function GetActualKey(key)
 	return ""
 end
 
-local elementalburst_badge = Class(Button, function(self, owner, bank, build, anim, fullanim, totalcd, key)
-	Button._ctor(self, "elementalburst_badge")
+local elementalburst_badge = Class(Draggable_GenshinBtn, function(self, owner, bank, build, anim, fullanim, totalcd, key)
+	Draggable_GenshinBtn._ctor(self, "elementalburst_badge")
 	self.owner = owner
     self.scale_on_focus = false  --禁止缩放
 	self.clickoffset = Vector3(0, 0, 0)   --禁止按下移动
@@ -153,7 +154,7 @@ local elementalburst_badge = Class(Button, function(self, owner, bank, build, an
 	self.btn.scale_on_focus = false  --禁止缩放
 	self.btn.clickoffset = Vector3(0, 0, 0)   --禁止按下移动
 	self.btn:SetOnClick(function()
-	    if self.onclick ~= nil then
+	    if not self:HasMoved() and self.onclick ~= nil then
             self.onclick()
         end
 	end)
