@@ -431,6 +431,9 @@ function property_main:UpdateWeapon()
 	end
 
 	--获取build并判断皮肤
+	if weapon.AnimState == nil then
+		return
+	end
 	local weaponbuild = weapon and weapon.AnimState:GetBuild() or ""
 	local skin_build = weapon.AnimState:GetSkinBuild() ~= "" and weapon.AnimState:GetSkinBuild() or nil--weapon:GetSkinBuild()
 	
@@ -527,8 +530,8 @@ function property_main:OnBecomeActive()
 		end
 	end
 
-	self:SetPosition(155 + 800 * TUNING.UISCALE, 120 + 400 * TUNING.UISCALE, 0)
-	self:SetScale(TUNING.UISCALE, TUNING.UISCALE, TUNING.UISCALE)
+	self:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+	self:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
     self:Show()
 end
 

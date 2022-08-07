@@ -27,8 +27,8 @@ AddClassPostConstruct("widgets/controls",function(self)
 				else
 				    TheFrontEnd:PushScreen(self.property_main)
 				end
-				--self.property_main:SetPosition(155 + 800 * TUNING.UISCALE, 120 + 400 * TUNING.UISCALE, 0)
-				--self.property_main:SetScale(TUNING.UISCALE, TUNING.UISCALE, TUNING.UISCALE)
+				--self.property_main:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+				--self.property_main:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
 				--self.property_main:Show()
 				--print(TheFrontEnd:GetActiveScreen().name)
 			end
@@ -43,11 +43,11 @@ AddClassPostConstruct("widgets/controls",function(self)
 		self.property_main = PropertyMain(self.owner)
 		if TUNING.CONTROLWITHUI then
 			self:AddChild(self.property_main)
-			self.property_main:SetPosition(155 + 800 * TUNING.UISCALE, 120 + 400 * TUNING.UISCALE, 0)
-			self.property_main:SetScale(TUNING.UISCALE, TUNING.UISCALE, TUNING.UISCALE)
+			self.property_main:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+			self.property_main:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
 		end
-		--self.property_main:SetPosition(155 + 800 * TUNING.UISCALE, 120 + 400 * TUNING.UISCALE, 0)
-		--self.property_main:SetScale(TUNING.UISCALE, TUNING.UISCALE, TUNING.UISCALE)
+		--self.property_main:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+		--self.property_main:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
 		self.property_main:MoveToFront()
 		self.property_main:Hide()
 

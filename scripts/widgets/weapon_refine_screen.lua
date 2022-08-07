@@ -189,6 +189,9 @@ function weapon_refine_screen:UpdateIngredient()
 end
 
 function weapon_refine_screen:UpdateWeapon(weapon)
+    if weapon.AnimState == nil then
+        return
+    end
 	--获取build并判断皮肤
 	local weaponbuild = weapon and weapon.AnimState:GetBuild() or ""
 	local skin_build = weapon.AnimState:GetSkinBuild() ~= "" and weapon.AnimState:GetSkinBuild() or nil--weapon:GetSkinBuild()

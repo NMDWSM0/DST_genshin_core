@@ -411,7 +411,7 @@ GLOBAL.setmetatable(env,{__index=function(t,k) return GLOBAL.rawget(GLOBAL,k) en
 TUNING.LANGUAGE_GENSHIN_CORE = "sc"
 TUNING.ELEMENTINDICATOR_ENABLED = true
 TUNING.DMGIND_ENABLE = true
-TUNING.UISCALE = 1
+TUNING.GENSHINCORE_UISCALE = 1
 TUNING.ENABLE_ENVIRONMENT_ELEMENT = true
 
 --Language
@@ -422,7 +422,7 @@ TUNING.ELEMENTINDICATOR_ENABLED = GetModConfigData("elementindicator")
 
 TUNING.DMGIND_ENABLE = GetModConfigData("damageindicator")
 
-TUNING.UISCALE = GetModConfigData("uiscale")
+TUNING.GENSHINCORE_UISCALE = GetModConfigData("uiscale")
 
 TUNING.CONTROLWITHUI = GetModConfigData("controlwhenUIon")
 

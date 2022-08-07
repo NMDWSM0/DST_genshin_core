@@ -72,11 +72,6 @@ function Draggable_GenshinBtn:BeginDrag()
 		local deltay = y - (TheFrontEnd.lasty or y)
 
 		local screen_width, screen_height = TheSim:GetScreenSize()
-		screen_width = screen_width
-		screen_height = screen_height
-
-		deltax = deltax
-		deltay = deltay
 
 		local nx = pos.x + deltax
 		local ny = pos.y + deltay
