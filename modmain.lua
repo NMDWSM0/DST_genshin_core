@@ -440,6 +440,11 @@ TUNING.WEAPON_REFINE_PROTECTION = GetModConfigData("weaponrefineprotection")
 ----------------------------------------------------
 ---------------------- 常量 ------------------------
 
+if TUNING.GENSHINCORE_UISCALE <= 0 then
+	local screen_width, screen_height = TheSim:GetScreenSize()
+	TUNING.GENSHINCORE_UISCALE = screen_width / 1920
+end
+
 TUNING.LABEL_NUMBER_SIZE = 48
 
 TUNING.LABEL_FONT_SIZE = 36

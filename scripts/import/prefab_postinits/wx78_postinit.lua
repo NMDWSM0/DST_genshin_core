@@ -72,11 +72,17 @@ local function maxhealth2_deactivate(inst, wx)
 end
 
 AddPrefabPostInit("wx78module_maxhealth", function(inst)
+    if inst.components.upgrademodule == nil then
+        return
+    end
     inst.components.upgrademodule.onactivatedfn = maxhealth_activate
     inst.components.upgrademodule.ondeactivatedfn = maxhealth_deactivate
 end)
 
 AddPrefabPostInit("wx78module_maxhealth2", function(inst)
+    if inst.components.upgrademodule == nil then
+        return
+    end
     inst.components.upgrademodule.onactivatedfn = maxhealth2_activate
     inst.components.upgrademodule.ondeactivatedfn = maxhealth2_deactivate
 end)

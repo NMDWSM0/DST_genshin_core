@@ -19,11 +19,12 @@ AddPrefabPostInitAny(function(inst)
 	
 	if inst.components.health then
 	    if inst.components.health.maxhealth < 1000 then
-		--不会掉落圣遗物
+			--让它掉落，不然的话，太难攒了
+			inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.1)
 		    
 		elseif inst.components.health.maxhealth <= 2500 then
 		
-		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.3)
+		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.5)
 			
 		elseif inst.components.health.maxhealth <= 6000 then
 		    
