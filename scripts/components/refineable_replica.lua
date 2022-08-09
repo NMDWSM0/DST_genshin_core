@@ -14,6 +14,12 @@ local Refineable = Class(function(self, inst)
         local refinetext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..level.."阶" or "Rank "..level
         return STRINGS.NAMES[string.upper(inst.prefab)].." "..refinetext
     end
+
+    self.inst:ListenForEvent("refineleveldirty", function ()
+        local lv = math.clamp(self._current_level:value(), 1, 5)
+        inst.inv_image_bg = { image = "refinenumber"..lv..".tex" }
+        inst.inv_image_bg.atlas = "images/inventoryimages/refinenumber.xml"
+    end)
 end)
 
 function Refineable:GetCurrentLevel()

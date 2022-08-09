@@ -90,6 +90,10 @@ Assets = {
 
     Asset("IMAGE", "images/inventoryimages/artifactsbundlewrap.tex"),
     Asset("ATLAS", "images/inventoryimages/artifactsbundlewrap.xml"),
+
+	Asset("IMAGE", "images/inventoryimages/refinenumber.tex"),
+    Asset("ATLAS", "images/inventoryimages/refinenumber.xml"),
+	
 --全都是UI图片
     ---------------------------------------------
 	--这是技能冷却图标

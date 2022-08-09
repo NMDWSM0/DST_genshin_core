@@ -34,6 +34,8 @@ local Refineable = Class(function(self, inst)
         local refinetext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼"..level.."阶" or "Rank "..level
         return STRINGS.NAMES[string.upper(inst.prefab)].." "..refinetext
     end
+
+    self:ChangeImageBG()
 end,
 nil,
 {
@@ -72,6 +74,16 @@ function Refineable:Refine(level)
             owner.components.inventory:Equip(self.inst)
         end
     end
+    self:ChangeImageBG()
+end
+
+function Refineable:ChangeImageBG()
+    self.inst.inv_image_bg = { image = "refinenumber"..self.current_level..".tex" }
+    self.inst.inv_image_bg.atlas = "images/inventoryimages/refinenumber.xml"
+    --#region
+    local old = self.inst.components.inventoryitem.imagename
+    self.inst.components.inventoryitem:ChangeImageName("nil")
+    self.inst.components.inventoryitem:ChangeImageName(old)
 end
 
 function Refineable:OnSave()
@@ -85,6 +97,7 @@ function Refineable:OnLoad(data)
     if data and data.current_level then
         self.current_level = data.current_level
     end
+    self:ChangeImageBG()
 end
 
 return Refineable

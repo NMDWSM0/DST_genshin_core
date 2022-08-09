@@ -10,7 +10,7 @@ else
 end
 
 author = "1526606449"
-version = "1.3.8"
+version = "1.3.9"
 api_version = 10
 dont_starve_compatible = false
 reign_of_giants_compatible = false
