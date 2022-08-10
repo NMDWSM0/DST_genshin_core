@@ -437,6 +437,10 @@ TUNING.ENABLE_ENVIRONMENT_ELEMENT = GetModConfigData("environmentelement")
 
 TUNING.ENERGY_RECHARGE_ENABLE = GetModConfigData("energyrecharge")
 
+TUNING.ARTIFACTS_MINHEALTH = GetModConfigData("artifactsminhealth")
+
+TUNING.ARTIFACTS_DROPRATE = GetModConfigData("artifactsdrop")
+
 TUNING.ARTIFACTS_ON_HEALTH = GetModConfigData("artifactsdowithhealth")
 
 TUNING.WEAPON_REFINE_PROTECTION = GetModConfigData("weaponrefineprotection")

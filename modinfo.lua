@@ -10,7 +10,7 @@ else
 end
 
 author = "1526606449"
-version = "1.3.9"
+version = "1.3.12"
 api_version = 10
 dont_starve_compatible = false
 reign_of_giants_compatible = false
@@ -139,6 +139,32 @@ if ischinese then
             default = true,
         },
         {
+            name = "artifactsminhealth",
+            label = "圣遗物掉落所需最低生命值",
+            hover = "低于(不包括)该数值的怪物将不会掉落圣遗物",
+            options =
+            {
+                { description = "100", data = 100, hover = "低于100生命值的生物将不会掉落圣遗物" },
+                { description = "200", data = 200, hover = "低于200生命值的生物将不会掉落圣遗物" },
+                { description = "500", data = 500, hover = "低于500生命值的生物将不会掉落圣遗物" },
+                { description = "1000", data = 1000, hover = "低于1000生命值的生物将不会掉落圣遗物" },
+            },
+            default = 100,
+        },
+        {
+            name = "artifactsdrop",
+            label = "圣遗物掉落概率",
+            hover = "圣遗物掉落数量也受此选项影响",
+            options =
+            {
+                { description = "0.5倍", data = 0.5, hover = "圣遗物掉落概率为默认值0.5倍" },
+                { description = "1倍", data = 1, hover = "圣遗物掉落概率为默认值" },
+                { description = "1.5倍", data = 1.5, hover = "圣遗物掉落概率为默认值1.5倍" },
+                { description = "2倍", data = 2, hover = "圣遗物掉落概率为默认值2倍" },
+            },
+            default = 1,
+        },
+        {
             name = "artifactsdowithhealth",
             label = "圣遗物修改生命值",
             hover = "部分角色MOD与该项不兼容，请关闭",
@@ -264,6 +290,32 @@ else
                 {description = "Off", data = false, hover = "Artifacts will not have recharge sub texts(also no main text)" },
             },
             default = true,
+        },
+        {
+            name = "artifactsminhealth",
+            label = "The min health of entities who drop artifacts",
+            hover = "Creatures whose maxhealth is lower than the value will never drop artifacts",
+            options =
+            {
+                { description = "100", data = 100, hover = "" },
+                { description = "200", data = 200, hover = "" },
+                { description = "500", data = 500, hover = "" },
+                { description = "1000", data = 1000, hover = "" },
+            },
+            default = 100,
+        },
+        {
+            name = "artifactsdrop",
+            label = "The chance of artifacts dropping",
+            hover = "The number of artifacts dropping is also affected by this",
+            options =
+            {
+                { description = "0.5", data = 0.5, hover = "Arifacts will drop at the 50% of deafult rate" },
+                { description = "1", data = 1, hover = "Arifacts will drop at the deafult rate" },
+                { description = "1.5", data = 1.5, hover = "Arifacts will drop at the 150% of deafult rate" },
+                { description = "2", data = 2, hover = "Arifacts will drop at the 200% of deafult rate" },
+            },
+            default = 1,
         },
         {
             name = "artifactsdowithhealth",

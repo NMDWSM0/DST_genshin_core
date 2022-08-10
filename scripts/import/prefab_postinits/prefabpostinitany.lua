@@ -17,35 +17,26 @@ AddPrefabPostInitAny(function(inst)
 		return
 	end
 	
+	local minhealth = TUNING.ARTIFACTS_MINHEALTH
+	local baserate = 0.05 * TUNING.ARTIFACTS_DROPRATE
+
 	if inst.components.health then
-	    if inst.components.health.maxhealth < 1000 then
-			--让它掉落，不然的话，太难攒了
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.1)
-		    
-		elseif inst.components.health.maxhealth <= 2500 then
-		
-		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.5)
-			
-		elseif inst.components.health.maxhealth <= 6000 then
-		    
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-			
+	    if inst.components.health.maxhealth < minhealth then
+		    return
 		else
-		    
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.5)
-			
+		    local h = inst.components.health.maxhealth
+			local r = baserate * math.pow((h / 100), 0.932)
+			while r > 1 do
+				inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
+				r = r - 1
+			end
+			inst.components.lootdropper:AddChanceLoot("randomartifacts", math.clamp(r, 0, 1))
 		end
 	else
 	    if not inst:HasTag("epic") then
-
 		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.1)
-			
 		else
-		    
 			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-			
 		end
 	end
 	

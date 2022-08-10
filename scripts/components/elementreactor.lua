@@ -59,6 +59,7 @@ end
 
 local ElementReactor = Class(function(self, inst)
     self.inst = inst
+    self.last_t = 0
 
     self.element_stack = 
     {
@@ -227,6 +228,8 @@ function ElementReactor:NewElement(stimuli, value, attacker, ignorecd, changepri
         end
     end
 
+    local first = self:NumberofElement() == 0
+
     self.element_stack[stimuli].value = self.element_stack[stimuli].value + value
     self.element_stack[stimuli].attacker = attacker
     if changepriority == nil then
@@ -240,7 +243,7 @@ function ElementReactor:NewElement(stimuli, value, attacker, ignorecd, changepri
             end
         end
     end
-    self:UpdateReaction()
+    self:UpdateReaction(first)
 end
 
 function ElementReactor:ConsumeElement(ele_x, ele_y)    
@@ -265,7 +268,10 @@ end
 function ElementReactor:CutOffElement(first)
     self.element_stack[5].value = 0
     self.element_stack[6].value = 0
-    if first then
+    for i = 1, 7 do
+        self.element_stack[i].value = math.min(2.5, self.element_stack[i].value)
+    end
+    if first or self:NumberofElement() <= 2 then
         return 
     end
 
@@ -295,10 +301,6 @@ function ElementReactor:CutOffElement(first)
             self.element_stack[ele].value = 0
         end
     end
-
-    for i = 1, 7 do
-        self.element_stack[i].value = math.min(2.5, self.element_stack[i].value)
-    end
 end
 
 function ElementReactor:NewElementFromPersist()
@@ -315,12 +317,15 @@ function ElementReactor:NewElementFromPersist()
     --元素全保持优先级高于元素半保持，如果有元素全保持，则元素半保持失效
 end
 
-function ElementReactor:UpdateReaction()
+function ElementReactor:UpdateReaction(first)
     --我们先排除基类元素为0的情况，此时直接将水火冰雷草攻击元素附着，而风岩没有附着效果
-    if not self:HasElement() or self:NumberofElement() == 1 then
+    if not self:HasElement() then
         self:CutOffElement(true)
         --绘画元素附着图标
         self:Push()
+        return
+    elseif self:NumberofElement() == 1 and not first then
+        self:CutOffElement()
         return
     end
 
@@ -790,6 +795,12 @@ function ElementReactor:Bloom(new_element, new_attacker, attached_element)
 end
 
 function ElementReactor:OnUpdate(dt)
+    self.last_t = self.last_t + dt
+    if self.last_t < 1 then
+        return
+    end
+    self.last_t = self.last_t - 1
+
     local updateanim = false
     --self.indicator:SetTrackingTarget(self.inst)
 
@@ -829,7 +840,7 @@ function ElementReactor:OnUpdate(dt)
     local previous_number = self:NumberofElement()
     for i = 1, 7 do
         if self.element_stack[i].value > 0 then
-            self.element_stack[i].value = math.max(self.element_stack[i].value - 0.13 * dt, 0)
+            self.element_stack[i].value = math.max(self.element_stack[i].value - 0.13, 0)
         end
     end
     if previous_number ~= self:NumberofElement() then
