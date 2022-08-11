@@ -421,6 +421,7 @@ AddComponentPostInit("combat", function(self)
 	
 	local old_GetAttacked = self.GetAttacked
 	function self:GetAttacked(attacker, damage, weapon, stimuli, ele_value, attackkey)
+		local bugtracker_ignore_flag__GetAttacked = true
 		local ele_value_copied = 1.3
 		local attackkey_copied = "normal"
 		local atk_elements = 8
@@ -471,7 +472,7 @@ AddComponentPostInit("combat", function(self)
 
 		--伤害免疫
 		local immuned = self:CalcImmunity(atk_elements)
-		if immuned then
+		if immuned or damage == nil then
 			damage = 0
 		end
 
@@ -479,7 +480,9 @@ AddComponentPostInit("combat", function(self)
 		local dmgadd = self.external_dmgaddnumber_multipliers:Get()
 
 		--最终传递给敌人的伤害（后面再去穿透护甲和伤害重定向）
-		damage = (damage + dmgadd + reaction_addnumber) * critical * defense * (typebonus + elements - 1) * elements_res * reaction_rate
+		if damage ~= 0 then
+			damage = (damage + dmgadd + reaction_addnumber) * critical * defense * (typebonus + elements - 1) * elements_res * reaction_rate
+		end
 		local damageresolved = self:CalcDamageResolved(attacker, damage, weapon, stimuli)
 
 		--推送一下事件

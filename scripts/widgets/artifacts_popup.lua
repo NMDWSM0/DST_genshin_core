@@ -264,6 +264,16 @@ function artifacts_popup:SetType(type)
             table.insert(artifactsbackpacks, itemcontainer)
         end
     end
+    if overflow ~= nil then
+        local num_slots_backpack = overflow:GetNumSlots()
+        for k = 1, num_slots_backpack do
+            local item = overflow:GetItemInSlot(k)
+            local itemcontainer = (item ~= nil and item[componentname].container) and item[componentname].container or nil
+            if itemcontainer and item:HasTag("artifactsbackpack") then
+                table.insert(artifactsbackpacks, itemcontainer)
+            end
+        end
+    end
 
     --获取该位置圣遗物
     local mainitem = inventory:GetEquippedItem(EQUIPSLOTS[string.upper(self.currenttype)])
@@ -381,7 +391,10 @@ function artifacts_popup:ShowDetail(item)
     self.noartifacts_text:Hide()
 
     --当前圣遗物基本信息
-    local artifacts = TheWorld.ismastersim and item.components.artifacts or item.replica.artifacts
+    local artifacts = item.components.artifacts or item.replica.artifacts
+    if artifacts == nil then
+        return
+    end
     local name = STRINGS.NAMES[string.upper(item.prefab)]
     local type = TUNING.ARTIFACTS_TAG[artifacts:GetTag()]
     local sets = TUNING.ARTIFACTS_SETS[artifacts:GetSets()]
@@ -396,7 +409,10 @@ function artifacts_popup:ShowDetail(item)
             if v == artifacts:GetTag() then
                 hasequip = true
             end
-            local anotherartifacts = TheWorld.ismastersim and anotheritem.components.artifacts or anotheritem.replica.artifacts
+            local anotherartifacts = anotheritem.components.artifacts or anotheritem.replica.artifacts
+            if anotherartifacts == nil then
+                return
+            end
             if anotherartifacts:GetSets() == artifacts:GetSets() then  --那个圣遗物的套装和当前显示居然一样诶
                 setsnumber = setsnumber + 1
             end
@@ -517,7 +533,11 @@ function artifacts_popup:SwitchorRemove(item)
     if item == nil then
         return
     end
-    local type = TheWorld.ismastersim and item.components.artifacts:GetTag() or item.replica.artifacts:GetTag()
+    local artifacts = item.components.artifacts or item.replica.artifacts
+    if artifacts == nil then
+        return
+    end
+    local type = artifacts:GetTag()
     local nowitem = self.owner.replica.inventory:GetEquippedItem(EQUIPSLOTS[string.upper(type)])
     if item == nowitem then
         --卸下装备

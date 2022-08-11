@@ -1,3 +1,4 @@
+---@diagnostic disable: cast-local-type
 local Widget = require "widgets/widget"
 local Text = require "widgets/text"
 local Image = require "widgets/image"

@@ -66,7 +66,8 @@ AddPrefabPostInitAny(function(inst)
 		end
 	end
 
-    inst.components.combat.crit_rate = 0
+    inst.components.combat.critical_rate = 0
+	inst.components.combat.critical_damage = 0
     inst.components.combat.pyro_res = 0.1
 	inst.components.combat.cryo_res = 0.1
 	inst.components.combat.hydro_res = 0.1
