@@ -14,7 +14,7 @@ local function LocalIndicator(inst, reactiontype)
     end
 end
 
-local function GetTimeLeft()
+local function GetTimeLeft(inst)
     local time = 0
     --land, grow1, grow2, explode_pre
     if inst.AnimState:IsCurrentAnimation("land") then
