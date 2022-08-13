@@ -29,7 +29,7 @@ local function OldestBomb(ents)
     local max = nil
     local maxtime = 0
     for k, v in pairs(ents) do
-        if v:GetTimeLeft() > maxtime then
+        if v:GetTimeRemained() > maxtime then
             max = v
             maxtime = v:GetTimeLeft()
         end
@@ -770,7 +770,9 @@ function ElementReactor:Bloom(new_element, new_attacker, attached_element)
     local number = #(ents)
     while number >= 5 do
         local oldestbomb = OldestBomb(ents)
-        oldestbomb:Explode(false)
+        if oldestbomb ~= nil then
+            oldestbomb:Explode(false)
+        end
         number = number - 1
     end
 

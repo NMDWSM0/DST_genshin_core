@@ -25,7 +25,7 @@ AddPrefabPostInitAny(function(inst)
 		    return
 		else
 		    local h = inst.components.health.maxhealth
-			local r = math.max(5, baserate * math.pow((h / 100), 0.932))
+			local r = math.min(5, baserate * math.pow((h / 100), 0.932))
 			while r > 1 do
 				inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
 				r = r - 1

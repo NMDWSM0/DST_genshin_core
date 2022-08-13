@@ -663,6 +663,11 @@ TUNING.SWORD_WEAPONS = {
 modimport("scripts/import/descriptions/descriptions.lua")
 
 ----------------------------------------------------
+-------------------- 圣遗物栏 ----------------------
+
+modimport("scripts/import/core/artifacts_slots.lua")
+
+----------------------------------------------------
 ----------------------- 字体 -----------------------
 
 function ApplyLocalizedFonts()
@@ -691,8 +696,9 @@ local OldRegisterPrefabs = ModManager.RegisterPrefabs
 local function NewRegisterPrefabs(self)
 	OldRegisterPrefabs(self)
 	ApplyLocalizedFonts()
+	RegisterArtifactSlots() --在这里再加入圣遗物栏
 end
-ModManager.RegisterPrefabs=NewRegisterPrefabs
+ModManager.RegisterPrefabs = NewRegisterPrefabs
 
 local OldStart = Start
 function Start()
@@ -740,13 +746,13 @@ modimport("scripts/import/prefab_postinits/prefabpostinitany.lua")
 -----**************************************************************-----
 -----**************************************************************-----
 
-modimport("scripts/import/core/artifacts_slots.lua")
-
 modimport("scripts/import/component_postinits/bundler_postinit.lua")
 
 modimport("scripts/import/component_postinits/rechargeable_postinit.lua")
 
 modimport("scripts/import/prefab_postinits/wx78_postinit.lua")
+
+modimport("scripts/import/prefab_postinits/houndmound_postinit.lua")
 ----------------------------------------------------
 ----------------------- UI -------------------------
 

@@ -14,17 +14,17 @@ local function LocalIndicator(inst, reactiontype)
     end
 end
 
-local function GetTimeLeft(inst)
+local function GetTimeRemained(inst)
     local time = 0
     --land, grow1, grow2, explode_pre
     if inst.AnimState:IsCurrentAnimation("land") then
-        time = time + inst.AnimState:GetCurrentAnimationTime()
+        time = inst.AnimState:GetCurrentAnimationTime()
     elseif inst.AnimState:IsCurrentAnimation("grow1") then
-        time = time + inst.AnimState:GetCurrentAnimationTime() + 10
+        time = inst.AnimState:GetCurrentAnimationTime() + 10
     elseif inst.AnimState:IsCurrentAnimation("grow2") then
-        time = time + inst.AnimState:GetCurrentAnimationTime() + 20
+        time = inst.AnimState:GetCurrentAnimationTime() + 20
     elseif inst.AnimState:IsCurrentAnimation("explode_pre") then
-        time = time + inst.AnimState:GetCurrentAnimationTime() + 30
+        time = inst.AnimState:GetCurrentAnimationTime() + 30
     end
     return time
 end
@@ -203,7 +203,7 @@ local function MakeBomb(name)
         inst.SetBaseDMG = SetBaseDMG
         inst.Burgeon = Burgeon
         inst.Hyperbloom = Hyperbloom
-        inst.GetTimeLeft = GetTimeLeft
+        inst.GetTimeRemained = GetTimeRemained
 
         inst:ListenForEvent("entity_damagecalculated", function(world, data)
             affectedby(inst, data.attacker, data.target, data.stimuli)
@@ -292,7 +292,9 @@ local function MakeTraceBomb(name)
     }
 
     local function OnHitTarget(inst)
-        inst.target.components.combat:GetAttacked(inst.attacker, inst.finaldmg, nil, 7, 0, "elementreaction")  --草伤
+        if inst.target.components.combat then
+            inst.target.components.combat:GetAttacked(inst.attacker, inst.finaldmg, nil, 7, 0, "elementreaction")  --草伤，但是没有元素附着
+        end
         inst:Remove()
     end
 
@@ -300,7 +302,7 @@ local function MakeTraceBomb(name)
         local x, y, z = inst.Transform:GetWorldPosition()
         inst.Transform:SetPosition(x + inst.speed.x * FRAMES, y + inst.speed.y * FRAMES, z + inst.speed.z * FRAMES)
 
-        if inst.target == nil or inst.target.components.health:IsDead() then
+        if inst.target == nil or (inst.target.components.health and inst.target.components.health:IsDead()) then
             inst:Remove()
         end
 
@@ -329,12 +331,12 @@ local function MakeTraceBomb(name)
         inst.speed = Vector3(math.cos(angle) * range, yspeed, math.sin(angle) * range)
         inst.accelration = Vector3(0, 0, 0)
         inst:DoTaskInTime(0.2, function(inst)
-            if inst.target == nil or inst.target.components.health:IsDead() then
+            if inst.target == nil or (inst.target.components.health and inst.target.components.health:IsDead()) then
                 inst:Remove()
             end
             local x, y, z = inst.Transform:GetWorldPosition()
             local x1, y1, z1 = inst.target.Transform:GetWorldPosition()
-            local vec = Vector3(x1-x, y1-y, z1-z)
+            local vec = Vector3(x1 - x, y1 - y, z1 - z)
             inst.accelration = (vec:GetNormalized()) * 50 
         end)
         inst:DoPeriodicTask(FRAMES, UpdatePosition)
