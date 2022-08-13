@@ -110,7 +110,8 @@ local function newattackactionhandler(sg)
 	sg.actionhandlers[ACTIONS.ATTACK].deststate = function(inst, action)
 	    local state = old_attackfn(inst, action)
         local weapon = inst.components.combat ~= nil and inst.components.combat:GetWeapon() or nil
-        if state == "attack" and (weapon and weapon:HasTag("chargeattack_weapon") or inst.chargesgname ~= nil) and inst.cancharge then
+        local isriding = inst.components.rider:IsRiding()
+        if state == "attack" and not isriding and (weapon and weapon:HasTag("chargeattack_weapon") or inst.chargesgname ~= nil) and inst.cancharge then
             state = inst.chargesgname ~= nil and FunctionOrValue(inst.chargesgname, inst) or "chargeattack"
         end
         return state
@@ -126,7 +127,8 @@ local function newattackactionhandler_client(sg)
 	sg.actionhandlers[ACTIONS.ATTACK].deststate = function(inst, action)
 	    local state = old_attackfn(inst, action)
         local equip = inst.replica.inventory:GetEquippedItem(EQUIPSLOTS.HANDS)
-        if state == "attack" and (equip and equip:HasTag("chargeattack_weapon") or inst.chargesgname ~= nil) and inst.cancharge then
+        local isriding = inst.replica.rider and inst.replica.rider:IsRiding() or false
+        if state == "attack" and not isriding and (equip and equip:HasTag("chargeattack_weapon") or inst.chargesgname ~= nil) and inst.cancharge then
             state = inst.chargesgname ~= nil and FunctionOrValue(inst.chargesgname, inst) or "chargeattack"
         end
         return state
@@ -145,7 +147,7 @@ AddStategraphPostInit("wilson_client", newattackactionhandler_client)
 
 local chargeattack = State{
     name = "chargeattack",
-    tags = {"chargeattack", "attack", "notalking", "abouttoattack", "autopredict" },
+    tags = { "chargeattack", "attack", "notalking", "abouttoattack", "autopredict" },
 
     onenter = function(inst)
         if inst.components.combat:InCooldown() then
@@ -154,7 +156,9 @@ local chargeattack = State{
             inst.sg:GoToState("idle", true)
             return
         end
-
+        if inst.sg.laststate == inst.sg.currentstate then
+            inst.sg.statemem.chained = true
+        end
         local buffaction = inst:GetBufferedAction()
         local target = buffaction ~= nil and buffaction.target or nil
         inst.components.combat:SetTarget(target)
@@ -166,17 +170,19 @@ local chargeattack = State{
 
         inst.sg:SetTimeout(cooldown)
 
-        if target ~= nil and target:IsValid() then
-            inst:FacePoint(target.Transform:GetWorldPosition())
-            inst.sg.statemem.attacktarget = target
+        if target ~= nil then
+            inst.components.combat:BattleCry()
+            if target:IsValid() then
+                inst:FacePoint(target:GetPosition())
+                inst.sg.statemem.attacktarget = target
+                inst.sg.statemem.retarget = target
+            end
         end
     end,
 
     timeline =
     {
         TimeEvent(7 * FRAMES, function(inst)
-            inst.sg.statemem.attackfinished = true
-            local old_multiplier = inst.components.combat.damagemultiplier
             inst:PerformBufferedAction()
             inst.sg:RemoveStateTag("abouttoattack")
         end),
@@ -190,12 +196,8 @@ local chargeattack = State{
     events =
     {
         EventHandler("equip", function(inst) inst.sg:GoToState("idle") end),
-        EventHandler("unequip", function(inst, data)
-            if data.eslot ~= EQUIPSLOTS.HANDS or not inst.sg.statemem.attackfinished then
-                inst.sg:GoToState("idle")
-            end
-        end),
-        EventHandler("animover", function(inst)
+        EventHandler("unequip", function(inst) inst.sg:GoToState("idle") end),
+        EventHandler("animqueueover", function(inst)
             if inst.AnimState:AnimDone() then
                 inst.sg:GoToState("idle")
             end
@@ -212,7 +214,7 @@ local chargeattack = State{
 
 local chargeattack_client = State{
     name = "chargeattack",
-    tags = {"chargeattack", "attack", "notalking", "abouttoattack" },
+    tags = { "chargeattack", "attack", "notalking", "abouttoattack" },
 
     onenter = function(inst)
         local buffaction = inst:GetBufferedAction()
@@ -224,9 +226,10 @@ local chargeattack_client = State{
                 return
             end
             inst.replica.combat:StartAttack()
-            inst.sg:SetTimeout(21 * FRAMES)
         end
-
+        if inst.sg.laststate == inst.sg.currentstate then
+            inst.sg.statemem.chained = true
+        end
         inst.components.locomotor:Stop()
 
         inst.AnimState:PlayAnimation("spearjab")
@@ -237,14 +240,16 @@ local chargeattack_client = State{
             if buffaction.target ~= nil and buffaction.target:IsValid() then
                 inst:FacePoint(buffaction.target:GetPosition())
                 inst.sg.statemem.attacktarget = buffaction.target
+                inst.sg.statemem.retarget = buffaction.target
             end
         end
+
+        inst.sg:SetTimeout(21 * FRAMES)
     end,
 
     timeline =
     {
         TimeEvent(7 * FRAMES, function(inst)
-            inst.sg.statemem.attackfinished = true
             inst:ClearBufferedAction()
             inst.sg:RemoveStateTag("abouttoattack")
         end),
@@ -257,7 +262,7 @@ local chargeattack_client = State{
 
     events =
     {
-        EventHandler("animover", function(inst)
+        EventHandler("animqueueover", function(inst)
             if inst.AnimState:AnimDone() then
                 inst.sg:GoToState("idle")
             end
