@@ -376,41 +376,41 @@ AddComponentPostInit("combat", function(self)
 	
     ----------------------------------------------------
     -------------- CalcDamageResolved ------------------
+	-- deprecated
+	-- function self:CalcDamageResolved(attacker, damage, weapon, stimuli)  
+	--     if self.inst.components.health and self.inst.components.health:IsDead() then
+	-- 		return damage
+	-- 	end
+
+	-- 	local blocked = false
+    --     local damageredirecttarget = self.redirectdamagefn ~= nil and self.redirectdamagefn(self.inst, attacker, damage, weapon, stimuli) or nil
+    --     local damageresolved = 0
+
+	-- 	if self.inst.components.health ~= nil and damage ~= nil and damageredirecttarget == nil then
+	-- 		if self.inst.components.inventory ~= nil then
+	-- 			--damage = self.inst.components.inventory:ApplyDamage(damage, attacker, weapon)
+    --             damage = self.inst.components.inventory:CalcAppliedDamage(damage, attacker, weapon)
+	-- 		end
+	-- 		damage = damage * self.externaldamagetakenmultipliers:Get()
+	-- 		if damage > 0 and not self.inst.components.health:IsInvincible() then
+	-- 			--Bonus damage only applies after unabsorbed damage gets through your armor
+	-- 			if attacker ~= nil and attacker.components.combat ~= nil and attacker.components.combat.bonusdamagefn ~= nil then
+	-- 				damage = (damage + attacker.components.combat.bonusdamagefn(attacker, self.inst, damage, weapon)) or 0
+	-- 			end
 	
-	function self:CalcDamageResolved(attacker, damage, weapon, stimuli)  --跟官方的getattacked一样，走流程获取数字而已
-	    if self.inst.components.health and self.inst.components.health:IsDead() then
-			return damage
-		end
+	-- 			local cause = attacker == self.inst and weapon or attacker
+	-- 			--V2C: guess we should try not to crash old mods that overwrote the health component
+	-- 			--damageresolved = self.inst.components.health:DoDelta(-damage, nil, cause ~= nil and (cause.nameoverride or cause.prefab) or "NIL", nil, cause)
+    --             damageresolved = self.inst.components.health:CalcResolved(-damage)
+	-- 			damageresolved = damageresolved ~= nil and -damageresolved or damage
+	-- 		else
+	-- 			blocked = true
+	-- 			damageresolved = 0
+	-- 		end
+	-- 	end
 
-		local blocked = false
-        local damageredirecttarget = self.redirectdamagefn ~= nil and self.redirectdamagefn(self.inst, attacker, damage, weapon, stimuli) or nil
-        local damageresolved = 0
-
-		if self.inst.components.health ~= nil and damage ~= nil and damageredirecttarget == nil then
-			if self.inst.components.inventory ~= nil then
-				--damage = self.inst.components.inventory:ApplyDamage(damage, attacker, weapon)
-                damage = self.inst.components.inventory:CalcAppliedDamage(damage, attacker, weapon)
-			end
-			damage = damage * self.externaldamagetakenmultipliers:Get()
-			if damage > 0 and not self.inst.components.health:IsInvincible() then
-				--Bonus damage only applies after unabsorbed damage gets through your armor
-				if attacker ~= nil and attacker.components.combat ~= nil and attacker.components.combat.bonusdamagefn ~= nil then
-					damage = (damage + attacker.components.combat.bonusdamagefn(attacker, self.inst, damage, weapon)) or 0
-				end
-	
-				local cause = attacker == self.inst and weapon or attacker
-				--V2C: guess we should try not to crash old mods that overwrote the health component
-				--damageresolved = self.inst.components.health:DoDelta(-damage, nil, cause ~= nil and (cause.nameoverride or cause.prefab) or "NIL", nil, cause)
-                damageresolved = self.inst.components.health:CalcResolved(-damage)
-				damageresolved = damageresolved ~= nil and -damageresolved or damage
-			else
-				blocked = true
-				damageresolved = 0
-			end
-		end
-
-		return damageresolved
-	end
+	-- 	return damageresolved
+	-- end
 	
 	----------------------------------------------------
 	----------------------------------------------------
@@ -483,14 +483,8 @@ AddComponentPostInit("combat", function(self)
 		if damage ~= 0 then
 			damage = (damage + dmgadd + reaction_addnumber) * critical * defense * (typebonus + elements - 1) * elements_res * reaction_rate
 		end
-		local damageresolved = self:CalcDamageResolved(attacker, damage, weapon, stimuli)
-
-		--推送一下事件
-		if attacker ~= nil then
-		    attacker:PushEvent("damagecalculated", { target = self.inst, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
-		end
-	    self.inst:PushEvent("takendamagecalculated", { attacker = attacker, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
-		TheWorld:PushEvent("entity_damagecalculated", { attacker = attacker, target = self.inst, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
+		-- local damageresolved = self:CalcDamageResolved(attacker, damage, weapon, stimuli) --两次访问health.redirect，造成棱镜的永不凋零免伤失效
+		local damageresolved = 0
 	
 		--有些mod获取attacked的stimuli数据不能有number，这下得整了
 		local STIMULI = {"fire", "cryo", "hydro", "electric", "anemo", "geo", "dendro", "physical"}
@@ -498,7 +492,33 @@ AddComponentPostInit("combat", function(self)
 		if type(stimuli) == "number" then
 		    stimuli = STIMULI[stimuli]
 		end
-	    old_GetAttacked(self, attacker, damage, weapon, stimuli, ele_value, attackkey)
+
+		debug.sethook(function ()   --采取hook的方式获取造成的伤害，而不是其它的什么函数
+			local info = debug.getinfo(2, "S")
+			local file = info.short_src
+			if string.find(file, "combat.lua") ~= nil then
+	            for i = 1, 100 do
+					local name, value = debug.getlocal(2, i)
+					if name == nil then --locals寻找结束，没有符合要求的
+						break
+					elseif name == "damageresolved" then --寻找damageresolved
+						damageresolved = value
+						debug.sethook()
+						return
+					end
+				end
+	        end
+		end, "r")
+	    local retval = old_GetAttacked(self, attacker, damage, weapon, stimuli, ele_value, attackkey)
+		debug.sethook()
+
+		--推送一下事件
+		if attacker ~= nil then
+		    attacker:PushEvent("damagecalculated", { target = self.inst, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
+		end
+	    self.inst:PushEvent("takendamagecalculated", { attacker = attacker, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
+		TheWorld:PushEvent("entity_damagecalculated", { attacker = attacker, target = self.inst, damage = damage, damageresolved = damageresolved, weapon = weapon, stimuli = atk_elements, elementvalue = ele_value_copied, crit = critical > 1 and true or false, attackkey = attackkey_copied, immuned = immuned })
+		return retval
 	end 
 	
 	----------------------------------------------------
@@ -555,7 +575,7 @@ AddComponentPostInit("combat", function(self)
     	    * playermultiplier
     	    * pvpmultiplier
 			* (self.customdamagemultfn ~= nil and self.customdamagemultfn(self.inst, target, weapon, multiplier, mount) or 1)
-    	    + old_damage  --that's why -1 in line 544
+    	    + old_damage  --that's why -1 in line 551
 	end
 	
 	----------------------------------------------------

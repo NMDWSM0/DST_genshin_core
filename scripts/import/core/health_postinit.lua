@@ -98,15 +98,17 @@ AddComponentPostInit("health", function(self, inst)
         	        self:DoDelta(-amount * mult, false, doer ~= nil and (doer.nameoverride or doer.prefab) or "fire", nil, doer)
 
 					----
-					local CDI = SpawnPrefab("dmgind")
-					CDI.Transform:SetPosition(inst.Transform:GetWorldPosition())
-					CDI.isheal = false
-					CDI.indicator = amount * mult
-					CDI.iscrit = false
-					CDI.element_type = 1
-					CDI.reaction_type = 0
-					if CDI.CreateDamageIndicator ~= nil then
-						CDI:CreateDamageIndicator()
+					if TUNING.DMGIND_ENABLE and not self.inst:HasTag("wall") then
+						local CDI = SpawnPrefab("dmgind")
+						CDI.Transform:SetPosition(inst.Transform:GetWorldPosition())
+						CDI.isheal = false
+						CDI.indicator = amount * mult
+						CDI.iscrit = false
+						CDI.element_type = 1
+						CDI.reaction_type = 0
+						if CDI.CreateDamageIndicator ~= nil then
+							CDI:CreateDamageIndicator()
+						end
 					end
 					----
 
