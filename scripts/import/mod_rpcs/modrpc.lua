@@ -83,6 +83,13 @@ local function removeartifacts(inst, type, item)
 	inst.components.inventory:Unequip(EQUIPSLOTS[string.upper(type)])
 end
 
+local function lockartifacts(inst, value, item)
+    if item == nil then
+		return
+	end
+	item.components.artifacts:Lock(value)
+end
+
 local function updatehealth(inst)
 	inst.components.health:SetMaxHealthWithPercent()
 end
@@ -172,6 +179,7 @@ local function updatedmgnumber(text, r, g, b, size, x, y, z, isnumber)
 end
 
 AddModRPCHandler("combatdata", "combat", calculatestatus)
+AddModRPCHandler("artifacts", "lock", lockartifacts)
 AddModRPCHandler("inventory", "removeartifacts", removeartifacts)
 AddModRPCHandler("inventory", "switchartifacts", switchartifacts)
 AddModRPCHandler("existhealthreplica", "updatehealth", updatehealth)

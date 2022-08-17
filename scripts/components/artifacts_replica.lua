@@ -19,6 +19,17 @@ local Artifacts = Class(function(self, inst)
 
     self._sub4_type = net_string(inst.GUID, "artifacts._sub4_type", "attributedirty")
     self._sub4_number = net_float(inst.GUID, "artifacts._sub4_number", "attributedirty")
+
+    self._locked = net_bool(inst.GUID, "artifacts._locked", "lockdirty")
+
+    self.inst:ListenForEvent("lockdirty", function ()
+        if self:IsLocked() then
+            self.inst.inv_image_bg = { image = "inv_art_lock.tex" }
+            self.inst.inv_image_bg.atlas = "images/inventoryimages/inv_art_lock.xml"
+        else
+            self.inst.inv_image_bg = nil
+        end
+    end)
 end)
 
 function Artifacts:GetSets()
@@ -62,6 +73,10 @@ function Artifacts:GetSub4()
         type = self._sub4_type:value(),
         number = self._sub4_number:value(),
     }
+end
+
+function Artifacts:IsLocked()
+    return self._locked:value()
 end
 
 return Artifacts

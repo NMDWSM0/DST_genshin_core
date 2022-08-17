@@ -39,7 +39,8 @@ local artifactsbundlecontainer =
 }
 
 function artifactsbundlecontainer.itemtestfn(container, item, slot)
-	return item:HasTag("artifacts")
+    local artifacts = item.components.artifacts or item.replica.artifacts
+	return item:HasTag("artifacts") and not artifacts:IsLocked()
 end
 
 function artifactsbundlecontainer.widget.buttoninfo.fn(inst, doer)

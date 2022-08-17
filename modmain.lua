@@ -93,6 +93,9 @@ Assets = {
 
 	Asset("IMAGE", "images/inventoryimages/refinenumber.tex"),
     Asset("ATLAS", "images/inventoryimages/refinenumber.xml"),
+
+	Asset("IMAGE", "images/inventoryimages/inv_art_lock.tex"),
+    Asset("ATLAS", "images/inventoryimages/inv_art_lock.xml"),
 	
 --全都是UI图片
     ---------------------------------------------
@@ -268,6 +271,15 @@ Assets = {
 
     Asset( "IMAGE", "images/ui/art_bg.tex"),
     Asset( "ATLAS", "images/ui/art_bg.xml"),
+
+	Asset( "IMAGE", "images/ui/art_slotbg.tex"),
+    Asset( "ATLAS", "images/ui/art_slotbg.xml"),
+
+	Asset( "IMAGE", "images/ui/art_lock.tex"),
+    Asset( "ATLAS", "images/ui/art_lock.xml"),
+
+	Asset( "IMAGE", "images/ui/art_button_lock.tex"),
+    Asset( "ATLAS", "images/ui/art_button_lock.xml"),
 
 	Asset( "IMAGE", "images/ui/artifact_stars.tex"),
     Asset( "ATLAS", "images/ui/artifact_stars.xml"),

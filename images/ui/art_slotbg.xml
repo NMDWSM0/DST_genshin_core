@@ -1,0 +1,7 @@
+<Atlas>
+	<Texture filename="art_slotbg.tex"/>
+	<Elements>
+		<Element name="art_slotbg.tex" u1="0.000000" u2="0.495000" v1="0.008333" v2="1.000000"/>
+		<Element name="art_slotbg_hl.tex" u1="0.505000" u2="1.000000" v1="0.008333" v2="1.000000"/>
+	</Elements>
+</Atlas>

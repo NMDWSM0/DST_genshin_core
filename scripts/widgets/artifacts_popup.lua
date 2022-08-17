@@ -5,8 +5,9 @@ local UIAnim = require "widgets/uianim"
 local ImageButton = require "widgets/imagebutton"
 local TextButton = require "widgets/textbutton"
 local ArtSlot = require "widgets/artslot"
-local ItemTile = require "widgets/itemtile"
+local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ScrollArea = require "widgets/scrollarea"
+local Artifacts_Scroll = require "widgets/artifacts_scroll"
 
 local TYPES = {
     "flower",
@@ -32,7 +33,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
 
 	----------------------------------------------------------------------------------------------
     --中心显示器
-	self.center_slot = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+	self.center_slot = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.center_slot:SetPosition(-20, -125, 0)
     self.center_slot:SetScale(1.8,1.8,1.8)
     self.center_slot.highlight_scale = 1.8
@@ -62,6 +63,8 @@ local artifacts_popup = Class(Widget, function(self, owner)
 	
     ----------------------------------------------------------------------------------------------
     --左侧圣遗物显示区先显示为空
+    self.artscroll = self:AddChild(Artifacts_Scroll(450, 520, {}, {x_pos = {-161, -54, 54, 161}, height = 116, padding_vertical = 13}))
+    self.artscroll:SetPosition(-520, -10, 0)
     self.art = {}
     self.artnumber = 0
     --没有圣遗物的信息
@@ -91,7 +94,12 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.name_text:SetRegionSize(400, 80)
     self.name_text:EnableWordWrap(true)
     self.name_text:SetPosition(0, -40, 0)
-    --500, 300, 0
+    --圣遗物锁定按钮
+    self.button_lock = ImageButton("images/ui/art_button_lock.xml","art_button_lock_unlocked.tex")
+    self.detail_list:AddItem(self.button_lock)
+    self.button_lock:SetPosition(96, -78, 0)
+    self.button_lock:SetOnClick(nil)
+    self.button_lock.focus_scale = {1.07, 1.07, 1.07}
     --圣遗物位置
     self.type_text = Text("genshinfont", 28, nil, {1, 1, 1, 1})
     self.detail_list:AddItem(self.type_text)
@@ -283,34 +291,40 @@ function artifacts_popup:SetType(type)
         self.center_emptywarning:Show()
     end
 
-    --把之前显示的全部清除
-    for k = 1, self.artnumber do
-        self.art[k]:Kill()
-    end
+    -- --把之前显示的全部清除
+    -- for k = 1, self.artnumber do
+    --     self.art[k]:Kill()
+    -- end
+    self.art = {}
 
     --显示物品栏和背包中所有带有该类型圣遗物标签的物品
     local i = 0  
     --一号位是穿在身上的那个
     if mainitem ~= nil then
         i = i + 1
-        self.art[i] = ArtSlot("images/hud.xml", "inv_slot.tex", self.owner)
-		self:AddChild(self.art[i])
-        self.art[i]:SetPosition(-686 + posx(i), 200 + posy(i))
+        self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		self.art[i]:SetScale(1)
-        self.art[i]:SetTile(ItemTile(mainitem))
+        self.art[i]:SetTile(Artifacts_ItemTile(mainitem))
         self.art[i]:SetOnClick(function() self:SetItemOnDetail(mainitem) end)
+        self.art[i].ownericon:Show()
+        local artifacts = mainitem.components.artifacts or mainitem.replica.artifacts
+        if artifacts and artifacts:IsLocked() then
+            self.art[i].lockicon:Show()
+        end
     end
     --然后是物品栏里的
     for k = 1, num_slots_inventory do
         local item = inventory:GetItemInSlot(k)
         if item and item:HasTag("artifacts_"..self.currenttype) then
             i = i + 1
-            self.art[i] = ArtSlot("images/hud.xml", "inv_slot.tex", self.owner)
-		    self:AddChild(self.art[i])
-            self.art[i]:SetPosition(-686 + posx(i), 200 + posy(i))
+            self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		    self.art[i]:SetScale(1)
-            self.art[i]:SetTile(ItemTile(item))
+            self.art[i]:SetTile(Artifacts_ItemTile(item))
             self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
+            local artifacts = item.components.artifacts or item.replica.artifacts
+            if artifacts and artifacts:IsLocked() then
+                self.art[i].lockicon:Show()
+            end
         end
     end
     --然后是背包里的
@@ -320,12 +334,14 @@ function artifacts_popup:SetType(type)
             local item = overflow:GetItemInSlot(k)
             if item and item:HasTag("artifacts_"..self.currenttype) then
                 i = i + 1
-                self.art[i] = ArtSlot("images/hud.xml", "inv_slot.tex", self.owner)
-		        self:AddChild(self.art[i])
-                self.art[i]:SetPosition(-686 + posx(i), 200 + posy(i))
+                self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		        self.art[i]:SetScale(1)
-                self.art[i]:SetTile(ItemTile(item))
+                self.art[i]:SetTile(Artifacts_ItemTile(item))
                 self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
+                local artifacts = item.components.artifacts or item.replica.artifacts
+                if artifacts and artifacts:IsLocked() then
+                    self.art[i].lockicon:Show()
+                end
             end
         end
     end
@@ -337,12 +353,14 @@ function artifacts_popup:SetType(type)
                 local item = v:GetItemInSlot(k)
                 if item and item:HasTag("artifacts_"..self.currenttype) then
                     i = i + 1
-                    self.art[i] = ArtSlot("images/hud.xml", "inv_slot.tex", self.owner)
-		            self:AddChild(self.art[i])
-                    self.art[i]:SetPosition(-686 + posx(i), 200 + posy(i))
+                    self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		            self.art[i]:SetScale(1)
-                    self.art[i]:SetTile(ItemTile(item))
+                    self.art[i]:SetTile(Artifacts_ItemTile(item))
                     self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
+                    local artifacts = item.components.artifacts or item.replica.artifacts
+                    if artifacts and artifacts:IsLocked() then
+                        self.art[i].lockicon:Show()
+                    end
                 end
             end
         end
@@ -350,6 +368,7 @@ function artifacts_popup:SetType(type)
 
     --记录一下数字
     self.artnumber = i
+    self.artscroll:CompletelyChangeItem(self.art)
     --如果有就显示信息，没有显示没有
     if self.artnumber > 0 then
         self.art[1].onclick(self)
@@ -361,6 +380,7 @@ end
 
 function artifacts_popup:HideDetail()
     self.name_text:Hide()
+    self.button_lock:Hide()
     self.type_text:Hide()
     self.sets_text:Hide()
     self.main_textbar:Hide()
@@ -377,13 +397,15 @@ function artifacts_popup:HideDetail()
     self.setseffect4_text:Hide()
     self.button_switch:Hide()
 
+    self.button_lock:SetOnClick(nil)
+
     --显示左边大字
     self.noartifacts_title:Show()
     self.noartifacts_title:SetString(TUNING.ARTIFACTS_TAG[self.currenttype])
     self.noartifacts_text:Show()
 end
 
-function artifacts_popup:ShowDetail(item)
+function artifacts_popup:ShowDetail(item, index)
     if item == nil then
         return
     end
@@ -462,6 +484,7 @@ function artifacts_popup:ShowDetail(item)
     local button_equip_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_equip.tex" or "button_equip_en.tex"
     -------------------------------------------------------
     self.name_text:Show()
+    self.button_lock:Show()
     self.type_text:Show()
     self.sets_text:Show()
     self.main_textbar:Show()
@@ -498,6 +521,24 @@ function artifacts_popup:ShowDetail(item)
 
     self.detail_list:UpdateContentHeight()
 
+    local cur_locked = artifacts:IsLocked()
+    if cur_locked then
+        self.button_lock:SetTextures("images/ui/art_button_lock.xml","art_button_lock_locked.tex")
+    else
+        self.button_lock:SetTextures("images/ui/art_button_lock.xml","art_button_lock_unlocked.tex")
+    end
+    self.button_lock:SetOnClick(function ()
+        local locked = artifacts:IsLocked()
+        SendModRPCToServer(MOD_RPC["artifacts"]["lock"], not locked, item)
+        if locked and index ~= nil then  --原先是锁定状态，现在解锁了
+            self.art[index].lockicon:Hide()
+            self.button_lock:SetTextures("images/ui/art_button_lock.xml","art_button_lock_unlocked.tex")
+        else
+            self.art[index].lockicon:Show()
+            self.button_lock:SetTextures("images/ui/art_button_lock.xml","art_button_lock_locked.tex")
+        end
+    end)
+
     if isequipped then
         self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_remove_tex)
         self.button_switch.image_normal = button_remove_tex
@@ -517,16 +558,19 @@ function artifacts_popup:ShowDetail(item)
 end
 
 function artifacts_popup:SetItemOnDetail(item)
+    local index
     for i = 1, self.artnumber do
-        self.art[i]:Unselect()
         if self.art[i].tile and self.art[i].tile.item == item then
             self.art[i]:Select()
+            index = i
+        else
+            self.art[i]:Unselect()
         end
     end
     --显示详细信息
-    self:ShowDetail(item)
+    self:ShowDetail(item, index)
     --把中心格换成那个物品
-    self.center_slot:SetTile(item ~= nil and ItemTile(item) or nil)
+    self.center_slot:SetTile(item ~= nil and Artifacts_ItemTile(item) or nil)
 end
 
 function artifacts_popup:SwitchorRemove(item)

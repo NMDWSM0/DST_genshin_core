@@ -166,10 +166,15 @@ local function onsub4(self, sub4)
     self.inst.replica.artifacts._sub4_number:set(sub4.number or 0)
 end
 
+local function onlocked(self, locked)
+    self.inst.replica.artifacts._locked:set(locked or false)
+end
+
 ---------------------------------------------------------------
 
 local Artifacts = Class(function(self, inst)
     self.inst = inst
+    self:Lock(false)
     self.inited = false
     --圣遗物套装，默认冰套
     self.sets = "bfmt"
@@ -195,6 +200,7 @@ nil,
     sub2 = onsub2,
     sub3 = onsub3,
     sub4 = onsub4,
+    locked = onlocked,
 })
 
 function Artifacts:Init(sets, tag, maintype)  --可选参数，比如指定套装，位置和主词条生成(但是不能有BUG，比如不可以生成主词条是攻击力的花)
@@ -267,6 +273,27 @@ function Artifacts:Init(sets, tag, maintype)  --可选参数，比如指定套�
     self.inst:SetDescription()
 end
 
+function Artifacts:Lock(value)
+    if value == nil then
+        value = not self.locked
+    end
+    self.locked = value
+    self:ChangeImageBG()
+end
+
+function Artifacts:ChangeImageBG()
+    if self.locked then
+        self.inst.inv_image_bg = { image = "inv_art_lock.tex" }
+        self.inst.inv_image_bg.atlas = "images/inventoryimages/inv_art_lock.xml"
+    else
+        self.inst.inv_image_bg = nil
+    end
+    --#region
+    local old = self.inst.components.inventoryitem.imagename
+    self.inst.components.inventoryitem:ChangeImageName("nil")
+    self.inst.components.inventoryitem:ChangeImageName(old)
+end
+
 function Artifacts:OnSave()
     return
     {
@@ -276,6 +303,7 @@ function Artifacts:OnSave()
         sub3 = self.sub3,
         sub4 = self.sub4,
         inited = self.inited,
+        locked = self.locked,
     }
 end
 
@@ -299,6 +327,7 @@ function Artifacts:OnLoad(data)
         self.sub4 = data.sub4
     end
     self.inited = data.inited ~= nil and data.inited or false
+    self:Lock(data.locked ~= nil and data.locked or false)
     self.inst:SetDescription()
 end
 
@@ -328,6 +357,10 @@ end
 
 function Artifacts:GetSub4()
     return self.sub4
+end
+
+function Artifacts:IsLocked()
+    return self.locked
 end
 
 return Artifacts

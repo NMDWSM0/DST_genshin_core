@@ -6,7 +6,7 @@ local UIAnim = require "widgets/uianim"
 local ImageButton = require "widgets/imagebutton"
 local TextButton = require "widgets/textbutton"
 local ArtSlot = require "widgets/artslot"
-local ItemTile = require "widgets/itemtile"
+local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ArtifactsPopop = require "widgets/artifacts_popup"
 local ScrollArea = require "widgets/scrollarea"
 
@@ -133,31 +133,31 @@ local artifacts_screen = Class(Widget, function(self, owner)
 
     ----------------------------------------------------------------------------------------------
 	--显示圣遗物？
-    self.artifacts_slots_flower = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+    self.artifacts_slots_flower = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.artifacts_slots_flower:SetPosition(-215, -50, 0)
     self.artifacts_slots_flower:SetScale(1.8,1.8,1.8)
     self.artifacts_slots_flower.highlight_scale = 1.9
     self.artifacts_slots_flower.base_scale = 1.8
 
-    self.artifacts_slots_plume = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+    self.artifacts_slots_plume = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.artifacts_slots_plume:SetPosition(-320, -135, 0)
     self.artifacts_slots_plume:SetScale(1.8,1.8,1.8)
     self.artifacts_slots_plume.highlight_scale = 1.9
     self.artifacts_slots_plume.base_scale = 1.8
 
-    self.artifacts_slots_sands = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+    self.artifacts_slots_sands = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.artifacts_slots_sands:SetPosition(-20, -220, 0)
     self.artifacts_slots_sands:SetScale(1.8,1.8,1.8)
     self.artifacts_slots_sands.highlight_scale = 1.9
     self.artifacts_slots_sands.base_scale = 1.8
 
-    self.artifacts_slots_goblet = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+    self.artifacts_slots_goblet = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.artifacts_slots_goblet:SetPosition(280, -135, 0)
     self.artifacts_slots_goblet:SetScale(1.8,1.8,1.8)
     self.artifacts_slots_goblet.highlight_scale = 1.9
     self.artifacts_slots_goblet.base_scale = 1.8
 
-    self.artifacts_slots_circlet = self:AddChild(ArtSlot("images/ui/art_bg.xml", "art_bg.tex", owner))
+    self.artifacts_slots_circlet = self:AddChild(ArtSlot(owner, "images/ui/art_bg.xml", "art_bg.tex"))
     self.artifacts_slots_circlet:SetPosition(175, -50, 0)
     self.artifacts_slots_circlet:SetScale(1.8,1.8,1.8)
     self.artifacts_slots_circlet.highlight_scale = 1.9
@@ -364,35 +364,35 @@ function artifacts_screen:OnUpdate(dt)
 	
 	--显示圣遗物图片(以及套装计数)
     if flower_item ~= nil then
-        self.artifacts_slots_flower:SetTile(ItemTile(flower_item))
+        self.artifacts_slots_flower:SetTile(Artifacts_ItemTile(flower_item))
 		local sets = TheWorld.ismastersim and flower_item.components.artifacts:GetSets() or flower_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_flower:SetTile(nil)
     end
     if plume_item ~= nil then
-        self.artifacts_slots_plume:SetTile(ItemTile(plume_item))
+        self.artifacts_slots_plume:SetTile(Artifacts_ItemTile(plume_item))
 		local sets = TheWorld.ismastersim and plume_item.components.artifacts:GetSets() or plume_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_plume:SetTile(nil)
     end
     if sands_item ~= nil then
-        self.artifacts_slots_sands:SetTile(ItemTile(sands_item))
+        self.artifacts_slots_sands:SetTile(Artifacts_ItemTile(sands_item))
 		local sets = TheWorld.ismastersim and sands_item.components.artifacts:GetSets() or sands_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_sands:SetTile(nil)
     end
     if goblet_item ~= nil then
-        self.artifacts_slots_goblet:SetTile(ItemTile(goblet_item))
+        self.artifacts_slots_goblet:SetTile(Artifacts_ItemTile(goblet_item))
 		local sets = TheWorld.ismastersim and goblet_item.components.artifacts:GetSets() or goblet_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else
         self.artifacts_slots_goblet:SetTile(nil)
     end
     if circlet_item ~= nil then
-        self.artifacts_slots_circlet:SetTile(ItemTile(circlet_item))
+        self.artifacts_slots_circlet:SetTile(Artifacts_ItemTile(circlet_item))
 		local sets = TheWorld.ismastersim and circlet_item.components.artifacts:GetSets() or circlet_item.replica.artifacts:GetSets()
 		SETS_NUMBER[sets]  = SETS_NUMBER[sets] + 1
     else

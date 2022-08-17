@@ -2,25 +2,94 @@ local Image = require("widgets/image")
 local Text = require("widgets/text")
 local Button = require("widgets/button")
 
-local ArtSlot = Class(Button, function(self, atlas, bgim, owner)
+local function fillparams(table, default)
+    if table == nil or type(table) ~= "table" then
+        return default
+    end
+    for k, v in pairs(default) do
+        if table[k] == nil then
+            table[k] = v
+        end
+    end
+    return table
+end
+
+local minimapatlas_lut = {}
+local function GetMiniMapAtlas(imagename, no_fallback)
+    local atlas = minimapatlas_lut[imagename]
+    if atlas ~= nil then
+        return atlas
+    end
+
+    local minimapatlases = {resolvefilepath("minimap/minimap_data.xml")}
+    for _, atlases in ipairs(ModManager:GetPostInitData("MinimapAtlases")) do
+        for _, path in ipairs(atlases) do
+            table.insert(minimapatlases, resolvefilepath(path))
+        end
+    end
+
+    for k, v in pairs(minimapatlases) do
+        if TheSim:AtlasContains(v, imagename) then
+            atlas = v
+        end
+    end
+    if not no_fallback and atlas == nil then
+        atlas = minimapatlases[1]
+    end
+
+	if atlas ~= nil then
+		minimapatlas_lut[imagename] = atlas
+	end
+    
+	return atlas
+end
+
+local default_posinfo = {tile_scale = 1, tile_x = 0, tile_y = 0, lock_x = -36, lock_y = 46, owner_x = 38, owner_y = 44}
+local ArtSlot = Class(Button, function(self, owner, atlas, bgim, posinfo, highlight_image)
     Button._ctor(self, "ArtSlot")
     self.owner = owner
+    self.posinfo = fillparams(posinfo, default_posinfo)
     self.bgimage = self:AddChild(Image(atlas, bgim))
+    self.atlas = atlas
+    self.bgim = bgim
+    self.hlim = highlight_image or bgim
     self.tile = nil
 
-    self.highlight_scale = 1.2
+    self.lockicon = self:AddChild(Image("images/ui/art_lock.xml", "art_lock.tex"))
+    self.lockicon:SetPosition(self.posinfo.lock_x, self.posinfo.lock_y)
+    
+    local mapicon_tex = self.owner.prefab..".tex"
+    local mapicon_atlas = GetMiniMapAtlas(mapicon_tex, true)
+    if mapicon_atlas == nil then
+        mapicon_tex = self.owner.prefab..".png"
+        mapicon_atlas = GetMiniMapAtlas(mapicon_tex)
+    end
+    if mapicon_atlas == nil then
+        mapicon_tex = "mod.tex"
+        mapicon_atlas = "images/saveslot_portraits.xml"
+    end
+
+    self.ownericon = self:AddChild(Image(mapicon_atlas, mapicon_tex))
+    self.ownericon:SetScale(0.5)
+    self.ownericon:SetPosition(self.posinfo.owner_x, self.posinfo.owner_y)
+    self.lockicon:Hide()
+    self.ownericon:Hide()
+
+    self.highlight_scale = 1.05
     self.base_scale = 1
     self:SetOnSelect(function() 
         self:SetScale(self.highlight_scale)
+        self.big = true
+        self.bgimage:SetTexture(self.atlas, self.hlim)
     end)
     self:SetOnUnSelect(function() 
-        self:SetScale(self.base_scale)
+        self:DeHighlight()
     end)
 end)
 
 function ArtSlot:LockHighlight()
     if not self.highlight then
-        self:ScaleTo(self.base_scale, self.highlight_scale, .125)
+        self:ScaleTo(self.base_scale, self.highlight_scale, .25)
         self.highlight = true
     end
 end
@@ -28,9 +97,9 @@ end
 function ArtSlot:UnlockHighlight()
     if self.highlight then
         if self.big then
-            self:ScaleTo(self.base_scale, self.highlight_scale, .125)
+            self:ScaleTo(self.base_scale, self.highlight_scale, .25)
         else
-            self:ScaleTo(self.highlight_scale, self.base_scale, .125)
+            self:ScaleTo(self.highlight_scale, self.base_scale, .25)
         end
         self.highlight = false
     end
@@ -38,17 +107,19 @@ end
 
 function ArtSlot:Highlight()
     if not self.selected and not self.big then
-        self:ScaleTo(self.base_scale, self.highlight_scale, .125)
+        self:ScaleTo(self.base_scale, self.highlight_scale, .25)
         self.big = true
+        self.bgimage:SetTexture(self.atlas, self.hlim)
     end
 end
 
 function ArtSlot:DeHighlight()
     if not self.selected and self.big then
         if not self.highlight then
-            self:ScaleTo(self.highlight_scale, self.base_scale, .25)
+            self:ScaleTo(self.highlight_scale, self.base_scale, .15)
         end
         self.big = false
+        self.bgimage:SetTexture(self.atlas, self.bgim)
     end
 end
 
@@ -67,6 +138,8 @@ function ArtSlot:SetTile(tile)
         end
         if tile ~= nil then
             self.tile = self:AddChild(tile)
+            self.tile:SetScale(self.posinfo.tile_scale)
+            self.tile:SetPosition(self.posinfo.tile_x, self.posinfo.tile_y, 0)
             if self.label ~= nil then
                 self.label:MoveToFront()
             end
