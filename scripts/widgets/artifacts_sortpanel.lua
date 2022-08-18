@@ -79,8 +79,24 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
     self.bg = self:AddChild(Image("images/ui/art_sort_bg.xml", "art_sort_bg.tex"))
     self.bg:SetScale(0.8, 0.8, 0.8)
 
-    self.scrollarea = self:AddChild(ScrollArea(480, 520, 1400))
-    self.scrollarea:SetPosition(0, -20, 0)
+    local titlestr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "排序方式" or "Sort Order"
+    self.title = self:AddChild(Text("genshinfont", 35, titlestr, {211/255, 188/255, 142/255, 1}))
+    self.title:SetHAlign(ANCHOR_LEFT)
+    self.title:SetVAlign(ANCHOR_MIDDLE)
+    self.title:SetRegionSize(440, 80)
+    self.title:EnableWordWrap(true)
+    self.title:SetPosition(0, 320, 0)
+
+    local subtitlestr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "属性排序规则" or "Sort by Attributes"
+    self.subtitle = self:AddChild(Text("genshinfont", 35, subtitlestr, {187/255, 185/255, 178/255, 1}))
+    self.subtitle:SetHAlign(ANCHOR_LEFT)
+    self.subtitle:SetVAlign(ANCHOR_MIDDLE)
+    self.subtitle:SetRegionSize(440, 80)
+    self.subtitle:EnableWordWrap(true)
+    self.subtitle:SetPosition(0, 260, 0)
+
+    self.scrollarea = self:AddChild(ScrollArea(480, 540, 1400))
+    self.scrollarea:SetPosition(0, -30, 0)
 
     self.select_num = 0
     self.selects = {}
@@ -99,7 +115,7 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
         self.btns[k]:SetPosition(0, -10 - 60 * (number - 1), 0)
         self.btns[k]:SetOnClick(function ()
             if not self.btns[k]._selected then  --原本没有选中
-                if #self.selects >= max_choosenum then
+                if self.select_num >= max_choosenum then
                     self.owner.components.talker:Say(STRINGS.ARTIFACTS_SORTITEM_LIMIT)
                     return
                 end
@@ -128,7 +144,7 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
     self.scrollarea:UpdateContentHeight()
 
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "确认筛选" or "Confirm Filter"
-    self.confirm_sort = self:AddChild(ImageButton("images/ui/button_unlock_constellation.xml", "button_unlock_constellation.tex"))
+    self.confirm_sort = self:AddChild(ImageButton("images/ui/button_talent_levelup.xml", "button_talent_levelup.tex"))
     self.confirm_sort:SetText(string)
     self.confirm_sort:SetFont("genshinfont")
     self.confirm_sort:SetTextSize(52)
@@ -136,7 +152,7 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
     self.confirm_sort:SetTextFocusColour(59/255, 66/255, 85/255, 1)
     self.confirm_sort.text:SetPosition(10, 0, 0)
     self.confirm_sort.text:Show()
-    self.confirm_sort:SetPosition(0, -320, 0)
+    self.confirm_sort:SetPosition(0, -334, 0)
     self.confirm_sort:SetScale(0.6, 0.6, 0.6)
     self.confirm_sort.focus_scale = {1.07, 1.07, 1.07}
     self.confirm_sort:SetOnClick(function()

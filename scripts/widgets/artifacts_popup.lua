@@ -59,11 +59,11 @@ local artifacts_popup = Class(Widget, function(self, owner)
     ----------------------------------------------------------------------------------------------
     --属性排序面板
     self.sort_panel = self:AddChild(Artifacts_SortPanel(self.owner, self))
-    self.sort_panel:SetPosition(-520, -10, 0)
+    self.sort_panel:SetPosition(-520, -5, 0)
     self.sort_panel:Hide()
 
     self.sort_button = self:AddChild(ImageButton("images/ui/button_art_sort.xml","button_art_sort.tex"))
-    self.sort_button:SetPosition(-320, -340, 0)
+    self.sort_button:SetPosition(-320, -330, 0)
 	self.sort_button:SetScale(0.8, 0.8, 0.8)
 	self.sort_button.focus_scale = {1.1,1.1,1.1}
     self.sort_button:SetOnClick(function ()

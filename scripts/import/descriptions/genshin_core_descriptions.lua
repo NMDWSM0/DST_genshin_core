@@ -559,7 +559,7 @@ else
 	STRINGS.NAMES.SLJY_GOBLET = "Lamp of the Lost"
 	STRINGS.NAMES.SLJY_CIRCLET = "Laurel Coronet"
 
-	STRINGS.ARTIFACTS_SORTITEM_LIMIT = "已选择属性数量达到上限"
+	STRINGS.ARTIFACTS_SORTITEM_LIMIT = "Sorting Option Limit Reached"
 
     TUNING.ARTIFACTS_TAG = {
 		flower = "Flower of Life",  
