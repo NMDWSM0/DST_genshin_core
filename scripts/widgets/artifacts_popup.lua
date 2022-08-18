@@ -8,6 +8,7 @@ local ArtSlot = require "widgets/artslot"
 local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ScrollArea = require "widgets/scrollarea"
 local Artifacts_Scroll = require "widgets/artifacts_scroll"
+local Artifacts_SortPanel = require "widgets/artifacts_sortpanel"
 
 local TYPES = {
     "flower",
@@ -17,19 +18,13 @@ local TYPES = {
     "circlet",
 }
 
-local function posx(num)
-    return ((num - 1) % 5) * 83
-end
-
-local function posy(num)
-    return math.floor((num - 1) / 5) * (-83)
-end
-
 local artifacts_popup = Class(Widget, function(self, owner)
     Widget._ctor(self, nil)
 	self.owner = owner
 	
     self.currenttype = "flower"
+
+    self.sortkeys = {}
 
 	----------------------------------------------------------------------------------------------
     --中心显示器
@@ -62,8 +57,26 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.button_circlet:SetPosition(-340, 300, 0)
 	
     ----------------------------------------------------------------------------------------------
+    --属性排序面板
+    self.sort_panel = self:AddChild(Artifacts_SortPanel(self.owner, self))
+    self.sort_panel:SetPosition(-520, -10, 0)
+    self.sort_panel:Hide()
+
+    self.sort_button = self:AddChild(ImageButton("images/ui/button_art_sort.xml","button_art_sort.tex"))
+    self.sort_button:SetPosition(-320, -340, 0)
+	self.sort_button:SetScale(0.8, 0.8, 0.8)
+	self.sort_button.focus_scale = {1.1,1.1,1.1}
+    self.sort_button:SetOnClick(function ()
+        if self.sort_panel.shown then
+            self:HideTwoPanels()
+        else
+            self:ShowSortPanel()
+        end
+    end)
+
+    ----------------------------------------------------------------------------------------------
     --左侧圣遗物显示区先显示为空
-    self.artscroll = self:AddChild(Artifacts_Scroll(450, 520, {}, {x_pos = {-161, -54, 54, 161}, height = 116, padding_vertical = 13}))
+    self.artscroll = self:AddChild(Artifacts_Scroll(450, 520, {}, {x_pos = {-162, -54, 54, 162}, height = 116, padding_vertical = 13}))
     self.artscroll:SetPosition(-520, -10, 0)
     self.art = {}
     self.artnumber = 0
@@ -230,7 +243,27 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.inst:ListenForEvent("itemget", function() self:SetType(self.currenttype) end, owner)
     self.inst:ListenForEvent("itemlose", function() self:SetType(self.currenttype) end, owner)
     self.inst:ListenForEvent("artbackpackchange", function() self:SetType(self.currenttype) end, owner)
+    ----------------------------------------------------------------------------------------------
+    self.sort_panel:MoveToFront()
 end)
+
+function artifacts_popup:ShowSortPanel()
+    self.sort_panel:Show()
+    --self.filter_panel:Hide()
+    self.artscroll:Hide()
+end
+
+function artifacts_popup:ShowFilterPanel()
+    self.sort_panel:Hide()
+    --self.filter_panel:Show()
+    self.artscroll:Hide()
+end
+
+function artifacts_popup:HideTwoPanels()
+    self.sort_panel:Hide()
+    --self.filter_panel:Hide()
+    self.artscroll:Show()
+end
 
 function artifacts_popup:ShowType(type)
     local typebuttons = {
@@ -253,6 +286,14 @@ function artifacts_popup:ShowType(type)
 		end
 	end
     self.detail_list:Reset()
+end
+
+function artifacts_popup:SetSortKeys(keys)
+    for k, v in pairs(keys) do
+        print(v)
+    end
+    self.sortkeys = keys
+    self.artscroll:CompletelyChangeItem(self:Sort(self.sortkeys))
 end
 
 function artifacts_popup:SetType(type)
@@ -292,9 +333,9 @@ function artifacts_popup:SetType(type)
     end
 
     -- --把之前显示的全部清除
-    -- for k = 1, self.artnumber do
-    --     self.art[k]:Kill()
-    -- end
+    for k = 1, self.artnumber do
+        self.art[k]:Kill()
+    end
     self.art = {}
 
     --显示物品栏和背包中所有带有该类型圣遗物标签的物品
@@ -366,9 +407,11 @@ function artifacts_popup:SetType(type)
         end
     end
 
+    --排序
+
     --记录一下数字
     self.artnumber = i
-    self.artscroll:CompletelyChangeItem(self.art)
+    self.artscroll:CompletelyChangeItem(self:Sort(self.sortkeys))
     --如果有就显示信息，没有显示没有
     if self.artnumber > 0 then
         self.art[1].onclick(self)
@@ -376,6 +419,44 @@ function artifacts_popup:SetType(type)
         self:HideDetail()
         self.center_slot:SetTile(nil)
     end
+end
+
+function artifacts_popup:Sort(sortkeys)
+    if sortkeys == nil then
+        sortkeys = {}
+    end
+
+    local function sortfunc(a, b)
+        local item_a = a.tile.item
+        local item_b = b.tile.item
+        if item_a == nil or item_b == nil then
+            return false
+        end
+
+        local artifacts_a = item_a.components.artifacts or item_a.replica.artifacts
+        local artifacts_b = item_b.components.artifacts or item_b.replica.artifacts
+        if artifacts_a == nil or artifacts_b == nil then
+            return item_a.GUID > item_b.GUID
+        end
+        
+        for k, v in pairs(sortkeys) do
+            local value_a = artifacts_a:GetValueOfType(v)
+            local value_b = artifacts_b:GetValueOfType(v)
+            if value_a > value_b then
+                return true
+            elseif value_a < value_b then
+                return false
+            end
+        end
+        return item_a.GUID > item_b.GUID
+    end
+
+    local result = {}
+    for k, v in pairs(self.art) do
+        table.insert(result, v)
+    end
+    table.sort(result, sortfunc)
+    return result
 end
 
 function artifacts_popup:HideDetail()

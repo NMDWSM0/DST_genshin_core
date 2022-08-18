@@ -1,0 +1,7 @@
+<Atlas>
+	<Texture filename="art_sortitem.tex"/>
+	<Elements>
+		<Element name="art_sortitem_normal.tex" u1="0.000000" u2="1.000000" v1="0.513889" v2="1.000000"/>
+		<Element name="art_sortitem_selected.tex" u1="0.000000" u2="1.000000" v1="0.013889" v2="0.500000"/>
+	</Elements>
+</Atlas>

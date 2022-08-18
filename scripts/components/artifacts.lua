@@ -359,6 +359,21 @@ function Artifacts:GetSub4()
     return self.sub4
 end
 
+function Artifacts:GetValueOfType(type)
+    if self.main.type == type then
+        return self.main.number
+    elseif self.sub1.type == type then
+        return self.sub1.number
+    elseif self.sub2.type == type then
+        return self.sub2.number
+    elseif self.sub3.type == type then
+        return self.sub3.number
+    elseif self.sub4.type == type then
+        return self.sub4.number
+    end
+    return 0
+end
+
 function Artifacts:IsLocked()
     return self.locked
 end

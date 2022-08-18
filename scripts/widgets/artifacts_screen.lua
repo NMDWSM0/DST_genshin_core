@@ -287,6 +287,7 @@ function artifacts_screen:HidePopup()
 	}
 	--隐藏popup界面和返回按钮，显示自身除了popup和返回按钮以外的任何东西(快速圣遗物属性显示和五个圣遗物按钮)
     self.popup:Hide()
+	self.popup:HideTwoPanels()
 	self.popupback:Hide()
 	for k,v in pairs(self.children) do
 		if v ~= self.popup and v ~= self.popupback then

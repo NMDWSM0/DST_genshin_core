@@ -245,7 +245,7 @@ Assets = {
 	Asset( "IMAGE", "images/ui/button_profile.tex"),
     Asset( "ATLAS", "images/ui/button_profile.xml"),
 
-
+	---------------------------------------------------------------
 	--Attribute界面（第一个界面）
 	Asset( "IMAGE", "images/ui/button_off2.tex"),
     Asset( "ATLAS", "images/ui/button_off2.xml"),
@@ -256,6 +256,7 @@ Assets = {
 	Asset( "IMAGE", "images/ui/button_detail_en.tex"),
     Asset( "ATLAS", "images/ui/button_detail_en.xml"),
 
+	---------------------------------------------------------------
 	--Weapon界面（第二个界面）
 	Asset( "IMAGE", "images/ui/weapon_refine_bg.tex"),
     Asset( "ATLAS", "images/ui/weapon_refine_bg.xml"),
@@ -265,6 +266,7 @@ Assets = {
 
 	Asset( "ANIM", "anim/weapon_show.zip"),
 
+	---------------------------------------------------------------
 	--Artifacts界面（第三个界面）
 	Asset( "IMAGE", "images/ui/button_arttype.tex"),
     Asset( "ATLAS", "images/ui/button_arttype.xml"),
@@ -280,6 +282,15 @@ Assets = {
 
 	Asset( "IMAGE", "images/ui/art_button_lock.tex"),
     Asset( "ATLAS", "images/ui/art_button_lock.xml"),
+
+	Asset( "IMAGE", "images/ui/art_sort_bg.tex"),
+	Asset( "ATLAS", "images/ui/art_sort_bg.xml"),
+
+	Asset( "IMAGE", "images/ui/art_sortitem.tex"),
+	Asset( "ATLAS", "images/ui/art_sortitem.xml"),
+
+	Asset( "IMAGE", "images/ui/button_art_sort.tex"),
+	Asset( "ATLAS", "images/ui/button_art_sort.xml"),
 
 	Asset( "IMAGE", "images/ui/artifact_stars.tex"),
     Asset( "ATLAS", "images/ui/artifact_stars.xml"),
@@ -299,8 +310,8 @@ Assets = {
 	Asset( "IMAGE", "images/ui/button_switch.tex"),
     Asset( "ATLAS", "images/ui/button_switch.xml"),
 
+	---------------------------------------------------------------
 	--Constellation界面（第四个界面）
-    ---------------------------------------------------------------
     Asset( "IMAGE", "images/ui/constellation_bg_shadow.tex" ),
     Asset( "ATLAS", "images/ui/constellation_bg_shadow.xml" ),
 
@@ -358,8 +369,8 @@ Assets = {
     Asset( "IMAGE", "images/ui/constellation_traveler/constellation_image.tex" ),
     Asset( "ATLAS", "images/ui/constellation_traveler/constellation_image.xml" ),
 
+	---------------------------------------------------------------
 	--Talents界面（第五个界面）
-    ---------------------------------------------------------------
     Asset( "IMAGE", "images/ui/talents_text_bg.tex" ),
     Asset( "ATLAS", "images/ui/talents_text_bg.xml" ),
 
@@ -672,7 +683,7 @@ TUNING.SWORD_WEAPONS = {
 ----------------------------------------------------
 ---------------------- 描述 ------------------------
 
-modimport("scripts/import/descriptions/descriptions.lua")
+modimport("scripts/import/descriptions/genshin_core_descriptions.lua")
 
 ----------------------------------------------------
 -------------------- 圣遗物栏 ----------------------

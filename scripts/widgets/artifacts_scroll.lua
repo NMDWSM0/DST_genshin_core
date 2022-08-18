@@ -7,7 +7,7 @@ local TextButton = require "widgets/textbutton"
 local ScrollArea = require "widgets/scrollarea"
 
 local Artifacts_Scroll = Class(Widget, function(self, listwidth, listheight, artitems, iteminfo, scrollbar_offset, scrollbar_height_offset)
-    Widget._ctor(self, nil)
+    Widget._ctor(self, "Artifacts_Scroll")
 
     if artitems == nil then
         artitems = {}
@@ -44,7 +44,7 @@ end
 ]]
 
 function Artifacts_Scroll:BuildItems(artitems, iteminfo)
-    self.scrollarea:ClearItemsInfo()
+    self.scrollarea:ClearItemsInfo(true)
     local paddings = {10}
     for j = 1, 250 do
         for i = 1, 4 do

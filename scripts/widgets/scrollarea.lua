@@ -25,7 +25,7 @@ local ScrollContent = Class(Widget, function(self)
 end)
 
 local ScrollArea = Class(Widget, function(self, listwidth, listheight, contentheight, first_top)
-    Widget._ctor(self, nil)
+    Widget._ctor(self, "ScrollArea")
 
     self.height = listheight
     self.width = listwidth
@@ -61,10 +61,12 @@ function ScrollArea:AddItem(item, level, selfheight, fontsize)
     self:UpdateContentHeight()
 end
 
-function ScrollArea:ClearItemsInfo()
-    for k, v in pairs(self.scrollcontent.items) do
-        if v ~= nil then
-            v:Kill()
+function ScrollArea:ClearItemsInfo(nokill)
+    if nokill == nil or nokill == false then
+        for k, v in pairs(self.scrollcontent.items) do
+            if v ~= nil then
+                v:Kill()
+            end
         end
     end
     self.scrollcontent.items = {}

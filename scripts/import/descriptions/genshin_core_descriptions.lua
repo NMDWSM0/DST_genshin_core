@@ -29,11 +29,21 @@ local timefunc_sc = timefunc
 
 if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 
+	STRINGS.GENSHIN_ACTION_REFINEWEAPON = "精炼"
+	STRINGS.WEAPON_REFINELEVEL_WARNING = "当前作为素材的武器已经被精炼过，请手动在游戏内右键动作精炼"
+
     STRINGS.NAMES.ELEMENT_SPEAR = "元素长矛"
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.ELEMENT_SPEAR = "没有神之眼却能使用元素力，你，是个例外"
 	STRINGS.RECIPE_DESC.ELEMENT_SPEAR = "无派蒙也能使用元素，哼"
-	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = "无羁的朱赤之蝶\n•释放元素战技后，获得16%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）"
+	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = {
+		"无羁的朱赤之蝶\n•释放元素战技后，获得16%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n•释放元素战技后，获得20%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n•释放元素战技后，获得24%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n•释放元素战技后，获得28%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n•释放元素战技后，获得32%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+	}
 
+	STRINGS.GENSHIN_ACTION_USEPOTION = "使用药剂"
 	STRINGS.NAMES.FLAMING_ESSENTIAL_OIL = "烈火精油"
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.FLAMING_ESSENTIAL_OIL = "以孕育火元素的物质制成，涂抹后能更有效地汇聚火元素，也会让人变得热情。"
 	STRINGS.RECIPE_DESC.FLAMING_ESSENTIAL_OIL = "让人更亲和火元素的油膏，能提升造成的火元素伤害"
@@ -175,6 +185,8 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 	STRINGS.NAMES.SLJY_GOBLET = "迷误者之灯"
 	STRINGS.NAMES.SLJY_CIRCLET = "月桂的宝冠"
 
+	STRINGS.ARTIFACTS_SORTITEM_LIMIT = "已选择属性数量达到上限"
+
     TUNING.ARTIFACTS_TAG = {
 		flower = "生之花",  
 		plume = "死之羽",
@@ -184,16 +196,16 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 	}
 
 	TUNING.ARTIFACTS_TYPE = {
-		hp_per = "生命值",      --大生命
-        hp = "生命值",             --小生命
-        atk_per = "攻击力",     --大攻击
-        atk = "攻击力",            --小攻击
+		atk = "攻击力",            --小攻击
+		atk_per = "攻击力",     --大攻击
+		def = "防御力",         --小防御
         def_per = "防御力",     --大防御
-        def = "防御力",         --小防御
-        mastery = "元素精通",       --元素精通
-        recharge = "元素充能效率",    --元素充能效率
+        hp = "生命值",             --小生命
+		hp_per = "生命值",      --大生命
         crit_rate = "暴击率",   --暴击
         crit_dmg = "暴击伤害",    --暴伤
+        mastery = "元素精通",       --元素精通
+        recharge = "元素充能效率",    --元素充能效率
         pyro = "火元素伤害加成",        --火伤
         cryo = "冰元素伤害加成",        --冰伤
         hydro = "水元素伤害加成",       --水伤
@@ -258,8 +270,6 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 	}
 
     TUNING.NOARTIFACTS_WARNING = "暂未拥有当前位置圣遗物"
-
-	TUNING.GENSHIN_ACTION_USEPOTION = "使用药剂"
 
 	TUNING.IMMUNED_TEXT = "免疫"
     TUNING.OVERLOAD_TEXT = "超载"
@@ -393,11 +403,21 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 
 else
 
+	STRINGS.GENSHIN_ACTION_REFINEWEAPON = "Refine"
+	STRINGS.WEAPON_REFINELEVEL_WARNING = "The weapon selected as ingredient has been refined.PLease Use ACTTIONS in DST game to refine."
+
     STRINGS.NAMES.ELEMENT_SPEAR = "Element Spear"
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.ELEMENT_SPEAR = "Capable of using elemental energy without a Vision, you are an exception"
     STRINGS.RECIPE_DESC.ELEMENT_SPEAR = "I can use elemental energy without Paimon!!!"
-	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = "Reckless Cinnabar\n•Gain a 16% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)"
+	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = {
+		"Reckless Cinnabar\n•Gain a 16% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n•Gain a 20% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n•Gain a 24% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n•Gain a 28% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n•Gain a 32% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+	}
 
+	STRINGS.GENSHIN_ACTION_USEPOTION = "Use Potion"
 	STRINGS.NAMES.FLAMING_ESSENTIAL_OIL = "Flaming Essential Oil"
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.FLAMING_ESSENTIAL_OIL = "It is made of materials that gestate Pyro, which serves to draw in Pyro energy more effectively."
 	STRINGS.RECIPE_DESC.FLAMING_ESSENTIAL_OIL = "Grants greater affinity for Pyro, boosting Pyro DMG"
@@ -539,6 +559,8 @@ else
 	STRINGS.NAMES.SLJY_GOBLET = "Lamp of the Lost"
 	STRINGS.NAMES.SLJY_CIRCLET = "Laurel Coronet"
 
+	STRINGS.ARTIFACTS_SORTITEM_LIMIT = "已选择属性数量达到上限"
+
     TUNING.ARTIFACTS_TAG = {
 		flower = "Flower of Life",  
 		plume = "Plume of Death",
@@ -548,16 +570,16 @@ else
 	} 
 
 	TUNING.ARTIFACTS_TYPE = {
-		hp_per = "HP",      --大生命
-        hp = "HP",             --小生命
-        atk_per = "ATK",     --大攻击
-        atk = "ATK",            --小攻击
+		atk = "ATK",            --小攻击
+		atk_per = "ATK",     --大攻击
+		def = "DEF",         --小防御
         def_per = "DEF",     --大防御
-        def = "DEF",         --小防御
-        mastery = "Elemental Mastery",       --元素精通
-        recharge = "Energy Recharge",    --元素充能效率
+        hp = "HP",             --小生命
+		hp_per = "HP",      --大生命
         crit_rate = "CRIT Rate",   --暴击
         crit_dmg = "CRIT DMG",    --暴伤
+		mastery = "Elemental Mastery",       --元素精通
+        recharge = "Energy Recharge",    --元素充能效率
         pyro = "Pyro DMG Bonus",        --火伤
         cryo = "Cryo DMG Bonus",        --冰伤
         hydro = "Hydro DMG Bonus",       --水伤
@@ -622,8 +644,6 @@ else
 	}
 
     TUNING.NOARTIFACTS_WARNING = "No artifacts available for this slot"
-
-	TUNING.GENSHIN_ACTION_USEPOTION = "Use Potion"
 
 	TUNING.IMMUNED_TEXT = "Immuned"
     TUNING.OVERLOAD_TEXT = "Overloaded"

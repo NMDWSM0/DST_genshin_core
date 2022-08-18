@@ -75,6 +75,21 @@ function Artifacts:GetSub4()
     }
 end
 
+function Artifacts:GetValueOfType(type)
+    if self._main_type:value() == type then
+        return self._main_number:value()
+    elseif self._sub1_type:value() == type then
+        return self._sub1_number:value()
+    elseif self._sub2_type:value() == type then
+        return self._sub2_number:value()
+    elseif self._sub3_type:value() == type then
+        return self._sub3_number:value()
+    elseif self._sub4_type:value() == type then
+        return self._sub4_number:value()
+    end
+    return 0
+end
+
 function Artifacts:IsLocked()
     return self._locked:value()
 end
