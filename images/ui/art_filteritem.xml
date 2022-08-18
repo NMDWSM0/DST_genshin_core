@@ -1,0 +1,8 @@
+<Atlas>
+	<Texture filename="art_filteritem.tex"/>
+	<Elements>
+		<Element name="art_filteritem_normal.tex" u1="0.000000" u2="1.000000" v1="0.342593" v2="0.666667"/>
+		<Element name="art_filteritem_selected.tex" u1="0.000000" u2="1.000000" v1="0.009259" v2="0.333333"/>
+		<Element name="art_filteritem_highlight.tex" u1="0.000000" u2="1.000000" v1="0.675926" v2="1.000000"/>
+	</Elements>
+</Atlas>

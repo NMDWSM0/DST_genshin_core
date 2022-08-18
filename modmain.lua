@@ -292,6 +292,18 @@ Assets = {
 	Asset( "IMAGE", "images/ui/button_art_sort.tex"),
 	Asset( "ATLAS", "images/ui/button_art_sort.xml"),
 
+	Asset( "IMAGE", "images/ui/art_filter_bg.tex"),
+	Asset( "ATLAS", "images/ui/art_filter_bg.xml"),
+
+	Asset( "IMAGE", "images/ui/button_art_filter.tex"),
+	Asset( "ATLAS", "images/ui/button_art_filter.xml"),
+
+	Asset( "IMAGE", "images/ui/art_filteritem.tex"),
+	Asset( "ATLAS", "images/ui/art_filteritem.xml"),
+
+	Asset( "IMAGE", "images/ui/articon_all.tex"),
+	Asset( "ATLAS", "images/ui/articon_all.xml"),
+
 	Asset( "IMAGE", "images/ui/artifact_stars.tex"),
     Asset( "ATLAS", "images/ui/artifact_stars.xml"),
 

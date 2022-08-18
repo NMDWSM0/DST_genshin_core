@@ -71,6 +71,8 @@ local function MakeArtifacts(sets, tag, maintype)
         inst.AnimState:PlayAnimation(tag)
 
         inst:AddTag("artifacts")
+        inst:AddTag("artifacts_all")
+        inst:AddTag("artifacts_"..sets)
         inst:AddTag("artifacts_"..tag)
 
         MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9)

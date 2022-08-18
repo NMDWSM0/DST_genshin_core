@@ -9,6 +9,7 @@ local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ScrollArea = require "widgets/scrollarea"
 local Artifacts_Scroll = require "widgets/artifacts_scroll"
 local Artifacts_SortPanel = require "widgets/artifacts_sortpanel"
+local Artifacts_FilterPanel = require "widgets/artifacts_filterpanel"
 
 local TYPES = {
     "flower",
@@ -25,6 +26,8 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.currenttype = "flower"
 
     self.sortkeys = {}
+
+    self.filter = "all"
 
 	----------------------------------------------------------------------------------------------
     --中心显示器
@@ -63,7 +66,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.sort_panel:Hide()
 
     self.sort_button = self:AddChild(ImageButton("images/ui/button_art_sort.xml","button_art_sort.tex"))
-    self.sort_button:SetPosition(-320, -330, 0)
+    self.sort_button:SetPosition(-330, -320, 0)
 	self.sort_button:SetScale(0.8, 0.8, 0.8)
 	self.sort_button.focus_scale = {1.1,1.1,1.1}
     self.sort_button:SetOnClick(function ()
@@ -73,6 +76,37 @@ local artifacts_popup = Class(Widget, function(self, owner)
             self:ShowSortPanel()
         end
     end)
+
+    ----------------------------------------------------------------------------------------------
+    --过滤器面板
+    self.filter_panel = self:AddChild(Artifacts_FilterPanel(self.owner, self))
+    self.filter_panel:SetPosition(-520, -10, 0)
+    self.filter_panel:Hide()
+
+    self.filter_button = self:AddChild(ImageButton("images/ui/button_art_filter.xml","button_art_filter.tex"))
+    self.filter_button:SetText("")
+    self.filter_button:SetFont("genshinfont")
+    self.filter_button:SetTextSize(40)
+    self.filter_button:SetTextColour(59/255, 66/255, 85/255, 1)
+    self.filter_button:SetTextFocusColour(59/255, 66/255, 85/255, 1)
+    self.filter_button.text:SetHAlign(ANCHOR_LEFT)
+    self.filter_button.text:SetVAlign(ANCHOR_MIDDLE)
+    self.filter_button.text:SetRegionSize(360, 80)
+    self.filter_button.text:EnableWordWrap(true)
+    self.filter_button.text:SetPosition(2.5, -2.5, 0)
+    self.filter_button.text:Show()
+    self.filter_button:SetPosition(-550, -320, 0)
+	self.filter_button:SetScale(0.75, 0.75, 0.75)
+	self.filter_button.focus_scale = {1.05, 1.05, 1.05}
+    self.filter_button:SetOnClick(function ()
+        if self.filter_panel.shown then
+            self:HideTwoPanels()
+        else
+            self:ShowFilterPanel()
+        end
+    end)
+
+    self:SetFilter("all", true)
 
     ----------------------------------------------------------------------------------------------
     --左侧圣遗物显示区先显示为空
@@ -244,25 +278,43 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.inst:ListenForEvent("itemlose", function() self:SetType(self.currenttype) end, owner)
     self.inst:ListenForEvent("artbackpackchange", function() self:SetType(self.currenttype) end, owner)
     ----------------------------------------------------------------------------------------------
+
+    self.blankbtn = self:AddChild(ImageButton("images/ui.xml", "blank.tex"))
+	self.blankbtn:ForceImageSize(1638, 819)  --(2048, 1024) * 0.8
+	self.blankbtn.scale_on_focus = false  --禁止缩放
+	self.blankbtn.clickoffset = Vector3(0, 0, 0)   --禁止按下移动
+	self.blankbtn:SetOnClick(function()
+	    self:HideTwoPanels()
+	end)
+    self.blankbtn:Hide()
+    self.filter_button:MoveToFront()
+    self.sort_button:MoveToFront()
+    self.filter_panel:MoveToFront()
     self.sort_panel:MoveToFront()
 end)
 
 function artifacts_popup:ShowSortPanel()
     self.sort_panel:Show()
-    --self.filter_panel:Hide()
+    self.filter_panel:Hide()
     self.artscroll:Hide()
+
+    self.blankbtn:Show()
 end
 
 function artifacts_popup:ShowFilterPanel()
     self.sort_panel:Hide()
-    --self.filter_panel:Show()
+    self.filter_panel:Show()
     self.artscroll:Hide()
+
+    self.blankbtn:Show()
 end
 
 function artifacts_popup:HideTwoPanels()
     self.sort_panel:Hide()
-    --self.filter_panel:Hide()
+    self.filter_panel:Hide()
     self.artscroll:Show()
+
+    self.blankbtn:Hide()
 end
 
 function artifacts_popup:ShowType(type)
@@ -294,6 +346,20 @@ function artifacts_popup:SetSortKeys(keys)
     end
     self.sortkeys = keys
     self.artscroll:CompletelyChangeItem(self:Sort(self.sortkeys))
+end
+
+function artifacts_popup:SetFilter(filter, initial)
+    self.filter = filter
+    local basestr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "套装筛选 / " or "Set Filter / "
+    local namestr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "全部" or "All"
+    if TUNING.ARTIFACTS_SETS[filter] ~= nil then
+        namestr = TUNING.ARTIFACTS_SETS[filter]
+    end
+    self.filter_button:SetText(basestr..namestr)
+    if initial then
+        return
+    end
+    self:SetType(self.currenttype)
 end
 
 function artifacts_popup:SetType(type)
@@ -341,7 +407,7 @@ function artifacts_popup:SetType(type)
     --显示物品栏和背包中所有带有该类型圣遗物标签的物品
     local i = 0  
     --一号位是穿在身上的那个
-    if mainitem ~= nil then
+    if mainitem ~= nil and mainitem:HasTag("artifacts_"..self.filter) then
         i = i + 1
         self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		self.art[i]:SetScale(1)
@@ -356,7 +422,7 @@ function artifacts_popup:SetType(type)
     --然后是物品栏里的
     for k = 1, num_slots_inventory do
         local item = inventory:GetItemInSlot(k)
-        if item and item:HasTag("artifacts_"..self.currenttype) then
+        if item and item:HasTag("artifacts_"..self.currenttype) and item:HasTag("artifacts_"..self.filter) then
             i = i + 1
             self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		    self.art[i]:SetScale(1)
@@ -373,7 +439,7 @@ function artifacts_popup:SetType(type)
         local num_slots_backpack = overflow:GetNumSlots()
         for k = 1, num_slots_backpack do
             local item = overflow:GetItemInSlot(k)
-            if item and item:HasTag("artifacts_"..self.currenttype) then
+            if item and item:HasTag("artifacts_"..self.currenttype) and item:HasTag("artifacts_"..self.filter) then
                 i = i + 1
                 self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		        self.art[i]:SetScale(1)
@@ -392,7 +458,7 @@ function artifacts_popup:SetType(type)
             local num_slots_artbackpack = v:GetNumSlots()
             for k = 1, num_slots_artbackpack do
                 local item = v:GetItemInSlot(k)
-                if item and item:HasTag("artifacts_"..self.currenttype) then
+                if item and item:HasTag("artifacts_"..self.currenttype) and item:HasTag("artifacts_"..self.filter) then
                     i = i + 1
                     self.art[i] = ArtSlot(self.owner, "images/ui/art_slotbg.xml", "art_slotbg.tex", {tile_scale = 1.2, tile_x = 0, tile_y = 10}, "art_slotbg_hl.tex")
 		            self.art[i]:SetScale(1)

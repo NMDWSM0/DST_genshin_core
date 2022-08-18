@@ -7,7 +7,7 @@ local ImageButton = require "widgets/imagebutton"
 local TextButton = require "widgets/textbutton"
 local ScrollArea = require "widgets/scrollarea"
 
-local SortItem = Class(Button, function (self, atlas, image_normal, image_selected, name)
+local SortItem = Class(Button, function (self, atlas, image_normal, image_highlight, image_selected, name)
     Button._ctor(self)
     self.bg = self:AddChild(Image(atlas, image_normal))
     self.bg:SetScale(0.8, 0.8, 0.8)
@@ -15,6 +15,7 @@ local SortItem = Class(Button, function (self, atlas, image_normal, image_select
 
     self.atlas = atlas
     self.image_normal = image_normal
+    self.image_highlight = image_highlight
     self.image_selected = image_selected
 
     self.indextext = self:AddChild(Text("genshinfont", 32, nil, {132/255, 215/255, 28/255, 1}))
@@ -33,6 +34,24 @@ local SortItem = Class(Button, function (self, atlas, image_normal, image_select
     self.nametext:EnableWordWrap(true)
     self.nametext:SetPosition(10, -1, 0)
 end)
+
+function SortItem:OnGainFocus()
+    if not self._selected and not self.big then
+        --self:ScaleTo(self.base_scale, self.highlight_scale, .25)
+        self.big = true
+        self.bg:SetTexture(self.atlas, self.image_highlight)
+    end
+end
+
+function SortItem:OnLoseFocus()
+    if not self._selected and self.big then
+        -- if not self.highlight then
+        --     self:ScaleTo(self.highlight_scale, self.base_scale, .15)
+        -- end
+        self.big = false
+        self.bg:SetTexture(self.atlas, self.image_normal)
+    end
+end
 
 function SortItem:ChangeToSelect(index)
     self._selected = true
@@ -110,7 +129,7 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
         if string.find(k, "per") ~= nil then
             name = v..(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "百分比" or " Percentage")
         end
-        self.btns[k] = SortItem("images/ui/art_sortitem.xml", "art_sortitem_normal.tex", "art_sortitem_selected.tex", name)
+        self.btns[k] = SortItem("images/ui/art_sortitem.xml", "art_sortitem_normal.tex", "art_sortitem_highlight.tex", "art_sortitem_selected.tex", name)
         self.scrollarea:AddItem(self.btns[k], number, 64)
         self.btns[k]:SetPosition(0, -10 - 60 * (number - 1), 0)
         self.btns[k]:SetOnClick(function ()
