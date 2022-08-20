@@ -24,11 +24,13 @@ local Artifacts = Class(function(self, inst)
 
     self.inst:ListenForEvent("lockdirty", function ()
         if self:IsLocked() then
-            self.inst.inv_image_bg = { image = "inv_art_lock.tex" }
-            self.inst.inv_image_bg.atlas = "images/inventoryimages/inv_art_lock.xml"
+            inst.inv_image_bg = { image = "inv_art_lock.tex" }
+            inst.inv_image_bg.atlas = "images/inventoryimages/inv_art_lock.xml"
         else
-            self.inst.inv_image_bg = nil
+            inst.inv_image_bg = { image = "blank.tex" }
+            inst.inv_image_bg.atlas = "images/ui.xml"
         end
+        self.inst:PushEvent("imagechange")
     end)
 end)
 

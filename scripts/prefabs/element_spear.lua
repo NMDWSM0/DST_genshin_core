@@ -5,6 +5,9 @@ local assets =
     Asset("ANIM", "anim/spear.zip"),
     Asset("ANIM", "anim/swap_spear.zip"),
     Asset("ANIM", "anim/floating_items.zip"),
+
+    Asset("IMAGE", "images/ui/element_spear_slot.tex"),
+    Asset("ATLAS", "images/ui/element_spear_slot.xml"),
 }
 
 ---------------------------------------------------------------------------------
@@ -17,13 +20,13 @@ local element_spear =
     {
         slotpos =
         {
-            Vector3(0,  36,  0),
-            Vector3(0,  -36,  0),
+            Vector3(0, 36, 0),
+            Vector3(0, -36, 0),
         },
         slotbg =
         {
-            { image = "fishing_slot_bobber.tex" },
-            { image = "fishing_slot_lure.tex" },
+            { image = "element_spear_slot1.tex" , atlas = "images/ui/element_spear_slot.xml" },
+            { image = "element_spear_slot2.tex" , atlas = "images/ui/element_spear_slot.xml" },
         },
         animbank = "ui_cookpot_1x2",
         animbuild = "ui_cookpot_1x2",

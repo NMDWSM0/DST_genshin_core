@@ -103,7 +103,7 @@ local Recipes = {
         name = "artifactsbundlewrap",
         ingredients = 
         {
-			Ingredient("waxpaper", 2), 
+			Ingredient("papyrus", 2), 
             Ingredient("rope", 4), 
             Ingredient("goldnugget", 1)
         },
@@ -125,6 +125,22 @@ local Recipes = {
         atlas = "images/inventoryimages/artifactsbackpack.xml",
         image = "artifactsbackpack.tex",
         filters = { "TOOLS", "CHARACTER" },
+    },
+
+    ---------------------------建筑-----------------------------
+	{
+        name = "artifacts_refiner",
+        ingredients = 
+        {
+			Ingredient("artifactsbundle", 10, "images/inventoryimages/artifactsbundle.xml"),
+            Ingredient("artifactsbackpack", 1, "images/inventoryimages/artifactsbackpack.xml"),
+            Ingredient("cutstone", 4)
+        },
+        level = TECH.SCIENCE_TWO,
+        atlas = GetInventoryItemAtlas("cookpot.tex"),
+        image = "cookpot.tex",
+        filters = { "STRUCTURES", "CHARACTER" },
+        placer = "cookpot_placer",
     },
 
     ---------------------------精炼-----------------------------

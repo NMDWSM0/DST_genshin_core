@@ -81,9 +81,7 @@ function Refineable:ChangeImageBG()
     self.inst.inv_image_bg = { image = "refinenumber"..self.current_level..".tex" }
     self.inst.inv_image_bg.atlas = "images/inventoryimages/refinenumber.xml"
     --#region
-    local old = self.inst.components.inventoryitem.imagename
-    self.inst.components.inventoryitem:ChangeImageName("nil")
-    self.inst.components.inventoryitem:ChangeImageName(old)
+    self.inst:PushEvent("imagechange")
 end
 
 function Refineable:OnSave()

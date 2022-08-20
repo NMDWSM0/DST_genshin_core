@@ -67,6 +67,7 @@ PrefabFiles = {
 	"randomartifacts",
 	"artifacts_bundle",
 	"artifactsbackpack",
+	"artifacts_refiner",
 	"bloombomb",
 	"genshin_potions"
 }
@@ -276,6 +277,9 @@ Assets = {
 
 	Asset( "IMAGE", "images/ui/art_slotbg.tex"),
     Asset( "ATLAS", "images/ui/art_slotbg.xml"),
+
+	Asset( "IMAGE", "images/ui/art_slotbg_empty.tex"),
+    Asset( "ATLAS", "images/ui/art_slotbg_empty.xml"),
 
 	Asset( "IMAGE", "images/ui/art_lock.tex"),
     Asset( "ATLAS", "images/ui/art_lock.xml"),

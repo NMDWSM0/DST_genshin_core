@@ -19,6 +19,7 @@ local Refineable = Class(function(self, inst)
         local lv = math.clamp(self._current_level:value(), 1, 5)
         inst.inv_image_bg = { image = "refinenumber"..lv..".tex" }
         inst.inv_image_bg.atlas = "images/inventoryimages/refinenumber.xml"
+        self.inst:PushEvent("imagechange")
     end)
 end)
 

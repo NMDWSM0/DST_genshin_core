@@ -167,7 +167,7 @@ local function onsub4(self, sub4)
 end
 
 local function onlocked(self, locked)
-    self.inst.replica.artifacts._locked:set(locked or false)
+    self.inst.replica.artifacts._locked:set(locked)
 end
 
 ---------------------------------------------------------------
@@ -286,12 +286,11 @@ function Artifacts:ChangeImageBG()
         self.inst.inv_image_bg = { image = "inv_art_lock.tex" }
         self.inst.inv_image_bg.atlas = "images/inventoryimages/inv_art_lock.xml"
     else
-        self.inst.inv_image_bg = nil
+        self.inst.inv_image_bg = { image = "blank.tex" }
+        self.inst.inv_image_bg.atlas = "images/ui.xml"
     end
     --#region
-    local old = self.inst.components.inventoryitem.imagename
-    self.inst.components.inventoryitem:ChangeImageName("nil")
-    self.inst.components.inventoryitem:ChangeImageName(old)
+    self.inst:PushEvent("imagechange")
 end
 
 function Artifacts:OnSave()

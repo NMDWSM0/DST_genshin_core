@@ -75,6 +75,9 @@ local function MakeArtifacts(sets, tag, maintype)
         inst:AddTag("artifacts_"..sets)
         inst:AddTag("artifacts_"..tag)
 
+        inst.inv_image_bg = { image = "blank.tex" }
+        inst.inv_image_bg.atlas = "images/ui.xml"
+
         MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9)
 
         inst.entity:SetPristine()
@@ -82,7 +85,6 @@ local function MakeArtifacts(sets, tag, maintype)
         if not TheWorld.ismastersim then
             return inst
         end
-
 
         inst:AddComponent("inspectable")
         inst.SetDescription = SetDescription

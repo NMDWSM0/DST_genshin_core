@@ -170,6 +170,35 @@ local function refineweapon(inst, weapon)
 	weapon.components.refineable:Refine(up_level)
 end
 
+local function refineartifacts(inst, refiner)
+	if refiner == nil or refiner.components.container == nil then
+		return
+	end
+	local number = refiner.components.container:NumItems() - 1 --去掉第一个
+	local finalnumber = math.floor(number / 3)
+	local proto_art = refiner.components.container:GetItemInSlot(1)
+	if proto_art == nil or finalnumber == 0 then
+		inst.components.talker:Say(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "材料不足" or "Insufficient Materials")
+		return
+	end
+	local sets = proto_art.components.artifacts.sets
+	local i = 1
+	local consumed = 0
+	while consumed < finalnumber * 3 and i <= refiner.components.container:GetNumSlots() do --1号位置是不动的
+		if refiner.components.container:GetItemInSlot(i + 1) ~= nil then
+			refiner.components.container:RemoveItemBySlot(i + 1)
+			consumed = consumed + 1
+		end
+		i = i + 1
+	end
+	local tags = {"flower", "plume", "sands", "goblet", "circlet"}
+	for j = 1, finalnumber do
+		local tag = tags[math.random(5)]
+		refiner.components.container:GiveItem(SpawnPrefab(sets.."_"..tag))
+	end
+	refiner.components.container:Close(inst)
+end
+
 local function updatedmgnumber(text, r, g, b, size, x, y, z, isnumber)
 	local screenpos_x, screenpos_y = TheSim:GetScreenPos(x, y, z)
     local data = {text = text, color = {r = r, g = g, b = b}, size = size, screenpos = {x = screenpos_x, y = screenpos_y}, isnumber = isnumber}
@@ -186,4 +215,5 @@ AddModRPCHandler("existhealthreplica", "updatehealth", updatehealth)
 AddModRPCHandler("constellation", "unlock", unlockconstellation)
 AddModRPCHandler("talents", "upgrade", upgradetalent)
 AddModRPCHandler("weapon", "refine", refineweapon)
+AddModRPCHandler("artifacts_refiner", "dorefine", refineartifacts)
 AddClientModRPCHandler("GenshinCore", "DMGnumberUpdate", updatedmgnumber)
