@@ -146,6 +146,21 @@ AddComponentPostInit("combat", function(self)
 	self.overrideattackkeyfn = nil
 	self.overridestimulifn = nil
 	
+	self.damage_stack = {}
+	self.damage_stack_top = 0
+
+	self.inst:ListenForEvent("attacked", function (inst, data)
+		if data and data.damageresolved ~= nil then
+			self.damage_stack_top = self.damage_stack_top + 1
+			self.damage_stack[self.damage_stack_top] = data.damageresolved
+			--print("入栈", self.damage_stack_top, data.damageresolved)
+		end
+	end)
+	self.inst:ListenForEvent("blocked", function (inst, data)
+		self.damage_stack_top = self.damage_stack_top + 1
+		self.damage_stack[self.damage_stack_top] = 0
+		--print("入栈", self.damage_stack_top, data.damageresolved)
+	end)
 
     ---------------------------------------------------
     -------------- SetOverrideStimuliFn ----------------
@@ -493,24 +508,27 @@ AddComponentPostInit("combat", function(self)
 		    stimuli = STIMULI[stimuli]
 		end
 
-		debug.sethook(function ()   --采取hook的方式获取造成的伤害，而不是其它的什么函数
-			local info = debug.getinfo(2, "S")
-			local file = info.short_src
-			if string.find(file, "combat.lua") ~= nil then
-	            for i = 1, 100 do
-					local name, value = debug.getlocal(2, i)
-					if name == nil then --locals寻找结束，没有符合要求的
-						break
-					elseif name == "damageresolved" then --寻找damageresolved
-						damageresolved = value
-						debug.sethook()
-						return
-					end
-				end
-	        end
-		end, "r")
+		-- debug.sethook(function ()   --采取hook的方式获取造成的伤害，而不是其它的什么函数
+		-- 	local info = debug.getinfo(2, "S")
+		-- 	local file = info.short_src
+		-- 	if string.find(file, "combat.lua") ~= nil then
+	    --         for i = 1, 100 do
+		-- 			local name, value = debug.getlocal(2, i)
+		-- 			if name == nil then --locals寻找结束，没有符合要求的
+		-- 				break
+		-- 			elseif name == "damageresolved" then --寻找damageresolved
+		-- 				damageresolved = value
+		-- 				debug.sethook()
+		-- 				return
+		-- 			end
+		-- 		end
+	    --     end
+		-- end, "r")
 	    local retval = old_GetAttacked(self, attacker, damage, weapon, stimuli, ele_value, attackkey)
-		debug.sethook()
+		-- debug.sethook()
+		damageresolved = self.damage_stack[self.damage_stack_top] or 0
+		self.damage_stack_top = self.damage_stack_top - 1
+		--print("出栈", self.damage_stack_top, damageresolved)
 
 		--推送一下事件
 		if attacker ~= nil then

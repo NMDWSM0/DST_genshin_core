@@ -4,43 +4,43 @@ AddPrefabPostInitAny(function(inst)
 	end
 end)
 
-AddPrefabPostInitAny(function(inst)
-    if not inst.components.lootdropper then
-	    return
-	end
+-- AddPrefabPostInitAny(function(inst)
+--     if not inst.components.lootdropper then
+-- 	    return
+-- 	end
 	
-    if not inst.components.combat then
-	    return
-	end
+--     if not inst.components.combat then
+-- 	    return
+-- 	end
 	
-	if inst:HasTag("wall") or inst:HasTag("chester") then
-		return
-	end
+-- 	if inst:HasTag("wall") or inst:HasTag("chester") then
+-- 		return
+-- 	end
 	
-	local minhealth = TUNING.ARTIFACTS_MINHEALTH
-	local baserate = 0.05 * TUNING.ARTIFACTS_DROPRATE
+-- 	local minhealth = TUNING.ARTIFACTS_MINHEALTH
+-- 	local baserate = 0.05 * TUNING.ARTIFACTS_DROPRATE
 
-	if inst.components.health then
-	    if inst.components.health.maxhealth < minhealth then
-		    return
-		else
-		    local h = inst.components.health.maxhealth
-			local r = math.min(5, baserate * math.pow((h / 100), 0.932))
-			while r > 1 do
-				inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-				r = r - 1
-			end
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", math.clamp(r, 0, 1))
-		end
-	else
-	    if not inst:HasTag("epic") then
-		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.1)
-		else
-			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
-		end
-	end
+-- 	if inst.components.health then
+-- 	    if inst.components.health.maxhealth < minhealth then
+-- 		    return
+-- 		else
+-- 		    local h = inst.components.health.maxhealth
+-- 			local r = math.min(5, baserate * math.pow((h / 100), 0.932))
+-- 			while r > 1 do
+-- 				inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
+-- 				r = r - 1
+-- 			end
+-- 			inst.components.lootdropper:AddChanceLoot("randomartifacts", math.clamp(r, 0, 1))
+-- 		end
+-- 	else
+-- 	    if not inst:HasTag("epic") then
+-- 		    inst.components.lootdropper:AddChanceLoot("randomartifacts", 0.1)
+-- 		else
+-- 			inst.components.lootdropper:AddChanceLoot("randomartifacts", 1)
+-- 		end
+-- 	end
 	
-end)
+-- end)
 
 
 local exclude_tags = {

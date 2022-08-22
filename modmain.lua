@@ -789,6 +789,8 @@ modimport("scripts/import/component_postinits/bundler_postinit.lua")
 
 modimport("scripts/import/component_postinits/rechargeable_postinit.lua")
 
+modimport("scripts/import/component_postinits/lootdropper_postinit.lua")
+
 modimport("scripts/import/prefab_postinits/wx78_postinit.lua")
 
 modimport("scripts/import/prefab_postinits/houndmound_postinit.lua")
