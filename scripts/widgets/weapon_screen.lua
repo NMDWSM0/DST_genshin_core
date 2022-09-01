@@ -14,8 +14,8 @@ local weapon_screen = Class(Widget, function(self, owner)
     self.previous_level = 0
 	
     --右侧武器详细显示区
-    self.detail_list = self:AddChild(ScrollArea(420, 650, 1100))
-    self.detail_list:SetPosition(550, 0, 0)
+    self.detail_list = self:AddChild(ScrollArea(420, 610, 1100))
+    self.detail_list:SetPosition(550, 20, 0)
     --武器名字
     self.name_text = Text("genshinfont", 44, nil, {1, 1, 1, 1})
     self.detail_list:AddItem(self.name_text)

@@ -66,8 +66,6 @@ local artifacts_refiner =
             Vector3(60,  -540,  0),
             Vector3(60+75,  -540,  0),
             Vector3(60+150,  -540,  0),
-
-            
         },
         slotbg =
         {

@@ -2,13 +2,20 @@ local containers = require "containers"
 
 local assets =
 {
-    Asset("ANIM", "anim/spear.zip"),
-    Asset("ANIM", "anim/swap_spear.zip"),
+    Asset("ANIM", "anim/element_spear.zip"),
+    --Asset("ANIM", "anim/swap_element_spear.zip"),
     Asset("ANIM", "anim/floating_items.zip"),
+
+    Asset("IMAGE", "images/inventoryimages/element_spear.tex"),
+    Asset("ATLAS", "images/inventoryimages/element_spear.xml"),
 
     Asset("IMAGE", "images/ui/element_spear_slot.tex"),
     Asset("ATLAS", "images/ui/element_spear_slot.xml"),
 }
+
+for i = 1, 8 do
+    table.insert(assets, Asset("ANIM", "anim/swap_element_spear_"..i..".zip"))
+end
 
 ---------------------------------------------------------------------------------
 
@@ -49,93 +56,6 @@ function containers.widgetsetup(container, prefab, data, ...)
         return
 	end
     return old_widgetsetup(container, prefab, data, ...)
-end
-
----------------------------------------------------------------------------------
-
---转换成武器去听
-local function OwnerOnDamageCalculated(owner, data)
-    local inst = owner.components.combat:GetWeapon()
-    if inst == nil then
-        return
-    end
-    inst:PushEvent("damagecalculated", {target = data.target, damage = data.damage, weapon = data.weapon, stimuli = data.stimuli, elementvalue = data.elementvalue, crit = data.crit, attackkey = data.attackkey})
-end
-
-local function OwnerOnHitOther(owner, data)
-    local inst = owner.components.combat:GetWeapon()
-    if inst == nil then
-        return
-    end
-    inst:PushEvent("onhitother", {target = data.terget, damage = data.damage, damageresolved = data.damageresolved, stimuli = data.stimuli, weapon = data.weapon, redirected = data.redirected})
-end
-
---统一设置计时器的格式
-local function LocalStartTimer(inst, name, time)
-    if name == nil or time == nil or time < 0 then
-        return
-    end
-    if inst.components.timer:TimerExists(name) then
-        inst.components.timer:SetTimeLeft(name, time)
-    else
-        inst.components.timer:StartTimer(name, time)
-    end
-end
-
----------------------------------------------------------------------------------
-
-local function onequip(inst, owner)
-    owner.AnimState:OverrideSymbol("swap_object", "swap_spear", "swap_spear")
-    owner.AnimState:Show("ARM_carry")
-    owner.AnimState:Hide("ARM_normal")
-    
-    if inst.components.container ~= nil then
-        inst.components.container:Open(owner)
-    end
-    
-    --武器被削了
-    owner.components.combat.external_critical_rate_multipliers:SetModifier(inst, 0.221, "all_permanent")
-    --owner.components.combat.external_critical_damage_multipliers:SetModifier(inst, 1, "all_permanent")
-    --owner.components.combat.external_element_mastery_multipliers:SetModifier(inst, 200, "all_permanent")
-    
-    owner:ListenForEvent("damagecalculated", OwnerOnDamageCalculated)
-    owner:ListenForEvent("onhitother", OwnerOnHitOther)
-end
-
-local function onunequip(inst, owner)
-    owner.AnimState:Hide("ARM_carry")
-    owner.AnimState:Show("ARM_normal")
-
-    if inst.components.container ~= nil then
-        inst.components.container:Close()
-    end
-
-    owner.components.combat.externaldamagemultipliers:RemoveModifier(inst)
-    owner.components.combat.externaldamagetakenmultipliers:RemoveModifier(inst)
-	owner.components.combat.external_atk_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_critical_rate_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_critical_damage_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_attacktype_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
-    owner.components.combat.external_element_mastery_multipliers:RemoveModifier(inst)
-
-    owner:RemoveEventCallback("damagecalculated", OwnerOnDamageCalculated)
-    owner:RemoveEventCallback("onhitother", OwnerOnHitOther)
 end
 
 ---------------------------------------------------------------------------------
@@ -190,6 +110,111 @@ local function GetElement(inst, type)
     end
     return 8 
 end
+
+--动画变动
+local function ChangeAnimandImage(inst, data, input_own)
+    local upper = GetElement(inst, "charge")
+    local lower = GetElement(inst, "skill")
+
+    inst.AnimState:OverrideSymbol("upper", "element_spear", "upper_"..upper)
+    inst.AnimState:OverrideSymbol("lower", "element_spear", "lower_"..lower)
+    if input_own ~= nil or inst.components.equippable:IsEquipped() then
+        local owner = input_own or inst.components.inventoryitem.owner
+        if owner then
+            owner.AnimState:OverrideSymbol("swap_object", "swap_element_spear_"..upper, "swap_element_spear_"..upper.."_"..lower)
+        end
+    end
+    --inst.components.inventoryitem:ChangeImageName()
+end
+
+---------------------------------------------------------------------------------
+
+--转换成武器去听
+local function OwnerOnDamageCalculated(owner, data)
+    local inst = owner.components.combat:GetWeapon()
+    if inst == nil then
+        return
+    end
+    inst:PushEvent("damagecalculated", {target = data.target, damage = data.damage, weapon = data.weapon, stimuli = data.stimuli, elementvalue = data.elementvalue, crit = data.crit, attackkey = data.attackkey})
+end
+
+local function OwnerOnHitOther(owner, data)
+    local inst = owner.components.combat:GetWeapon()
+    if inst == nil then
+        return
+    end
+    inst:PushEvent("onhitother", {target = data.terget, damage = data.damage, damageresolved = data.damageresolved, stimuli = data.stimuli, weapon = data.weapon, redirected = data.redirected})
+end
+
+--统一设置计时器的格式
+local function LocalStartTimer(inst, name, time)
+    if name == nil or time == nil or time < 0 then
+        return
+    end
+    if inst.components.timer:TimerExists(name) then
+        inst.components.timer:SetTimeLeft(name, time)
+    else
+        inst.components.timer:StartTimer(name, time)
+    end
+end
+
+---------------------------------------------------------------------------------
+
+local function onequip(inst, owner)
+    ChangeAnimandImage(inst, nil, owner)
+    owner.AnimState:Show("ARM_carry")
+    owner.AnimState:Hide("ARM_normal")
+    
+    if inst.components.container ~= nil then
+        inst.components.container:Open(owner)
+    end
+    
+    --武器被削了
+    owner.components.combat.external_critical_rate_multipliers:SetModifier(inst, 0.221, "all_permanent")
+    --owner.components.combat.external_critical_damage_multipliers:SetModifier(inst, 1, "all_permanent")
+    --owner.components.combat.external_element_mastery_multipliers:SetModifier(inst, 200, "all_permanent")
+    
+    owner:ListenForEvent("damagecalculated", OwnerOnDamageCalculated)
+    owner:ListenForEvent("onhitother", OwnerOnHitOther)
+end
+
+local function onunequip(inst, owner)
+    owner.AnimState:Hide("ARM_carry")
+    owner.AnimState:Show("ARM_normal")
+
+    if inst.components.container ~= nil then
+        inst.components.container:Close()
+    end
+
+    owner.components.combat.externaldamagemultipliers:RemoveModifier(inst)
+    owner.components.combat.externaldamagetakenmultipliers:RemoveModifier(inst)
+	owner.components.combat.external_atk_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_critical_rate_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_critical_damage_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_attacktype_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_pyro_res_multipliers:RemoveModifier(inst)
+    owner.components.combat.external_element_mastery_multipliers:RemoveModifier(inst)
+
+    owner:RemoveEventCallback("damagecalculated", OwnerOnDamageCalculated)
+    owner:RemoveEventCallback("onhitother", OwnerOnHitOther)
+end
+
+---------------------------------------------------------------------------------
 
 local anims = {
     "pyro",
@@ -407,8 +432,8 @@ local function fn()
 
     MakeInventoryPhysics(inst)
 
-    inst.AnimState:SetBank("spear")
-    inst.AnimState:SetBuild("swap_spear")
+    inst.AnimState:SetBank("element_spear")
+    inst.AnimState:SetBuild("element_spear")
     inst.AnimState:PlayAnimation("idle")
 
     inst:AddTag("sharp")
@@ -423,6 +448,10 @@ local function fn()
     inst.subtext = "crit_rate"
     inst.subnumber = "22.1%"
     inst.description = TUNING.WEAPONEFFECT_ELEMENT_SPEAR
+    inst.weaponscreen_override = {
+        build = "swap_element_spear_8",
+        folder = "swap_element_spear_8_8",
+    }
 
     MakeInventoryFloatable(inst, "med", 0.05, {1.1, 0.5, 1.1}, true, -9)
 
@@ -441,9 +470,8 @@ local function fn()
     inst:AddComponent("inspectable")
 
     inst:AddComponent("inventoryitem")
-    inst.components.inventoryitem.imagename = "spear"
-    inst.components.inventoryitem.atlasname = GetInventoryItemAtlas("spear.tex")
-	inst.components.inventoryitem:ChangeImageName("spear")
+    inst.components.inventoryitem.atlasname = "images/inventoryimages/element_spear.xml"
+	inst.components.inventoryitem:ChangeImageName("element_spear")
 
     inst:AddComponent("equippable")
     inst.components.equippable:SetOnEquip(onequip)
@@ -472,7 +500,11 @@ local function fn()
     inst:ListenForEvent("onhitother", OnHitOther)
 
     MakeHauntableLaunch(inst)
+    ChangeAnimandImage(inst)
     inst.chargeattackdmgratefn = ChargeATKRateFn
+
+    inst:ListenForEvent("itemget", ChangeAnimandImage)
+    inst:ListenForEvent("itemlose", ChangeAnimandImage)
 
     return inst
 end

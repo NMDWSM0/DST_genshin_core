@@ -93,8 +93,8 @@ local Recipes = {
             Ingredient("livinglog",2)
         },
         level = TECH.MAGIC_TWO,
-        atlas = GetInventoryItemAtlas("spear.tex"),
-        image = "spear.tex",
+        atlas = "images/inventoryimages/element_spear.xml",
+        image = "element_spear.tex",
         filters = { "WEAPONS", "CHARACTER" },
     },
 

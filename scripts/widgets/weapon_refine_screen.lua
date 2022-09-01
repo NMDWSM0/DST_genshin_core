@@ -196,65 +196,69 @@ function weapon_refine_screen:UpdateWeapon(weapon)
 	local weaponbuild = weapon and weapon.AnimState:GetBuild() or ""
 	local skin_build = weapon.AnimState:GetSkinBuild() ~= "" and weapon.AnimState:GetSkinBuild() or nil--weapon:GetSkinBuild()
 	
-	--处理皮肤(字符串操作)  (也处理吹箭)
-	if skin_build ~= nil then
-	    weaponbuild = removeskinstring(weaponbuild)
-	end
-
-	--还有火腿棒你是个奇葩
-	if weaponbuild == "hambat" then
-	    weaponbuild = "ham_bat"
-	elseif weaponbuild == "oceanfishingrod" then
-	--海钓竿你也是
-	    weaponbuild = "fishingrod_ocean"
-	elseif weaponbuild == "nightsword" then
-	--影刀？？？
-	    weaponbuild = "nightmaresword"
-	elseif string.find(weaponbuild, "blow_dart") ~= nil then
-	    weaponbuild = "blowdart"
-	end
-
-	--处理swap
-	local swap_weaponbuild = weaponbuild
-	if string.find(weaponbuild, "swap") == nil then
-	    swap_weaponbuild = "swap_"..weaponbuild
-	end
-
-	--设置build
-	if skin_build ~= nil then
-		if string.find(weaponbuild, "staff") ~= nil then
-		    if weapon.prefab == "firestaff" then
-			    swap_weaponbuild = "swap_redstaff"
-			elseif weapon.prefab == "icestaff" then
-			    swap_weaponbuild = "swap_bluestaff"
-			elseif weapon.prefab == "telestaff" then
-			    swap_weaponbuild = "swap_purplestaff"
-	        else
-		        swap_weaponbuild = "swap_"..weapon.prefab
-			end
-		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild, weapon.GUID, "swap_staffs")
-		elseif weaponbuild == "multitool_axe_pickaxe" then
-		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, "swap_object", weapon.GUID, swap_weaponbuild)
-		else
-		    self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild, weapon.GUID, swap_weaponbuild)
-		end
+    if weapon.weaponscreen_override ~= nil then
+        self.weaponanim:GetAnimState():OverrideSymbol("swap_object", weapon.weaponscreen_override.build, weapon.weaponscreen_override.folder)
     else
-		if string.find(weaponbuild, "staff") ~= nil then
-		    if weapon.prefab == "firestaff" then
-			    swap_weaponbuild = "swap_redstaff"
-			elseif weapon.prefab == "icestaff" then
-			    swap_weaponbuild = "swap_bluestaff"
-			elseif weapon.prefab == "telestaff" then
-			    swap_weaponbuild = "swap_purplestaff"
-	        else
-		        swap_weaponbuild = "swap_"..weapon.prefab
-			end
-		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", "swap_staffs", swap_weaponbuild)
-		elseif weaponbuild == "multitool_axe_pickaxe" then
-		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, "swap_object")
-		else
-		    self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, swap_weaponbuild)
-		end
+        --处理皮肤(字符串操作)  (也处理吹箭)
+        if skin_build ~= nil then
+            weaponbuild = removeskinstring(weaponbuild)
+        end
+        --还有火腿棒你是个奇葩
+        if weaponbuild == "hambat" then
+            weaponbuild = "ham_bat"
+        elseif weaponbuild == "oceanfishingrod" then
+            --海钓竿你也是
+            weaponbuild = "fishingrod_ocean"
+        elseif weaponbuild == "nightsword" then
+            --影刀？？？
+            weaponbuild = "nightmaresword"
+        elseif string.find(weaponbuild, "blow_dart") ~= nil then
+            weaponbuild = "blowdart"
+        end
+        --处理swap
+        local swap_weaponbuild = weaponbuild
+        if string.find(weaponbuild, "swap") == nil then
+            swap_weaponbuild = "swap_" .. weaponbuild
+        end
+        --设置build
+        if skin_build ~= nil then
+            if string.find(weaponbuild, "staff") ~= nil then
+                if weapon.prefab == "firestaff" then
+                    swap_weaponbuild = "swap_redstaff"
+                elseif weapon.prefab == "icestaff" then
+                    swap_weaponbuild = "swap_bluestaff"
+                elseif weapon.prefab == "telestaff" then
+                    swap_weaponbuild = "swap_purplestaff"
+                else
+                    swap_weaponbuild = "swap_" .. weapon.prefab
+                end
+                self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild,
+                    weapon.GUID, "swap_staffs")
+            elseif weaponbuild == "multitool_axe_pickaxe" then
+                self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, "swap_object",
+                    weapon.GUID, swap_weaponbuild)
+            else
+                self.weaponanim:GetAnimState():OverrideItemSkinSymbol("swap_object", skin_build, swap_weaponbuild,
+                    weapon.GUID, swap_weaponbuild)
+            end
+        else
+            if string.find(weaponbuild, "staff") ~= nil then
+                if weapon.prefab == "firestaff" then
+                    swap_weaponbuild = "swap_redstaff"
+                elseif weapon.prefab == "icestaff" then
+                    swap_weaponbuild = "swap_bluestaff"
+                elseif weapon.prefab == "telestaff" then
+                    swap_weaponbuild = "swap_purplestaff"
+                else
+                    swap_weaponbuild = "swap_" .. weapon.prefab
+                end
+                self.weaponanim:GetAnimState():OverrideSymbol("swap_object", "swap_staffs", swap_weaponbuild)
+            elseif weaponbuild == "multitool_axe_pickaxe" then
+                self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, "swap_object")
+            else
+                self.weaponanim:GetAnimState():OverrideSymbol("swap_object", swap_weaponbuild, swap_weaponbuild)
+            end
+        end
     end
 	
     local ispolearm = false

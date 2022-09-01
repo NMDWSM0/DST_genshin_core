@@ -92,6 +92,9 @@ Assets = {
     Asset("IMAGE", "images/inventoryimages/artifactsbundlewrap.tex"),
     Asset("ATLAS", "images/inventoryimages/artifactsbundlewrap.xml"),
 
+	Asset("IMAGE", "images/inventoryimages/element_spear.tex"),
+    Asset("ATLAS", "images/inventoryimages/element_spear.xml"),
+
 	Asset("IMAGE", "images/inventoryimages/refinenumber.tex"),
     Asset("ATLAS", "images/inventoryimages/refinenumber.xml"),
 
