@@ -495,8 +495,10 @@ AddComponentPostInit("combat", function(self)
 		local dmgadd = self.external_dmgaddnumber_multipliers:Get()
 
 		--最终传递给敌人的伤害（后面再去穿透护甲和伤害重定向）
-		if damage ~= 0 then
+		if damage ~= 0 and attackkey_copied ~= "elementreaction" then
 			damage = (damage + dmgadd + reaction_addnumber) * critical * defense * (typebonus + elements - 1) * elements_res * reaction_rate
+		elseif damage ~= 0 and attackkey_copied == "elementreaction" then
+			damage = (damage + dmgadd) * defense * elements_res
 		end
 		-- local damageresolved = self:CalcDamageResolved(attacker, damage, weapon, stimuli) --两次访问health.redirect，造成棱镜的永不凋零免伤失效
 		local damageresolved = 0

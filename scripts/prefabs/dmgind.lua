@@ -28,7 +28,7 @@ local function CreateDamageIndicator(inst, data)
 		    elseif (element_type == 6) then--岩元素伤害
 		        color = TUNING.GEO_COLOR
 		    elseif (element_type == 7) then--草元素伤害
-		        color = TUNING.DENDRO_COLOR
+		        color = TUNING.DENDRO2_COLOR
 		    else--if (element_type == 8) --物理伤害
 		        color = TUNING.PHYSICAL_COLOR
 		    end

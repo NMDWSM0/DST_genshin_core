@@ -188,14 +188,14 @@ local function updateanimation(inst)
     if inst.element1 == 0 and inst.element2 == 0 then
 	    inst.anim1.Image:SetTexture(resolvefilepath("images/null.xml"), "null.tex")
 		inst.anim2.Image:SetTexture(resolvefilepath("images/null.xml"), "null.tex")
-		inst.anim1.Image:SetWorldOffset(-0.5, inst.anim1.y_offset, 0)
-		inst.anim2.Image:SetWorldOffset(0.5, inst.anim2.y_offset, 0)
+		inst.anim1.Image:SetWorldOffset(-0.4, inst.anim1.y_offset, 0)
+		inst.anim2.Image:SetWorldOffset(0.4, inst.anim2.y_offset, 0)
 
 	elseif inst.element1 ~= 0 and inst.element2 ~= 0 then
 	    inst.anim1.Image:SetTexture(resolvefilepath("images/"..anims[inst.element1]..".xml"), anims[inst.element1]..".tex")
 		inst.anim2.Image:SetTexture(resolvefilepath("images/"..anims[inst.element2]..".xml"), anims[inst.element2]..".tex")
-		inst.anim1.Image:SetWorldOffset(-0.5, inst.anim1.y_offset, 0)
-		inst.anim2.Image:SetWorldOffset(0.5, inst.anim2.y_offset, 0)
+		inst.anim1.Image:SetWorldOffset(-0.45, inst.anim1.y_offset, 0)
+		inst.anim2.Image:SetWorldOffset(0.45, inst.anim2.y_offset, 0)
 
 	else
 	    if inst.element1 ~= 0 then

@@ -137,10 +137,10 @@ local Recipes = {
             Ingredient("cutstone", 4)
         },
         level = TECH.SCIENCE_TWO,
-        atlas = GetInventoryItemAtlas("cookpot.tex"),
-        image = "cookpot.tex",
+        atlas = "images/inventoryimages/artifacts_refiner.xml",
+        image = "artifacts_refiner.tex",
         filters = { "STRUCTURES", "CHARACTER" },
-        placer = "cookpot_placer",
+        placer = "artifacts_refiner_placer",
     },
 
     ---------------------------精炼-----------------------------

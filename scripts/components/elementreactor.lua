@@ -252,10 +252,10 @@ function ElementReactor:ConsumeElement(ele_x, ele_y)
         {{nil, nil}, {1  , 2  }, {2  , 1  }, {1  , 1  }, {1  , 1  }, {1  , 1  }, {1  , 1  }},  --火
         {{2  , 1  }, {nil, nil}, {1  , 1  }, {1  , 1  }, {1  , 1  }, {1  , 1  }, {nil, nil}},  --冰
         {{1  , 2  }, {1  , 1  }, {nil, nil}, {nil, nil}, {1  , 1  }, {1  , 1  }, {2  , 1  }},  --水
-        {{1  , 1  }, {1  , 1  }, {nil, nil}, {nil, nil}, {1  , 1  }, {1  , 1  }, {1  , 1  }},  --雷
+        {{1  , 1  }, {1  , 1  }, {nil, nil}, {nil, nil}, {1  , 1  }, {1  , 1  }, {nil, nil}},  --雷
         {{1  , 1  }, {1  , 1  }, {1  , 1  }, {1  , 1  }, {nil, nil}, {nil, nil}, {nil, nil}},  --风
         {{1  , 1  }, {1  , 1  }, {1  , 1  }, {1  , 1  }, {nil, nil}, {nil, nil}, {nil, nil}},  --岩
-        {{1  , 1  }, {nil, nil}, {1  , 2  }, {1  , 1  }, {nil, nil}, {nil, nil}, {nil, nil}},  --草 
+        {{1  , 1  }, {nil, nil}, {1  , 2  }, {nil, nil}, {nil, nil}, {nil, nil}, {nil, nil}},  --草 
     }
     if rate[ele_x][ele_y][1] == nil or rate[ele_x][ele_y][2] == nil then
         return

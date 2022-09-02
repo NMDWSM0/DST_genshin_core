@@ -511,7 +511,7 @@ else
 
 	STRINGS.NAMES.ARTIFACTS_REFINER = "Mystic Offering"
 	STRINGS.CHARACTERS.GENERIC.DESCRIBE.ARTIFACTS_REFINER = "You can craft batch of artifacts here"
-	STRINGS.RECIPE_DESC.ARTIFACTS_REFINER = "Craft the artifacts easier"
+	STRINGS.RECIPE_DESC.ARTIFACTS_REFINER = "Craft artifacts easier"
 
 	STRINGS.NAMES.BFMT_FLOWER = "Snowswept Memory"
 	STRINGS.NAMES.BFMT_PLUME = "Icebreaker's Resolve"
