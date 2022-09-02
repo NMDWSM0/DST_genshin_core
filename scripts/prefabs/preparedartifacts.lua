@@ -94,6 +94,9 @@ local function MakeArtifacts(sets, tag, maintype)
         inst.components.inventoryitem.atlasname = "images/inventoryimages/"..sets..".xml"
 	    inst.components.inventoryitem:ChangeImageName(sets.."_"..tag)
 
+        inst:AddComponent("tradable")
+        inst.components.tradable.goldvalue = TUNING.GOLD_VALUES.GENSHIN_ARTIFACTS
+
         inst:AddComponent("artifacts")
         inst.components.artifacts:Init(sets, tag, maintype)
 
