@@ -498,7 +498,7 @@ AddComponentPostInit("combat", function(self)
 		if damage ~= 0 and attackkey_copied ~= "elementreaction" then
 			damage = (damage + dmgadd + reaction_addnumber) * critical * defense * (typebonus + elements - 1) * elements_res * reaction_rate
 		elseif damage ~= 0 and attackkey_copied == "elementreaction" then
-			damage = (damage + dmgadd) * defense * elements_res
+			damage = (damage + dmgadd + reaction_addnumber) * defense * elements_res * reaction_rate
 		end
 		-- local damageresolved = self:CalcDamageResolved(attacker, damage, weapon, stimuli) --两次访问health.redirect，造成棱镜的永不凋零免伤失效
 		local damageresolved = 0
