@@ -649,12 +649,12 @@ AddComponentPostInit("combat", function(self)
 		--真正的直接崩溃只有在官方完全修改该函数逻辑，或者添加了传入参数（我的参数要往后挪）才会出现
 		-----------------------------------------------------------------------------
 
-		if stimuli == nil then  --优先级最高是直接传入参数
+		if stimuli == nil or stimuli == 8 then  --优先级最高是直接传入参数
 			--其次是人物的自定义伤害类型，已经判断过了，最后是武器的自定义伤害类型
-            if weapon ~= nil and weapon.components.weapon ~= nil and weapon.components.weapon.overridestimulifn ~= nil then
+            if stimuli == nil and weapon ~= nil and weapon.components.weapon ~= nil and weapon.components.weapon.overridestimulifn ~= nil then
                 stimuli = weapon.components.weapon.overridestimulifn(weapon, self.inst, targ)
             end
-            if stimuli == nil and self.inst.components.electricattacks ~= nil then
+            if (stimuli == nil or stimuli == 8) and self.inst.components.electricattacks ~= nil then
                 stimuli = "electric"
             end
         end

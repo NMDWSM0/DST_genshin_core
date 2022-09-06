@@ -59,7 +59,7 @@ function damageind_screen:ShowPopupNumber(data)
         end
     end
 
-	local popupnumber = self:AddChild(PopupNumber("genshinfont", data.size, data.text, {data.color.r, data.color.g, data.color.b, 0}))
+	local popupnumber = self:AddChild(PopupNumber("outline_genshinfont", data.size, data.text, {data.color.r, data.color.g, data.color.b, 0}))
 	popupnumber:SetPosition(data.screenpos.x + xoffset, data.screenpos.y + yoffset)
     popupnumber.x_offset = data.screenpos.x + xoffset
     popupnumber.y_offset = data.screenpos.y + yoffset + (data.isnumber and 25 or 0)

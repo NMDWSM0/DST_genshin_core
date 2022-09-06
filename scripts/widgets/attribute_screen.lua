@@ -699,7 +699,7 @@ function attribute_screen:OnUpdate(dt)
 	--元素精通
 	self.element_mastery_number:SetString( string.format("%12s", GetScoreFormat(combatstatus:GetElementMastery())) )
 	if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
-	    self.element_mastery_description:SetString( string.format("元素精通可以提升元素反应带来的收益。\n•蒸发、融化反应造成伤害时，伤害提升%.1f%%;\n•超载、超导、感电、碎冰、扩散、绽放、超绽放、烈绽放反应\n造成的伤害提升%.1f%%;\n•超激化、蔓激化反应带来的伤害提升提高%.1f%%;\n•结晶反应形成的晶片护盾，提供的伤害吸收量提升%.1f%%。", rate1, rate4, rate3 * 2, rate2) )
+	    self.element_mastery_description:SetString( string.format("元素精通可以提升元素反应带来的收益。\n·蒸发、融化反应造成伤害时，伤害提升%.1f%%;\n·超载、超导、感电、碎冰、扩散、绽放、超绽放、烈绽放反应\n造成的伤害提升%.1f%%;\n·超激化、蔓激化反应带来的伤害提升提高%.1f%%;\n·结晶反应形成的晶片护盾，提供的伤害吸收量提升%.1f%%。", rate1, rate4, rate3 * 2, rate2) )
 	else
 	    self.element_mastery_description:SetSize(22)
 	    self.element_mastery_description:SetString( string.format("The higher a character's elemental mastery,the stronger the\nelemental energy that can be released.Increases damage caused by\nVaporize and Melt by %.1f%%.Also increases damage caused by\nOverloaded,Superconduct,Electro-Charged,Shattered,Swirl,Bloom,\nBurgeon and Hyperbloom by %.1f%%.Increases the DMG Bonus conferred\nby Spread and Aggravate by %.1f%%.Increases the damage absorption\npower of shields created through Crystallize by %.1f%%", rate1, rate4, rate3 * 2, rate2) )

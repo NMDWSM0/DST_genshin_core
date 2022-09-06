@@ -165,7 +165,7 @@ end)
 function elementalburst_badge:OnUpdate(dt)
     local energyrecharge = TheWorld.ismastersim and self.owner.components.energyrecharge or self.owner.replica.energyrecharge
     local elementalcaster = TheWorld.ismastersim and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
-    if energyrecharge == nil then
+    if energyrecharge == nil or elementalcaster == nil then
         return
     end
 

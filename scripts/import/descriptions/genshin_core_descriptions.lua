@@ -36,11 +36,11 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.ELEMENT_SPEAR = "没有神之眼却能使用元素力，你，是个例外"
 	STRINGS.RECIPE_DESC.ELEMENT_SPEAR = "无派蒙也能使用元素，哼"
 	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = {
-		"无羁的朱赤之蝶\n•释放元素战技后，获得16%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
-		"无羁的朱赤之蝶\n•释放元素战技后，获得20%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
-		"无羁的朱赤之蝶\n•释放元素战技后，获得24%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
-		"无羁的朱赤之蝶\n•释放元素战技后，获得28%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
-		"无羁的朱赤之蝶\n•释放元素战技后，获得32%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n·释放元素战技后，获得16%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n·释放元素战技后，获得20%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n·释放元素战技后，获得24%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n·释放元素战技后，获得28%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
+		"无羁的朱赤之蝶\n·释放元素战技后，获得32%全元素伤害加成。元素伤害暴击时，元素战技或等效于元素战技的技能冷却时间减少1秒。（该武器主动技能视为使用元素战技）",
 	}
 
 	STRINGS.GENSHIN_ACTION_USEPOTION = "使用药剂"
@@ -414,11 +414,11 @@ else
     STRINGS.CHARACTERS.GENERIC.DESCRIBE.ELEMENT_SPEAR = "Capable of using elemental energy without a Vision, you are an exception"
     STRINGS.RECIPE_DESC.ELEMENT_SPEAR = "I can use elemental energy without Paimon!!!"
 	TUNING.WEAPONEFFECT_ELEMENT_SPEAR = {
-		"Reckless Cinnabar\n•Gain a 16% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
-		"Reckless Cinnabar\n•Gain a 20% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
-		"Reckless Cinnabar\n•Gain a 24% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
-		"Reckless Cinnabar\n•Gain a 28% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
-		"Reckless Cinnabar\n•Gain a 32% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n·Gain a 16% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n·Gain a 20% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n·Gain a 24% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n·Gain a 28% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
+		"Reckless Cinnabar\n·Gain a 32% Elemental DMG Bonus for all elements after casting elemental skill.When attacks with elemental damage crits, decreases the CD of Elemental Skill or skills equal to it by 1s.(The skill of this weapon is equal to using Elemental Skill)",
 	}
 
 	STRINGS.GENSHIN_ACTION_USEPOTION = "Use Potion"

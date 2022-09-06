@@ -159,6 +159,9 @@ end)
 
 function elementalskill_badge:OnUpdate(dt)
     local elementalcaster = TheWorld.ismastersim and self.owner.components.elementalcaster or self.owner.replica.elementalcaster
+    if elementalcaster == nil then
+        return
+    end
     local cd = math.max(0, self.totalcd - (elementalcaster.CDTime - elementalcaster.elementalskill))
     --print(cd)
     --print("GetTime:"..self.owner.CDTime.."  ,Bursttime:"..self.owner.elementalskill)

@@ -87,7 +87,7 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
 
     --右侧武器描述区
     self.detail_list = self:AddChild(ScrollArea(620, 300, 1100))
-    self.detail_list:SetPosition(460, 55, 0)
+    self.detail_list:SetPosition(455, 55, 0)
     --武器effect
     self.effect_title = Text("genshinfont", 38, nil, {1, 1, 1, 1})
     self.detail_list:AddItem(self.effect_title)
@@ -339,20 +339,20 @@ function weapon_refine_screen:OnUpdate(dt)
         local desc = string.sub(oridesc, index + 4)
         local ranktext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前效果:" or "Current:"
         self.effect_title:SetString("• "..title.." •")
-        self.effect_text1:SetString("•"..ranktext..desc)
+        self.effect_text1:SetString("·"..ranktext..desc)
         self.effect_text2:Hide()
     else
         local oridesc1 = weapon.description[current_level]
         local oridesc2 = weapon.description[current_level + 1]
         local index = string.find(oridesc1, "\n")
         local title = string.sub(oridesc1, 1, index - 1)
-        local desc1 = string.sub(oridesc1, index + 4)
-        local desc2 = string.sub(oridesc2, index + 4)
+        local desc1 = string.sub(oridesc1, index + 3)
+        local desc2 = string.sub(oridesc2, index + 3)
         local ranktext1 = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前效果:" or "Current:"
         local ranktext2 = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "下一阶效果:" or "Next Rank:"
         self.effect_title:SetString("• "..title.." •")
-        self.effect_text1:SetString("•"..ranktext1..desc1)
-        self.effect_text2:SetString("•"..ranktext2..desc2)
+        self.effect_text1:SetString("·"..ranktext1..desc1)
+        self.effect_text2:SetString("·"..ranktext2..desc2)
         self.effect_text2:Show()
     end
 

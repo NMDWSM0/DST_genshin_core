@@ -78,6 +78,7 @@ PrefabFiles = {
 Assets = {
 --字体
 	Asset("FONT", MODROOT.."fonts/genshinfont.zip" ),
+	Asset("FONT", MODROOT.."fonts/outline_genshinfont.zip" ),
 
 --制作栏图片
 	Asset("IMAGE", "images/inventoryimages/randomartifacts.tex"),
@@ -498,7 +499,7 @@ if TUNING.GENSHINCORE_UISCALE <= 0 then
 	TUNING.GENSHINCORE_UISCALE = screen_width / 1920
 end
 
-TUNING.LABEL_NUMBER_SIZE = 48
+TUNING.LABEL_NUMBER_SIZE = 46
 
 TUNING.LABEL_FONT_SIZE = 36
 
@@ -720,14 +721,19 @@ modimport("scripts/import/core/artifacts_slots.lua")
 function ApplyLocalizedFonts()
 
 	TheSim:UnloadFont("genshinfont")
-    TheSim:UnloadPrefabs({"fonts_genshin"})
+	TheSim:UnloadFont("outline_genshinfont")
+    TheSim:UnloadPrefabs({"fonts_genshin", "fonts_genshin_outline"})
 
     GenshinFontPrefab = Prefab("fonts_genshin", nil, {Asset("FONT", MODROOT.."fonts/genshinfont.zip" )})
+	OutlineGenshinFontPrefab = Prefab("fonts_genshin_outline", nil, {Asset("FONT", MODROOT.."fonts/outline_genshinfont.zip" )})
     RegisterPrefabs(GenshinFontPrefab)
-    TheSim:LoadPrefabs({"fonts_genshin"})
+	RegisterPrefabs(OutlineGenshinFontPrefab)
+    TheSim:LoadPrefabs({"fonts_genshin", "fonts_genshin_outline"})
 
     TheSim:LoadFont(MODROOT.."fonts/genshinfont.zip", "genshinfont")
     TheSim:SetupFontFallbacks("genshinfont", DEFAULT_FALLBACK_TABLE)
+	TheSim:LoadFont(MODROOT.."fonts/outline_genshinfont.zip", "outline_genshinfont")
+    TheSim:SetupFontFallbacks("outline_genshinfont", DEFAULT_FALLBACK_TABLE)
 
 end
 

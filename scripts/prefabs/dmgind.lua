@@ -96,7 +96,7 @@ local function CreateDamageIndicator(inst, data)
 
 	local critbig = 1
 		if inst.iscrit == true then
-		    critbig = 1.4
+		    critbig = 1.5
 		end
 	size = inst.reaction_type == 0 and TUNING.LABEL_NUMBER_SIZE * critbig or TUNING.LABEL_FONT_SIZE
 

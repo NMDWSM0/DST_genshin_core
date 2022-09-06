@@ -304,7 +304,7 @@ end
 ---------------------------------------------------------------------------------
 
 local function ElementFn(inst, owner, target)
-    return owner and owner.sg and owner.sg:HasStateTag("chargeattack") and GetElement(inst, "charge") or 8
+    return owner and owner.sg and owner.sg:HasStateTag("chargeattack") and GetElement(inst, "charge") or nil
 end
 
 local function AttackkeyFn(inst, owner, target)
