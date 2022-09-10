@@ -460,7 +460,7 @@ function ElementReactor:Frozen(new_element, new_attacker, attached_element)
     if self.inst.components.freezable then
     --延迟触发，不然直接被打碎了
         self.inst:DoTaskInTime(FRAMES, function(inst)
-            inst.components.freezable:AddColdness(8, 1)
+            inst.components.freezable:AddColdness(8, 1, nil, "reaction")
         end)
     end
     self.inst:PushEvent("elementreaction", {reaction = 6})
