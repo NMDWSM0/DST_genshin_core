@@ -78,7 +78,8 @@ PrefabFiles = {
 Assets = {
 --字体
 	Asset("FONT", MODROOT.."fonts/genshinfont.zip" ),
-	Asset("FONT", MODROOT.."fonts/outline_genshinfont.zip" ),
+	Asset("FONT", MODROOT.."fonts/genshinfont_small.zip" ),
+	Asset("FONT", MODROOT.."fonts/genshinfont_small_outline.zip" ),
 
 --制作栏图片
 	Asset("IMAGE", "images/inventoryimages/randomartifacts.tex"),
@@ -722,18 +723,31 @@ function ApplyLocalizedFonts()
 
 	TheSim:UnloadFont("genshinfont")
 	TheSim:UnloadFont("outline_genshinfont")
-    TheSim:UnloadPrefabs({"fonts_genshin", "fonts_genshin_outline"})
+	TheSim:UnloadFont("fallback_genshinfont")
+    TheSim:UnloadPrefabs({"fonts_genshin", "fonts_genshin_outline", "fonts_genshin_fallback"})
 
-    GenshinFontPrefab = Prefab("fonts_genshin", nil, {Asset("FONT", MODROOT.."fonts/genshinfont.zip" )})
-	OutlineGenshinFontPrefab = Prefab("fonts_genshin_outline", nil, {Asset("FONT", MODROOT.."fonts/outline_genshinfont.zip" )})
+    GenshinFontPrefab = Prefab("fonts_genshin", nil, {Asset("FONT", MODROOT.."fonts/genshinfont_small.zip" )})
+	OutlineGenshinFontPrefab = Prefab("fonts_genshin_outline", nil, {Asset("FONT", MODROOT.."fonts/genshinfont_small_outline.zip" )})
+	FallbackGenshinFontPrefab = Prefab("fonts_genshin_fallback", nil, {Asset("FONT", MODROOT.."fonts/genshinfont.zip" )})
     RegisterPrefabs(GenshinFontPrefab)
 	RegisterPrefabs(OutlineGenshinFontPrefab)
-    TheSim:LoadPrefabs({"fonts_genshin", "fonts_genshin_outline"})
+	RegisterPrefabs(FallbackGenshinFontPrefab)
+    TheSim:LoadPrefabs({"fonts_genshin", "fonts_genshin_outline", "fonts_genshin_fallback"})
 
-    TheSim:LoadFont(MODROOT.."fonts/genshinfont.zip", "genshinfont")
-    TheSim:SetupFontFallbacks("genshinfont", DEFAULT_FALLBACK_TABLE)
-	TheSim:LoadFont(MODROOT.."fonts/outline_genshinfont.zip", "outline_genshinfont")
-    TheSim:SetupFontFallbacks("outline_genshinfont", DEFAULT_FALLBACK_TABLE)
+	local GENSHIN_FALLBACK_TABLE = {
+		"fallback_genshinfont"
+	}
+	for k, v in pairs(DEFAULT_FALLBACK_TABLE) do
+		table.insert(GENSHIN_FALLBACK_TABLE, v)
+	end
+
+	TheSim:LoadFont(MODROOT.."fonts/genshinfont.zip", "fallback_genshinfont")
+    TheSim:SetupFontFallbacks("fallback_genshinfont", DEFAULT_FALLBACK_TABLE)
+
+    TheSim:LoadFont(MODROOT.."fonts/genshinfont_small.zip", "genshinfont")
+    TheSim:SetupFontFallbacks("genshinfont", GENSHIN_FALLBACK_TABLE)
+	TheSim:LoadFont(MODROOT.."fonts/genshinfont_small_outline.zip", "outline_genshinfont")
+    TheSim:SetupFontFallbacks("outline_genshinfont", GENSHIN_FALLBACK_TABLE)
 
 end
 
