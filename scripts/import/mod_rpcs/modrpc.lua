@@ -186,7 +186,8 @@ local function refineartifacts(inst, refiner)
 	local consumed = 0
 	while consumed < finalnumber * 3 and i <= refiner.components.container:GetNumSlots() do --1号位置是不动的
 		if refiner.components.container:GetItemInSlot(i + 1) ~= nil then
-			refiner.components.container:RemoveItemBySlot(i + 1)
+			local item = refiner.components.container:RemoveItemBySlot(i + 1)
+			item:Remove()
 			consumed = consumed + 1
 		end
 		i = i + 1

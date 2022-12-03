@@ -539,7 +539,7 @@ function ElementReactor:Swirl(new_element, new_attacker, attached_element)
     local ents = TheSim:FindEntities(x, y, z, 4, {"_combat"}, EXCLUDE_TAGS)
     self.inst.components.combat:GetAttacked(new_attacker, base_damage * (1 + mastery_rate) * bonus, nil, element_swirled, 0, "elementreaction")   --自身受到无元素量的伤害
     for k, v in pairs (ents) do
-        if v ~= self.inst and v ~= new_attacker then --不攻击自己
+        if v ~= self.inst and v ~= new_attacker and v.components.combat then --不攻击自己
             v.components.combat:GetAttacked(new_attacker, base_damage * (1 + mastery_rate) * bonus, nil, element_swirled, 2.2, "elementreaction")  --其他单位受到有元素量的伤害
         end
     end
@@ -614,7 +614,7 @@ function ElementReactor:Overloaded(new_element, new_attacker, attached_element)
     local x,y,z = self.inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x, y, z, 2, {"_combat"}, EXCLUDE_TAGS)
     for k, v in pairs (ents) do
-        if v ~= new_attacker then
+        if v ~= new_attacker and v.components.combat then
             v.components.combat:GetAttacked(new_attacker, base_damage * (1 + mastery_rate) * bonus, nil, 1, 0, "elementreaction")  --超载是火伤
             --炸飞小体积单位
             --没做
@@ -652,14 +652,16 @@ function ElementReactor:Superconduct(new_element, new_attacker, attached_element
     local x,y,z = self.inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x, y, z, 2, {"_combat"}, EXCLUDE_TAGS)
     for k, v in pairs (ents) do
-        if v ~= new_attacker then
+        if v ~= new_attacker and v.components.combat then
             v.components.combat:GetAttacked(new_attacker, base_damage * (1 + mastery_rate) * bonus, nil, 2, 0, "elementreaction")  --超导是冰伤
             --减物理抗性40%, 持续8秒
             v.components.combat.external_physical_res_multipliers:SetModifier("superconduction", -0.4)
             if not v:HasTag("superconduction") then
                 v:AddTag("superconduction")
                 v:DoTaskInTime(8, function(v)
-                    v.components.combat.external_physical_res_multipliers:RemoveModifier("superconduction")
+                    if v.components.combat then
+                        v.components.combat.external_physical_res_multipliers:RemoveModifier("superconduction")
+                    end
                     v:RemoveTag("superconduction")
                 end)
             end
@@ -719,7 +721,7 @@ function ElementReactor:ElectroChargedDamage()
     local x,y,z = self.inst.Transform:GetWorldPosition()
     local ents = TheSim:FindEntities(x, y, z, 2.5, {"_combat"}, EXCLUDE_TAGS)
     for k,v in pairs(ents) do
-        if v ~= new_attacker and ((v.components.elementreactor and v.components.elementreactor.element_stack[3].value > 0) or v == self.inst) then
+        if v ~= new_attacker and v.components.combat and ((v.components.elementreactor and v.components.elementreactor.element_stack[3].value > 0) or v == self.inst) then
             v.components.combat:GetAttacked(new_attacker, base_damage * (1 + mastery_rate) * bonus, nil, 4, 0, "elementreaction")  --感电是雷伤
         end
     end

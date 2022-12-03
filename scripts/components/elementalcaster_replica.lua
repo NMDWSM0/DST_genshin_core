@@ -9,7 +9,7 @@ local ElementalCaster = Class(function(self, inst)
     self._elementalburst = net_float(inst.GUID, "elementalcaster._elementalburst", "skillcddirty")
     self._CDTime = net_float(inst.GUID, "elementalcaster._CDTime", "skillcddirty")
 
-    self.inst:ListenForEvent("skillcddirty", function(inst) inst.replica.elementalcaster:synchronize() end)
+    self.inst:ListenForEvent("skillcddirty", function() self:synchronize() end)
 end)
 
 function ElementalCaster:synchronize()

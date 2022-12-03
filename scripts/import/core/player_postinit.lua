@@ -37,13 +37,37 @@ AddPlayerPostInit(function(inst)
         inst.attack_start_time = inst.GetTime
     end)
 
-	TheInput:AddKeyDownHandler(GLOBAL.KEY_F, function()
+    local device = 1
+    local numInputs = 1
+    local input1 = GLOBAL.KEY_F
+    local input2
+    local input3
+    local input4
+    local intParam
+    if not TheNet:IsDedicated() then
+        device, numInputs, input1, input2, input3, input4, intParam = TheInputProxy:GetLocalizedControl(TheInput:GetControllerID(), CONTROL_ATTACK, false, true)
+    end
+	TheInput:AddKeyDownHandler(numInputs > 0 and input1 or GLOBAL.KEY_F, function()
+        if numInputs >= 2 and not TheInput:IsKeyDown(input2) then
+            return
+        elseif numInputs >= 3 and not TheInput:IsKeyDown(input3) then
+            return
+        elseif numInputs == 4 and not TheInput:IsKeyDown(input4) then
+            return
+        end
         local IsHUDscreen = GLOBAL.TheFrontEnd:GetActiveScreen() and GLOBAL.TheFrontEnd:GetActiveScreen().name == "HUD"
         if IsHUDscreen then
 			SendModRPCToServer(MOD_RPC["player"]["StartCharge"])
 		end
 	end)
-    TheInput:AddKeyUpHandler(GLOBAL.KEY_F, function()
+    TheInput:AddKeyUpHandler(numInputs > 0 and input1 or GLOBAL.KEY_F, function()
+        if numInputs >= 2 and not TheInput:IsKeyDown(input2) then
+            return
+        elseif numInputs >= 3 and not TheInput:IsKeyDown(input3) then
+            return
+        elseif numInputs == 4 and not TheInput:IsKeyDown(input4) then
+            return
+        end
         local IsHUDscreen = GLOBAL.TheFrontEnd:GetActiveScreen() and GLOBAL.TheFrontEnd:GetActiveScreen().name == "HUD"
         if IsHUDscreen then
 			SendModRPCToServer(MOD_RPC["player"]["StopCharge"])
@@ -249,7 +273,7 @@ local chargeattack_client = State{
 
     timeline =
     {
-        TimeEvent(7 * FRAMES, function(inst)
+        TimeEvent(2 * FRAMES, function(inst)   --这里出伤，但是要提前，不然有些伤害会卡掉
             inst:ClearBufferedAction()
             inst.sg:RemoveStateTag("abouttoattack")
         end),

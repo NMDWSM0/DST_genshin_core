@@ -65,7 +65,7 @@ local function OnUnwrapped(inst, pos, doer)
         doer.SoundEmitter:PlaySound("dontstarve/common/together/packaged")
     end
     if inst.components.stackable and inst.components.stackable.stacksize > 1 then
-        inst.components.stackable:Get(1)
+        (inst.components.stackable:Get(1)):Remove()
     else
         inst:Remove()
     end
