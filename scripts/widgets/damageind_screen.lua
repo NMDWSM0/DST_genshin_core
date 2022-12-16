@@ -3,8 +3,9 @@ local Text = require "widgets/text"
 
 local PopupNumber = Class(Widget, function(self, font, size, text, color)
 	Widget._ctor(self, "PopupNumber")
-	self.text = self:AddChild(Text(font, size, text, color))
-    self.size = size
+    local scale_rate = TUNING.GENSHINCORE_UISCALE <= 1 and TUNING.GENSHINCORE_UISCALE or (2 * TUNING.GENSHINCORE_UISCALE + 1) / 3
+	self.text = self:AddChild(Text(font, size * scale_rate, text, color))
+    self.size = size * scale_rate
     self.t = 0
     self.t_max = TUNING.LABEL_TIME
     self.x_offset = 0

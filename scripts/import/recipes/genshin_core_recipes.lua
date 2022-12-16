@@ -142,6 +142,20 @@ local Recipes = {
         filters = { "STRUCTURES", "CHARACTER" },
         placer = "artifacts_refiner_placer",
     },
+    {
+        name = "teleport_waypoint",
+        ingredients = 
+        {
+			Ingredient("fireflies", 1),
+            Ingredient("rocks", 5),
+            Ingredient("twigs", 3)
+        },
+        level = TECH.SCIENCE_TWO,
+        atlas = "images/inventoryimages/teleport_waypoint.xml",
+        image = "teleport_waypoint.tex",
+        filters = { "STRUCTURES", "CHARACTER" },
+        placer = "teleport_waypoint_placer",
+    },
 
     ---------------------------精炼-----------------------------
 	potions_recipes("flaming", "oil", "charcoal", 3), 

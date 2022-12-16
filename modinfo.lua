@@ -81,6 +81,11 @@ if ischinese then
             hover = "如果UI大小显示不正常可以尝试修改",
             options =
             {
+                { description = "150%", data = 1.5, hover = "UI显示大小：150%" },
+                { description = "140%", data = 1.4, hover = "UI显示大小：140%" },
+                { description = "130%", data = 1.3, hover = "UI显示大小：130%" },
+                { description = "120%", data = 1.2, hover = "UI显示大小：120%" },
+                { description = "110%", data = 1.1, hover = "UI显示大小：110%" },
                 { description = "自动调整", data = -1, hover = "UI显示自动调整" },
                 { description = "100%", data = 1, hover = "UI显示大小：100%" },
                 { description = "90%", data = 0.9, hover = "UI显示大小：90%" },
@@ -234,6 +239,11 @@ else
             hover = "Control the UI scale if your UI displays incorrectly",
             options =
             {
+                {description = "150%", data = 1.5, hover = "The UI will scale to 150%" },
+                {description = "140%", data = 1.4, hover = "The UI will scale to 140%" },
+                {description = "130%", data = 1.3, hover = "The UI will scale to 130%" },
+                {description = "120%", data = 1.2, hover = "The UI will scale to 120%" },
+                {description = "110%", data = 1.1, hover = "The UI will scale to 110%" },
                 {description = "Auto", data = -1, hover = "The UI will resize automatically" },
                 {description = "100%", data = 1, hover = "The UI will scale to 100%" },
                 {description = "90%", data = 0.9, hover = "The UI will scale to 90%" },

@@ -200,6 +200,21 @@ local function refineartifacts(inst, refiner)
 	refiner.components.container:Close(inst)
 end
 
+local function tptowaypoint(inst, x, y, z)
+	local angle = math.random() * 2 * 3.1415926
+	local range = 1.5
+	local x_offset = math.cos(angle) * range
+	local z_offset = math.sin(angle) * range
+	while not TheWorld.Map:IsPassableAtPoint(x + x_offset, y, z + z_offset) do
+		angle = math.random() * 2 * 3.1415926
+		x_offset = math.cos(angle) * range
+		z_offset = math.sin(angle) * range
+	end
+	inst.Transform:SetPosition(x + x_offset, y, z + z_offset)
+end
+
+-------------------------------------------------------------------------------
+--Client Functions
 local function updatedmgnumber(text, r, g, b, size, x, y, z, isnumber)
 	local screenpos_x, screenpos_y = TheSim:GetScreenPos(x, y, z)
     local data = {text = text, color = {r = r, g = g, b = b}, size = size, screenpos = {x = screenpos_x, y = screenpos_y}, isnumber = isnumber}
@@ -208,6 +223,27 @@ local function updatedmgnumber(text, r, g, b, size, x, y, z, isnumber)
 	end
 end
 
+local function registerwaypoint(x, y, z, waypoint_id, custom_info)
+	if not ThePlayer then
+        return
+    end
+	if ThePlayer.registered_waypoint == nil then
+		ThePlayer.registered_waypoint = {}
+	end
+	ThePlayer.registered_waypoint[waypoint_id] = {pos = Vector3(x, y, z), info = custom_info}
+end
+
+local function unregisterwaypoint(waypoint_id)
+	if not ThePlayer then
+        return
+    end
+	if ThePlayer.registered_waypoint == nil or ThePlayer.registered_waypoint[waypoint_id] == nil then
+		return
+	end
+	ThePlayer.registered_waypoint[waypoint_id] = nil
+end
+
+--Server
 AddModRPCHandler("combatdata", "combat", calculatestatus)
 AddModRPCHandler("artifacts", "lock", lockartifacts)
 AddModRPCHandler("inventory", "removeartifacts", removeartifacts)
@@ -217,4 +253,8 @@ AddModRPCHandler("constellation", "unlock", unlockconstellation)
 AddModRPCHandler("talents", "upgrade", upgradetalent)
 AddModRPCHandler("weapon", "refine", refineweapon)
 AddModRPCHandler("artifacts_refiner", "dorefine", refineartifacts)
+AddModRPCHandler("genshintp", "tptowaypoint", tptowaypoint)
+--Client
 AddClientModRPCHandler("GenshinCore", "DMGnumberUpdate", updatedmgnumber)
+AddClientModRPCHandler("GenshinCore", "registerwaypoint", registerwaypoint)
+AddClientModRPCHandler("GenshinCore", "unregisterwaypoint", unregisterwaypoint)

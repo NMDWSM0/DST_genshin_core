@@ -167,13 +167,14 @@ AddStategraphPostInit("wilson_client", newattackactionhandler_client)
 
 
 
-
+--local i = 0
 
 local chargeattack = State{
     name = "chargeattack",
     tags = { "chargeattack", "attack", "notalking", "abouttoattack", "autopredict" },
 
     onenter = function(inst)
+        --i = i + 1
         if inst.components.combat:InCooldown() then
             inst.sg:RemoveStateTag("abouttoattack")
             inst:ClearBufferedAction()
@@ -206,8 +207,9 @@ local chargeattack = State{
 
     timeline =
     {
-        TimeEvent(7 * FRAMES, function(inst)
+        TimeEvent(6 * FRAMES, function(inst)
             inst:PerformBufferedAction()
+            --print(i, "出伤")
             inst.sg:RemoveStateTag("abouttoattack")
         end),
     },
@@ -215,6 +217,7 @@ local chargeattack = State{
     ontimeout = function(inst)
         inst.sg:RemoveStateTag("attack")
         inst.sg:AddStateTag("idle")
+        --print(i, "timeout")
     end,
 
     events =
@@ -233,6 +236,7 @@ local chargeattack = State{
         if inst.sg:HasStateTag("abouttoattack") then
             inst.components.combat:CancelAttack()
         end
+        --print(i, "exit")
     end,
 }
 
@@ -273,7 +277,7 @@ local chargeattack_client = State{
 
     timeline =
     {
-        TimeEvent(2 * FRAMES, function(inst)   --这里出伤，但是要提前，不然有些伤害会卡掉
+        TimeEvent(7 * FRAMES, function(inst)   --这里出伤，但是要提前，不然有些伤害会卡掉
             inst:ClearBufferedAction()
             inst.sg:RemoveStateTag("abouttoattack")
         end),

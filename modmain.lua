@@ -69,7 +69,8 @@ PrefabFiles = {
 	"artifactsbackpack",
 	"artifacts_refiner",
 	"bloombomb",
-	"genshin_potions"
+	"genshin_potions",
+	"teleport_waypoint"
 }
 
 ----------------------------------------------------
@@ -100,13 +101,33 @@ Assets = {
 	Asset("IMAGE", "images/inventoryimages/artifacts_refiner.tex"),
     Asset("ATLAS", "images/inventoryimages/artifacts_refiner.xml"),
 
+	Asset("IMAGE", "images/inventoryimages/teleport_waypoint.tex"),
+    Asset("ATLAS", "images/inventoryimages/teleport_waypoint.xml"),
+
 	Asset("IMAGE", "images/inventoryimages/refinenumber.tex"),
     Asset("ATLAS", "images/inventoryimages/refinenumber.xml"),
 
 	Asset("IMAGE", "images/inventoryimages/inv_art_lock.tex"),
     Asset("ATLAS", "images/inventoryimages/inv_art_lock.xml"),
-	
+
 --全都是UI图片
+	---------------------------------------------
+	--地图界面图片，传送相关
+	Asset("IMAGE", "images/ui/teleport_waypoint_button.tex"),
+    Asset("ATLAS", "images/ui/teleport_waypoint_button.xml"),
+
+	Asset("IMAGE", "images/ui/button_tpconfirm.tex"),
+    Asset("ATLAS", "images/ui/button_tpconfirm.xml"),
+
+	Asset("IMAGE", "images/ui/teleport_loc_bg.tex"),
+    Asset("ATLAS", "images/ui/teleport_loc_bg.xml"),
+
+	Asset("IMAGE", "images/ui/teleport_bg.tex"),
+    Asset("ATLAS", "images/ui/teleport_bg.xml"),
+
+	Asset("IMAGE", "images/ui/tp_select_ring.tex"),
+    Asset("ATLAS", "images/ui/tp_select_ring.xml"),
+
     ---------------------------------------------
 	--这是技能冷却图标
     Asset( "ANIM", "anim/genshincd_meter.zip" ),
@@ -498,8 +519,10 @@ TUNING.WEAPON_REFINE_PROTECTION = GetModConfigData("weaponrefineprotection")
 if TUNING.GENSHINCORE_UISCALE <= 0 then
 	local screen_width, screen_height = TheSim:GetScreenSize()
 	TUNING.GENSHINCORE_UISCALE = screen_width / 1920
+	print("屏幕宽高", screen_width, screen_height)
 end
 
+--不可以在这里设置缩放，因为获取到的是服务器的屏幕大小，值为0
 TUNING.LABEL_NUMBER_SIZE = 46
 
 TUNING.LABEL_FONT_SIZE = 36

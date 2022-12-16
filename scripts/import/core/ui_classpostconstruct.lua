@@ -6,6 +6,9 @@ local Widget = require "widgets/widget"
 local Text = require "widgets/text"
 local UIAnim = require "widgets/uianim"
 local ItemTile = require "widgets/itemtile"
+local Teleport_Waypoint_Button = require "widgets/teleport_waypoint_button"
+local Teleport_Infopanel = require "widgets/teleport_infopanel"
+local writeables = require "writeables"
 
 --------------------------------------------------------------------------
 --添加自定义UI
@@ -57,6 +60,92 @@ AddClassPostConstruct("widgets/controls",function(self)
 		self.property_main:Hide()
 
 	end
+end)
+
+--------------------------------------------------------------------------
+--修改Map
+AddClassPostConstruct("screens/mapscreen", function(self)  -- 给小地图添加传送锚点按钮，这个过程会
+    if self.owner.registered_waypoint == nil then
+		return
+	end
+	self.wp_btns = {}
+	for k, v in pairs(self.owner.registered_waypoint) do
+		if v ~= nil then
+			self.wp_btns[k] = self:AddChild(Teleport_Waypoint_Button(self.owner, k, v.pos, v.info))
+			self.wp_btns[k]:SetOnClick(function ()
+				self:ShowInfo(k)
+			end)
+		end
+	end
+	self.tp_panel_open = false
+
+	local w, h = TheSim:GetScreenSize()
+	-- local scale = h / origin_size.y
+	self.TP_Panel = self:AddChild(Teleport_Infopanel(self.owner, w, h))
+	-- self.TP_Panel:SetScale(scale, scale, scale)
+	self.TP_Panel:SetPosition(0.5 * w, 0.5 * h, 0)
+	self.TP_Panel:Hide()
+
+	function self:ShowInfo(wp_id)
+		for k, v in pairs(self.wp_btns) do
+			if k ~= wp_id then
+				v:Unselect()
+			else
+				v:Select()
+				self.TP_Panel:ShowInfo(v.world_pos, v.custom_info)
+			end
+		end
+		self.tp_panel_open = true
+	end
+
+	function self:HideInfo()
+		for k, v in pairs(self.wp_btns) do
+			v:Unselect()
+			v:StartUpdating()
+		end
+		-- self.TP_Panel:Hide() 已经在那一边做了
+		self.tp_panel_open = false
+	end
+
+	--禁止在打开状态点击其它东西比如转视角
+	local old_OnControl = self.OnControl
+	function self:OnControl(control, down)
+		print(self.tp_panel_open)
+		if self.tp_panel_open then
+			for k, v in pairs(self.wp_btns) do
+				if v:OnControl(control, down) then
+					return true
+				end
+			end
+			return self.TP_Panel:OnControl(control, down)
+		end
+	
+		return old_OnControl(self, control, down)
+	end
+	--禁止在打开状态缩放
+	local old_DoZoomIn = self.DoZoomIn
+	local old_DoZoomOut = self.DoZoomOut
+	function self:DoZoomIn(...)
+		if self.tp_panel_open then
+			return
+		end
+		return old_DoZoomIn(self, ...)
+	end
+	function self:DoZoomOut(...)
+		if self.tp_panel_open then
+			return
+		end
+		return old_DoZoomOut(self, ...)
+	end
+	--禁止在打开状态拖动
+	local old_MapWidget_Update = self.minimap.OnUpdate
+	local function MapWidget_OnUpdate(self, ...)
+		if self.parent.tp_panel_open then
+			return
+		end
+		old_MapWidget_Update(self, ...)
+	end
+	self.minimap.OnUpdate = MapWidget_OnUpdate
 end)
 
 --------------------------------------------------------------------------
@@ -232,3 +321,20 @@ AddClassPostConstruct("widgets/containerwidget",function(self)
 
 	end
 end)
+
+----------------------------------------------------------------
+--添加新的writeables布局
+local SignGenerator = require "signgenerator"
+local tp_wp_layout = {
+    prompt = STRINGS.SIGNS.MENU.PROMPT,
+    animbank = "ui_board_5x3",
+    animbuild = "ui_board_5x3",
+    menuoffset = Vector3(6, -70, 0),
+
+    cancelbtn = { text = STRINGS.SIGNS.MENU.CANCEL, cb = nil, control = CONTROL_CANCEL },
+    middlebtn = { text = STRINGS.SIGNS.MENU.RANDOM, cb = function(inst, doer, widget)
+            widget:OverrideText( SignGenerator(inst, doer) )
+        end, control = CONTROL_MENU_MISC_2 },
+    acceptbtn = { text = STRINGS.SIGNS.MENU.ACCEPT, cb = nil, control = CONTROL_ACCEPT },
+}
+writeables.AddLayout("teleport_waypoint", tp_wp_layout)
