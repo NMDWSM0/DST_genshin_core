@@ -1,10 +1,10 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local Button = require "widgets/button"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local Button = require "widgets/genshin_widgets/Gbutton"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
 
 local SortItem = Class(Button, function (self, atlas, image_normal, image_highlight, image_selected, name)
@@ -12,6 +12,9 @@ local SortItem = Class(Button, function (self, atlas, image_normal, image_highli
     self.bg = self:AddChild(Image(atlas, image_normal))
     self.bg:SetScale(0.8, 0.8, 0.8)
     self._selected = false
+
+    self.highlight_scale = 1.01
+    self.base_scale = 1
 
     self.atlas = atlas
     self.image_normal = image_normal
@@ -24,7 +27,7 @@ local SortItem = Class(Button, function (self, atlas, image_normal, image_highli
     self.indextext:SetRegionSize(400, 80)
     self.indextext:EnableWordWrap(true)
     self.indextext:SetPosition(-8, -2, 0)
-    self.indextext:Hide()
+    self.indextext:Hide(-1)
 
     self.name = name
     self.nametext = self:AddChild(Text("genshinfont", 30, name, {236/255, 229/255, 216/255, 1}))
@@ -37,7 +40,7 @@ end)
 
 function SortItem:OnGainFocus()
     if not self._selected and not self.big then
-        --self:ScaleTo(self.base_scale, self.highlight_scale, .25)
+        self:ScaleTo(self.base_scale, self.highlight_scale, .25)
         self.big = true
         self.bg:SetTexture(self.atlas, self.image_highlight)
     end
@@ -45,9 +48,9 @@ end
 
 function SortItem:OnLoseFocus()
     if not self._selected and self.big then
-        -- if not self.highlight then
-        --     self:ScaleTo(self.highlight_scale, self.base_scale, .15)
-        -- end
+        if not self.highlight then
+            self:ScaleTo(self.highlight_scale, self.base_scale, .15)
+        end
         self.big = false
         self.bg:SetTexture(self.atlas, self.image_normal)
     end
@@ -56,7 +59,7 @@ end
 function SortItem:ChangeToSelect(index)
     self._selected = true
     self.bg:SetTexture(self.atlas, self.image_selected)
-    self.indextext:Show()
+    self.indextext:Show(-1)
     self.indextext:SetString(index or 1)
     self.nametext:SetColour(66/255, 75/255, 92/255, 1)
 end
@@ -64,7 +67,7 @@ end
 function SortItem:ChangeToNormal()
     self._selected = false
     self.bg:SetTexture(self.atlas, self.image_normal)
-    self.indextext:Hide()
+    self.indextext:Hide(-1)
     self.nametext:SetColour(236/255, 229/255, 216/255, 1)
 end
 
@@ -163,17 +166,10 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
     self.scrollarea:UpdateContentHeight()
 
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "确认筛选" or "Confirm Filter"
-    self.confirm_sort = self:AddChild(ImageButton("images/ui/button_talent_levelup.xml", "button_talent_levelup.tex"))
+    self.confirm_sort = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "xxlong", "ok")))
     self.confirm_sort:SetText(string)
-    self.confirm_sort:SetFont("genshinfont")
-    self.confirm_sort:SetTextSize(52)
-    self.confirm_sort:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.confirm_sort:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.confirm_sort.text:SetPosition(10, 0, 0)
-    self.confirm_sort.text:Show()
     self.confirm_sort:SetPosition(0, -334, 0)
-    self.confirm_sort:SetScale(0.6, 0.6, 0.6)
-    self.confirm_sort.focus_scale = {1.07, 1.07, 1.07}
+    self.confirm_sort:SetScale(0.8, 0.8, 0.8)
     self.confirm_sort:SetOnClick(function()
         local final_sortkeys = {}
         for i = 1, self.select_num do

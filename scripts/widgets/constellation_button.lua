@@ -1,9 +1,6 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
 
 local constellation_button = Class(ImageButton, function(self, image1_atlas, image1_texture, name)
     ImageButton._ctor(self, image1_atlas, image1_texture, nil, nil, nil, image1_texture, {0.35, 0.35, 0.35})

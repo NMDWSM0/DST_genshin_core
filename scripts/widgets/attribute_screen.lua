@@ -1,9 +1,9 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 
 --数字转化成带逗号的数字
 local function GetScoreFormat(num)
@@ -149,10 +149,9 @@ local attribute_screen = Class(Widget, function(self, owner)
 
 	----------------------------------------------------------------------------------------------
 	--关闭详细显示按钮
-	self.detailclose = self:AddChild(ImageButton("images/ui/button_off2.xml","button_off2.tex"))
+	self.detailclose = self:AddChild(GMultiLayerButton(GetSingleGButtonConfig("light", "images/ui/icon_genshin_button.xml", "icon_close.tex")))
 	self.detailclose:SetPosition(722, 333, 0)
-	self.detailclose:SetScale(0.8, 0.8, 0.8)
-	self.detailclose.focus_scale = {1.1,1.1,1.1}
+	self.detailclose:SetScale(1, 1, 1)
 
 	----------------------------------------------------------------------------------------------
 	--详细属性显示

@@ -1,0 +1,9 @@
+<Atlas>
+	<Texture filename="noicon_genshin_button.tex"/>
+	<Elements>
+		<Element name="border_long.tex" u1="0.000000" u2="1.000000" v1="0.675000" v2="1.000000"/>
+		<Element name="btn_long.tex" u1="0.000000" u2="0.994318" v1="0.012500" v2="0.325000"/>
+		<Element name="border_short.tex" u1="0.000000" u2="0.451705" v1="0.337500" v2="0.662500"/>
+		<Element name="btn_short.tex" u1="0.457386" u2="0.909091" v1="0.350000" v2="0.662500"/>
+	</Elements>
+</Atlas>

@@ -1,9 +1,9 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
 local WeaponRefineScreen = require "widgets/weapon_refine_screen"
 
@@ -106,24 +106,17 @@ local weapon_screen = Class(Widget, function(self, owner)
     self.refinescreen:SetPosition(0, 10, 0)
 
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "强化" or "Enhance"
-    self.refineopen = self:AddChild(ImageButton("images/ui/button_unlock_constellation.xml", "button_unlock_constellation.tex"))
+    self.refineopen = self:AddChild(GMultiLayerButton(GetNoiconGButtonConfig("light", "long")))
     self.refineopen:SetText(string)
-    self.refineopen:SetFont("genshinfont")
-    self.refineopen:SetTextSize(56)
-    self.refineopen:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.refineopen:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.refineopen.text:SetPosition(10, 0, 0)
-    self.refineopen.text:Show()
     self.refineopen:SetPosition(510, -310, 0)
-    self.refineopen:SetScale(0.6, 0.6, 0.6)
-    self.refineopen.focus_scale = {1.07, 1.07, 1.07}
+    self.refineopen:SetScale(0.85, 0.85, 0.85)
     self.refineopen:SetOnClick(function()
-        self.refinescreen:Show()
         self.refinescreen:UpdateIngredient()
+        self.refinescreen:Show()
     end)
 
     self.refinescreen:MoveToFront()
-    self.refinescreen:Hide()
+    self.refinescreen:Hide(-1)
 
     self:StartUpdating()
 end)

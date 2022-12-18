@@ -95,7 +95,7 @@ end
 function GWidget:TransitPosition(pos, y, z, animtime, fn)
     local dest = type(pos) == "number" and {x = pos, y = y, z = z} or {x = pos.x, y = pos.y, z = pos.z}  --pos是Vector3
     self:CancelMoveTo()
-    self:MoveTo(nil, dest, animtime or 0.1, fn)
+    self:MoveTo(nil, dest, animtime or 0.09, fn)
 end
 
 -------------------------------------------------------
@@ -188,14 +188,14 @@ end
 function GWidget:TransitTint(r, g, b, a, animtime, fn)
     local dest = type(r) == "number" and { r = r, g = g, b = b, a = a } or {r = r[1], g = r[2], b = r[3], a = r[4]}
     self:CancelTintTo()
-    self:TintTo(nil, dest, animtime or 0.22, fn)
+    self:TintTo(nil, dest, animtime or 0.18, fn)
 end
 
 -------------------------------------------------------
 -- 第一个运用到渐变的功能
 -- 添加渐变隐藏
 function GWidget:Hide(animtime)
-    animtime = animtime or 0.22
+    animtime = animtime or 0.18
     if animtime <= 0 or self.shown == false then
         self.inst.entity:Hide(false) --立即
     else
@@ -210,7 +210,7 @@ end
 
 -- 添加渐变显现
 function GWidget:Show(animtime)
-    animtime = animtime or 0.22
+    animtime = animtime or 0.18
     local r, g, b, a = self:GetTint(true)
     if self.shown and r * g * b * a == 1 then
         -- do nothing on color tint
@@ -218,6 +218,7 @@ function GWidget:Show(animtime)
         if animtime <= 0 then
             self:SetTint(1, 1, 1, 1, true)
         else
+            self:SetTint()
             self:TransitTint(1, 1, 1, 1, animtime)
         end
     end

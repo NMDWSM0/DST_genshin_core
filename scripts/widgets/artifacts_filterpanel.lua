@@ -1,8 +1,7 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local Button = require "widgets/button"
-local ImageButton = require "widgets/imagebutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local Button = require "widgets/genshin_widgets/Gbutton"
 local ScrollArea = require "widgets/scrollarea"
 
 local FilterItem = Class(Button, function (self, atlas, image_normal, image_highlight, image_selected, name, iconatlas, iconimage, iconimage2)
@@ -10,6 +9,9 @@ local FilterItem = Class(Button, function (self, atlas, image_normal, image_high
     self.bg = self:AddChild(Image(atlas, image_normal))
     self.bg:SetScale(0.8, 0.8, 0.8)
     self._selected = false
+
+    self.highlight_scale = 1.01
+    self.base_scale = 1
 
     self.atlas = atlas
     self.image_normal = image_normal
@@ -34,7 +36,7 @@ end)
 
 function FilterItem:OnGainFocus()
     if not self._selected and not self.big then
-        --self:ScaleTo(self.base_scale, self.highlight_scale, .25)
+        self:ScaleTo(self.base_scale, self.highlight_scale, .25)
         self.big = true
         self.bg:SetTexture(self.atlas, self.image_highlight)
     end
@@ -42,9 +44,9 @@ end
 
 function FilterItem:OnLoseFocus()
     if not self._selected and self.big then
-        -- if not self.highlight then
-        --     self:ScaleTo(self.highlight_scale, self.base_scale, .15)
-        -- end
+        if not self.highlight then
+            self:ScaleTo(self.highlight_scale, self.base_scale, .15)
+        end
         self.big = false
         self.bg:SetTexture(self.atlas, self.image_normal)
     end

@@ -1,9 +1,9 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
 
 local constellation_popup = Class(Widget, function(self, owner, up1parent, path)
@@ -25,17 +25,10 @@ local constellation_popup = Class(Widget, function(self, owner, up1parent, path)
     self.icon:SetScale(0.44, 0.44, 0.44)
     
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "激活" or "Activate"
-    self.enable_button = self:AddChild(ImageButton("images/ui/button_unlock_constellation.xml", "button_unlock_constellation.tex"))
+    self.enable_button = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "medium", "ok")))
     self.enable_button:SetText(string)
-    self.enable_button:SetFont("genshinfont")
-    self.enable_button:SetTextSize(50)
-    self.enable_button:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.enable_button:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.enable_button.text:SetPosition(10, 0, 0)
-    self.enable_button.text:Show()
     self.enable_button:SetPosition(0, -390, 0)
-    self.enable_button:SetScale(0.8, 0.8, 0.8)
-    self.enable_button.focus_scale = {1.07, 1.07, 1.07}
+    self.enable_button:SetScale(1, 1, 1)
     self.enable_button:SetOnClick(function()
         if self.can == false then
             self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
@@ -124,6 +117,15 @@ end)
 
 function constellation_popup:ShowLevel(level)
     self.current_show = level
+    -- 全部立即hide
+    self.enable_button:Hide(-1)
+    self.cannot_unlock_bg:Hide(-1)
+    self.cannot_unlock_text:Hide(-1)
+    self.unlocked_text:Hide(-1)
+    self.starneedtitle:Hide(-1)
+    self.starimage:Hide(-1)
+    self.starnumber:Hide(-1)
+    --
     self:Refresh()
     self.decription_list:UpdateContentHeight()
 end

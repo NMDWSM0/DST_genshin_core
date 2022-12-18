@@ -1,6 +1,6 @@
-local Image = require("widgets/image")
-local Text = require("widgets/text")
-local Button = require("widgets/button")
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local Button = require "widgets/genshin_widgets/Gbutton"
 
 local function fillparams(table, default)
     if table == nil or type(table) ~= "table" then
@@ -72,8 +72,8 @@ local ArtSlot = Class(Button, function(self, owner, atlas, bgim, posinfo, highli
     self.ownericon = self:AddChild(Image(mapicon_atlas, mapicon_tex))
     self.ownericon:SetScale(0.5)
     self.ownericon:SetPosition(self.posinfo.owner_x, self.posinfo.owner_y)
-    self.lockicon:Hide()
-    self.ownericon:Hide()
+    self.lockicon:Hide(-1)
+    self.ownericon:Hide(-1)
 
     self.highlight_scale = 1.05
     self.base_scale = 1

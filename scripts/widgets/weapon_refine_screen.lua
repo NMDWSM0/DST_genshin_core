@@ -1,10 +1,12 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local UIAnim = require "widgets/genshin_widgets/Guianim"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
-local IngredientUI = require "widgets/ingredientui"
+local IngredientUI = require "widgets/genshin_widgets/Gingredientui"
 
 local function removeskinstring(str)
     local pos = 0
@@ -35,10 +37,9 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.refine_bg:SetScale(0.95, 0.95, 0.95)
 
 
-    self.refineclose = self:AddChild(ImageButton("images/ui/button_off1.xml","button_off1.tex"))
+    self.refineclose = self:AddChild(GMultiLayerButton(GetIconGButtonConfig("close")))
 	self.refineclose:SetPosition(722, 313, 0)
-	-- self.refineclose:SetScale(1, 1, 1)
-	self.refineclose.focus_scale = {1.1,1.1,1.1}
+	self.refineclose:SetScale(0.743, 0.743, 0.743)
     self.refineclose:SetOnClick(function()
 	    self:Hide()
 	end)
@@ -125,17 +126,10 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.maxlevel_hint:SetPosition(455, -200, 0)
 
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "精炼" or "Refine"
-    self.refine_button = self:AddChild(ImageButton("images/ui/button_unlock_constellation.xml", "button_unlock_constellation.tex"))
+    self.refine_button = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "medshort", "ok")))
     self.refine_button:SetText(string)
-    self.refine_button:SetFont("genshinfont")
-    self.refine_button:SetTextSize(56)
-    self.refine_button:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.refine_button:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.refine_button.text:SetPosition(10, 0, 0)
-    self.refine_button.text:Show()
     self.refine_button:SetPosition(460, -340, 0)
-    self.refine_button:SetScale(0.6, 0.6, 0.6)
-    self.refine_button.focus_scale = {1.07, 1.07, 1.07}
+    self.refine_button:SetScale(0.85, 0.85, 0.85)
     self.refine_button:SetOnClick(function()
         if self.can == false then
             self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
@@ -147,8 +141,16 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.ingredient_items = {}
 
     -------------------------------------------------------------
-    self.inst:ListenForEvent("itemget", function() self:UpdateIngredient() end, owner)
-    self.inst:ListenForEvent("itemlose", function() self:UpdateIngredient() end, owner)
+    self.inst:ListenForEvent("itemget", function()
+        if self.shown then
+            self:UpdateIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("itemlose", function()
+        if self.shown then
+            self:UpdateIngredient()
+        end
+    end, owner)
     self:StartUpdating()
 end)
 

@@ -1,10 +1,10 @@
 -- Modified from itemtile
 
 require("constants")
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local Widget = require "widgets/widget"
-local UIAnim = require "widgets/uianim"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local UIAnim = require "widgets/genshin_widgets/Guianim"
 
 local Artifacts_ItemTile = Class(Widget, function(self, invitem)
     Widget._ctor(self, "Artifacts_ItemTile")

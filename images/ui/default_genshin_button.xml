@@ -1,21 +1,27 @@
 <Atlas>
 	<Texture filename="default_genshin_button.tex"/>
 	<Elements>
-		<Element name="btn_xlong.tex" u1="0.000000" u2="0.860000" v1="0.250000" v2="0.369403"/>
-		<Element name="icon_teleport.tex" u1="0.816667" u2="0.890000" v1="0.041045" v2="0.123134"/>
-		<Element name="border_short.tex" u1="0.000000" u2="0.393333" v1="0.623134" v2="0.746269"/>
-		<Element name="border_xlong.tex" u1="0.000000" u2="0.863333" v1="0.496269" v2="0.619403"/>
-		<Element name="btn_xxlong.tex" u1="0.000000" u2="0.923333" v1="0.373134" v2="0.492537"/>
-		<Element name="icon_setting.tex" u1="0.863333" u2="0.936667" v1="0.287313" v2="0.369403"/>
-		<Element name="icon_cancel.tex" u1="0.926667" u2="1.000000" v1="0.410448" v2="0.492537"/>
-		<Element name="icon_refresh.tex" u1="0.820000" u2="0.893333" v1="0.917910" v2="1.000000"/>
-		<Element name="icon_delete.tex" u1="0.866667" u2="0.940000" v1="0.537313" v2="0.619403"/>
-		<Element name="icon_ok.tex" u1="0.896667" u2="0.970000" v1="0.917910" v2="1.000000"/>
-		<Element name="btn_long.tex" u1="0.000000" u2="0.813333" v1="0.003731" v2="0.123134"/>
-		<Element name="btn_medium.tex" u1="0.393333" u2="0.993333" v1="0.126866" v2="0.246269"/>
-		<Element name="border_xxlong.tex" u1="0.000000" u2="0.926667" v1="0.750000" v2="0.873134"/>
-		<Element name="border_medium.tex" u1="0.396667" u2="1.000000" v1="0.623134" v2="0.746269"/>
-		<Element name="border_long.tex" u1="0.000000" u2="0.816667" v1="0.876866" v2="1.000000"/>
-		<Element name="btn_short.tex" u1="0.000000" u2="0.390000" v1="0.126866" v2="0.246269"/>
+		<Element name="border_medlong.tex" u1="0.000000" u2="0.611111" v1="0.540761" v2="0.630435"/>
+		<Element name="border_medium.tex" u1="0.000000" u2="0.574074" v1="0.448370" v2="0.538043"/>
+		<Element name="icon_refresh.tex" u1="0.738095" u2="0.796296" v1="0.755435" v2="0.815217"/>
+		<Element name="border_xxlong.tex" u1="0.000000" u2="0.735450" v1="0.725543" v2="0.815217"/>
+		<Element name="border_long.tex" u1="0.000000" u2="0.648148" v1="0.910326" v2="1.000000"/>
+		<Element name="icon_teleport.tex" u1="0.796296" u2="0.854497" v1="0.570652" v2="0.630435"/>
+		<Element name="btn_medlong.tex" u1="0.000000" u2="0.608466" v1="0.179348" v2="0.266304"/>
+		<Element name="icon_setting.tex" u1="0.674603" u2="0.732804" v1="0.570652" v2="0.630435"/>
+		<Element name="btn_long.tex" u1="0.000000" u2="0.645503" v1="0.000000" v2="0.086957"/>
+		<Element name="border_xlong.tex" u1="0.000000" u2="0.685185" v1="0.817935" v2="0.907609"/>
+		<Element name="btn_medshort.tex" u1="0.481481" u2="0.957672" v1="0.635870" v2="0.722826"/>
+		<Element name="icon_ban.tex" u1="0.735450" u2="0.793651" v1="0.570652" v2="0.630435"/>
+		<Element name="icon_cancel.tex" u1="0.613757" u2="0.671958" v1="0.570652" v2="0.630435"/>
+		<Element name="icon_delete.tex" u1="0.920635" u2="0.978836" v1="0.755435" v2="0.815217"/>
+		<Element name="icon_down.tex" u1="0.859788" u2="0.917989" v1="0.755435" v2="0.815217"/>
+		<Element name="icon_ok.tex" u1="0.798942" u2="0.857143" v1="0.755435" v2="0.815217"/>
+		<Element name="btn_xlong.tex" u1="0.000000" u2="0.682540" v1="0.358696" v2="0.445652"/>
+		<Element name="border_short.tex" u1="0.650794" u2="0.962963" v1="0.910326" v2="1.000000"/>
+		<Element name="btn_xxlong.tex" u1="0.000000" u2="0.732804" v1="0.269022" v2="0.355978"/>
+		<Element name="btn_medium.tex" u1="0.000000" u2="0.571429" v1="0.089674" v2="0.176630"/>
+		<Element name="btn_short.tex" u1="0.687831" u2="0.997354" v1="0.820652" v2="0.907609"/>
+		<Element name="border_medshort.tex" u1="0.000000" u2="0.478836" v1="0.633152" v2="0.722826"/>
 	</Elements>
 </Atlas>

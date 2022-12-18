@@ -1,10 +1,10 @@
 ---@diagnostic disable: cast-local-type
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ArtSlot = require "widgets/artslot"
 local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ArtifactsPopop = require "widgets/artifacts_popup"
@@ -45,10 +45,9 @@ local artifacts_screen = Class(Widget, function(self, owner)
 	
     ----------------------------------------------------------------------------------------------
     --popup界面的返回按钮
-	self.popupback = self:AddChild(ImageButton("images/ui/button_back.xml","button_back.tex"))
+	self.popupback = self:AddChild(GMultiLayerButton(GetIconGButtonConfig("back")))
 	self.popupback:SetPosition(722, 333, 0)
-	self.popupback:SetScale(0.75, 0.75, 0.75)
-	self.popupback.focus_scale = {1.1,1.1,1.1}
+	self.popupback:SetScale(0.743, 0.743, 0.743)
 
 	----------------------------------------------------------------------------------------------
 	--快速属性显示
@@ -239,9 +238,27 @@ local artifacts_screen = Class(Widget, function(self, owner)
 	----------------------------------------------------------------------------------------------
     --设置初始状态，开始刷新
 	self.popupback:MoveToFront()
-	self.popup:Hide()
+	self.popup:Hide(-1)
 	self:StartUpdating()
 end)
+
+function artifacts_screen:OnHide()
+    -- 用于修复五个圣遗物显示器延迟Hide的BUG：立即Hide它们
+    self.artifacts_slots_flower:Hide(-1)
+	self.artifacts_slots_plume:Hide(-1)
+	self.artifacts_slots_sands:Hide(-1)
+	self.artifacts_slots_goblet:Hide(-1)
+	self.artifacts_slots_circlet:Hide(-1)
+end
+
+function artifacts_screen:OnShow()
+    -- 与上面的OnHide对应，此处需要立即显示
+    self.artifacts_slots_flower:Show(-1)
+	self.artifacts_slots_plume:Show(-1)
+	self.artifacts_slots_sands:Show(-1)
+	self.artifacts_slots_goblet:Show(-1)
+	self.artifacts_slots_circlet:Show(-1)
+end
 
 function artifacts_screen:ShowPopup(type)
     local thingsofparents = {
@@ -286,8 +303,8 @@ function artifacts_screen:HidePopup()
 		self.parent.mainclose,
 	}
 	--隐藏popup界面和返回按钮，显示自身除了popup和返回按钮以外的任何东西(快速圣遗物属性显示和五个圣遗物按钮)
-    self.popup:Hide()
 	self.popup:HideTwoPanels()
+	self.popup:Hide()
 	self.popupback:Hide()
 	for k,v in pairs(self.children) do
 		if v ~= self.popup and v ~= self.popupback then
@@ -303,6 +320,9 @@ function artifacts_screen:HidePopup()
 end
 
 function artifacts_screen:OnUpdate(dt)
+	if not self.shown or self.popup.shown or not self.parent.shown then
+		return
+	end
     --获取数据
 	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     local inventory = self.owner.replica.inventory

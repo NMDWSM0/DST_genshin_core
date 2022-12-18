@@ -1,10 +1,10 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
-local IngredientUI = require "widgets/ingredientui"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
+local IngredientUI = require "widgets/genshin_widgets/Gingredientui"
 local ScrollArea = require "widgets/scrollarea"
 
 local function HasDoubleLine(str)
@@ -70,10 +70,9 @@ local talents_upgrade_widget = Class(Widget, function(self, owner)
 
     self.bg = self:AddChild(Image("images/ui/talents_upgrade_bg.xml", "talents_upgrade_bg.tex"))
 
-    self.close = self:AddChild(ImageButton("images/ui/button_talentupgrade_close.xml","button_talentupgrade_close.tex"))
+    self.close = self:AddChild(GMultiLayerButton(GetSingleGButtonConfig("dark", "images/ui/icon_genshin_button.xml", "icon_close.tex")))
     self.close:SetPosition(400, 283, 0)
-    self.close:SetScale(0.52, 0.52, 0.52)
-    self.close.focus_scale = {1.07, 1.07, 1.07}
+    self.close:SetScale(0.743, 0.743, 0.743)
     self.close:SetOnClick(function()
         self:Hide()
     end)
@@ -109,36 +108,18 @@ local talents_upgrade_widget = Class(Widget, function(self, owner)
     self.ingredient_items = {}
 
     --
-    self.cancel = self:AddChild(ImageButton("images/ui/button_talentupgrade_cancel.xml", "button_talentupgrade_cancel.tex"))
+    self.cancel = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "long", "cancel")))
     self.cancel:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "取消" or "Cancel")
-    self.cancel:SetFont("genshinfont")
-    self.cancel:SetDisabledFont("genshinfont")
-    self.cancel:SetTextSize(72)
-    self.cancel:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.cancel:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.cancel:SetTextDisabledColour(150/255, 150/255, 150/255, 1)
-    self.cancel.text:SetPosition(0, 0, 0)
-    self.cancel.text:Show()
-    self.cancel:SetScale(0.46, 0.46, 0.46)
+    self.cancel:SetScale(0.75, 0.75, 0.75)
     self.cancel:SetPosition(-196, -260, 0)
-    self.cancel.focus_scale = {1.05, 1.05, 1.05}
     self.cancel:SetOnClick(function()
         self:Hide()
     end)
 
-    self.confirm = self:AddChild(ImageButton("images/ui/button_talentupgrade_confirm.xml", "button_talentupgrade_confirm.tex", nil, "button_talentupgrade_confirm_disabled.tex"))
+    self.confirm = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "long", "ok")))
     self.confirm:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "确认" or "Confirm")
-    self.confirm:SetFont("genshinfont")
-    self.confirm:SetDisabledFont("genshinfont")
-    self.confirm:SetTextSize(72)
-    self.confirm:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.confirm:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.confirm:SetTextDisabledColour(150/255, 150/255, 150/255, 1)
-    self.confirm.text:SetPosition(0, 0, 0)
-    self.confirm.text:Show()
-    self.confirm:SetScale(0.46, 0.46, 0.46)
+    self.confirm:SetScale(0.75, 0.75, 0.75)
     self.confirm:SetPosition(196, -260, 0)
-    self.confirm.focus_scale = {1.05, 1.05, 1.05}
     self.confirm:SetOnClick(function()
         if self.current_talent >= 1 and self.current_talent <= 3 then
             SendModRPCToServer(MOD_RPC["talents"]["upgrade"], self.current_talent)

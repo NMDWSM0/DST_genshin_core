@@ -1,9 +1,9 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ArtSlot = require "widgets/artslot"
 local Artifacts_ItemTile = require "widgets/artifacts_itemtile"
 local ScrollArea = require "widgets/scrollarea"
@@ -41,6 +41,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.center_emptywarning = self:AddChild(Image("images/ui/slotempty.xml", "slotempty.tex"))
     self.center_emptywarning:SetPosition(25, -75, 0)
     self.center_emptywarning:SetScale(0.6, 0.6, 0.6)
+    self.center_emptywarning:Hide(-1)
 
     ----------------------------------------------------------------------------------------------
     --左侧上方切换按钮
@@ -63,7 +64,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
     --属性排序面板
     self.sort_panel = self:AddChild(Artifacts_SortPanel(self.owner, self))
     self.sort_panel:SetPosition(-520, -5, 0)
-    self.sort_panel:Hide()
+    self.sort_panel:Hide(-1)
 
     self.sort_button = self:AddChild(ImageButton("images/ui/button_art_sort.xml","button_art_sort.tex"))
     self.sort_button:SetPosition(-330, -320, 0)
@@ -81,7 +82,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
     --过滤器面板
     self.filter_panel = self:AddChild(Artifacts_FilterPanel(self.owner, self))
     self.filter_panel:SetPosition(-520, -10, 0)
-    self.filter_panel:Hide()
+    self.filter_panel:Hide(-1)
 
     self.filter_button = self:AddChild(ImageButton("images/ui/button_art_filter.xml","button_art_filter.tex"))
     self.filter_button:SetText("")
@@ -254,10 +255,10 @@ local artifacts_popup = Class(Widget, function(self, owner)
 
     ----------------------------------------------------------------------------------------------
     --卸下和切换按钮
-    self.button_switch = self:AddChild(ImageButton("images/ui/button_switch.xml","button_switch.tex"))
+    self.button_switch = self:AddChild(GMultiLayerButton(GetNoiconGButtonConfig("light", "long")))
     self.button_switch:SetPosition(455, -300, 0)
-    self.button_switch:SetScale(0.9, 0.9, 0.9)
-    self.button_switch.focus_scale = {1.1,1.1,1.1}
+    self.button_switch:SetScale(0.8, 0.8, 0.8)
+    self.button_switch:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "切换" or "Switch")
 
 	----------------------------------------------------------------------------------------------
     --按钮按下动作
@@ -286,12 +287,22 @@ local artifacts_popup = Class(Widget, function(self, owner)
 	self.blankbtn:SetOnClick(function()
 	    self:HideTwoPanels()
 	end)
-    self.blankbtn:Hide()
+    self.blankbtn:Hide(-1)
     self.filter_button:MoveToFront()
     self.sort_button:MoveToFront()
     self.filter_panel:MoveToFront()
     self.sort_panel:MoveToFront()
 end)
+
+function artifacts_popup:OnHide()
+    -- 用于修复中心显示器延迟Hide的BUG：立即Hide它
+    self.center_slot:Hide(-1)
+end
+
+function artifacts_popup:OnShow()
+    -- 与上面的OnHide对应，此处需要立即显示
+    self.center_slot:Show(-1)
+end
 
 function artifacts_popup:ShowSortPanel()
     self.sort_panel:Show()
@@ -413,10 +424,10 @@ function artifacts_popup:SetType(type)
 		self.art[i]:SetScale(1)
         self.art[i]:SetTile(Artifacts_ItemTile(mainitem))
         self.art[i]:SetOnClick(function() self:SetItemOnDetail(mainitem) end)
-        self.art[i].ownericon:Show()
+        self.art[i].ownericon:Show(-1)
         local artifacts = mainitem.components.artifacts or mainitem.replica.artifacts
         if artifacts and artifacts:IsLocked() then
-            self.art[i].lockicon:Show()
+            self.art[i].lockicon:Show(-1)
         end
     end
     --然后是物品栏里的
@@ -430,7 +441,7 @@ function artifacts_popup:SetType(type)
             self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
             local artifacts = item.components.artifacts or item.replica.artifacts
             if artifacts and artifacts:IsLocked() then
-                self.art[i].lockicon:Show()
+                self.art[i].lockicon:Show(-1)
             end
         end
     end
@@ -447,7 +458,7 @@ function artifacts_popup:SetType(type)
                 self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
                 local artifacts = item.components.artifacts or item.replica.artifacts
                 if artifacts and artifacts:IsLocked() then
-                    self.art[i].lockicon:Show()
+                    self.art[i].lockicon:Show(-1)
                 end
             end
         end
@@ -466,7 +477,7 @@ function artifacts_popup:SetType(type)
                     self.art[i]:SetOnClick(function() self:SetItemOnDetail(item) end)
                     local artifacts = item.components.artifacts or item.replica.artifacts
                     if artifacts and artifacts:IsLocked() then
-                        self.art[i].lockicon:Show()
+                        self.art[i].lockicon:Show(-1)
                     end
                 end
             end
@@ -626,9 +637,12 @@ function artifacts_popup:ShowDetail(item, index)
     local sub4string = TUNING.ARTIFACTS_TYPE[(artifacts:GetSub4()).type]
     local sub4number = (artifacts:GetSub4()).number > 1 and string.format("%.1f", (artifacts:GetSub4()).number) or string.format("%.1f", (100 * (artifacts:GetSub4()).number)).."%"
 
-    local button_switch_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_switch.tex" or "button_switch_en.tex"
-    local button_remove_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_remove.tex" or "button_remove_en.tex"
-    local button_equip_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_equip.tex" or "button_equip_en.tex"
+    -- local button_switch_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_switch.tex" or "button_switch_en.tex"
+    -- local button_remove_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_remove.tex" or "button_remove_en.tex"
+    -- local button_equip_tex = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "button_equip.tex" or "button_equip_en.tex"
+    local button_switch_str = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "切换" or "Switch"
+    local button_remove_str = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "卸下" or "Remove"
+    local button_equip_str = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "装备" or "Equip"
     -------------------------------------------------------
     self.name_text:Show()
     self.button_lock:Show()
@@ -687,20 +701,23 @@ function artifacts_popup:ShowDetail(item, index)
     end)
 
     if isequipped then
-        self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_remove_tex)
-        self.button_switch.image_normal = button_remove_tex
-        self.button_switch.image_focus = button_remove_tex
-        self.button_switch.image_down = button_remove_tex
+        self.button_switch:SetText(button_remove_str)
+        -- self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_remove_tex)
+        -- self.button_switch.image_normal = button_remove_tex
+        -- self.button_switch.image_focus = button_remove_tex
+        -- self.button_switch.image_down = button_remove_tex
     elseif hasequip then
-        self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_switch_tex)
-        self.button_switch.image_normal = button_switch_tex
-        self.button_switch.image_focus = button_switch_tex
-        self.button_switch.image_down = button_switch_tex
+        self.button_switch:SetText(button_switch_str)
+        -- self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_switch_tex)
+        -- self.button_switch.image_normal = button_switch_tex
+        -- self.button_switch.image_focus = button_switch_tex
+        -- self.button_switch.image_down = button_switch_tex
     else
-        self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_equip_tex)
-        self.button_switch.image_normal = button_equip_tex
-        self.button_switch.image_focus = button_equip_tex
-        self.button_switch.image_down = button_equip_tex
+        self.button_switch:SetText(button_equip_str)
+        -- self.button_switch.image:SetTexture("images/ui/button_switch.xml", button_equip_tex)
+        -- self.button_switch.image_normal = button_equip_tex
+        -- self.button_switch.image_focus = button_equip_tex
+        -- self.button_switch.image_down = button_equip_tex
     end
 end
 

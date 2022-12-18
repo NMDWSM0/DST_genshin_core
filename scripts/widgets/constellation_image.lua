@@ -1,8 +1,6 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local Button = require("widgets/button")
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Image = require "widgets/genshin_widgets/Gimage"
+local Button = require "widgets/genshin_widgets/Gbutton"
 
 local constellation_image_content = Class(Widget, function(self, owner, atlas, texture, positions, lines)
     Widget._ctor(self, nil)

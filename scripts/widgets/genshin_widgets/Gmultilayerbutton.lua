@@ -1,6 +1,7 @@
 local GButton = require "widgets/genshin_widgets/Gbutton"
 local GImage = require "widgets/genshin_widgets/Gimage"
 require "widgets/genshin_widgets/Gbtnpresets"
+
 ----------------------------------------------------------------
 -- GMultiLayerButton 旨在解决多层按钮渐变动画
 -- 使用切换Texture的方式并不能解决所有的切换动画，只有透明度和文字颜色可以渐变
@@ -9,12 +10,11 @@ require "widgets/genshin_widgets/Gbtnpresets"
 -- GMultiLayerButton 在每一层都支持同时设置多个属性，可以结合使用position，scale，tint
 -- 你也可以在饥荒中实现原神那样的带动效的按钮
 ----------------------------------------------------------------
-
 local GMultiLayerButton = Class(GButton, function(self, layers)
     GButton._ctor(self, "MultiLayerButton")
 
     self.images = {}
-    self.layers = layers or GetDefaultGButtonConfig("light", "medium", "ok")
+    self.layers = layers or GetDefaultGButtonConfig("light", "medshort", "ok")
     self.showtext = false
     self:InitLayers()
 
@@ -65,7 +65,7 @@ end
 
 function GMultiLayerButton:OnGainFocus(noanim)
 	GMultiLayerButton._base.OnGainFocus(self, noanim)
-    if self:IsSelected() then return end
+    if self:IsSelected() or not self:IsEnabled() then return end
     --按钮状态改变为为focus
     if noanim then
         --无动画，用作初始化
@@ -108,7 +108,7 @@ end
 
 function GMultiLayerButton:OnLoseFocus(noanim)
 	GMultiLayerButton._base.OnLoseFocus(self, noanim)
-    if self:IsSelected() then return end
+    if self:IsSelected() or not self:IsEnabled() then return end
     --按钮状态改变为为normal
     if noanim then
         --无动画，用作初始化

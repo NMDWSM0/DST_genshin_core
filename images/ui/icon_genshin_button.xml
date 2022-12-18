@@ -1,0 +1,9 @@
+<Atlas>
+	<Texture filename="icon_genshin_button.tex"/>
+	<Elements>
+		<Element name="button.tex" u1="0.000000" u2="0.500000" v1="0.013889" v2="0.444444"/>
+		<Element name="icon_close.tex" u1="0.516129" u2="0.854839" v1="0.152778" v2="0.444444"/>
+		<Element name="border.tex" u1="0.000000" u2="0.629032" v1="0.458333" v2="1.000000"/>
+		<Element name="icon_back.tex" u1="0.645161" u2="0.975806" v1="0.708333" v2="1.000000"/>
+	</Elements>
+</Atlas>

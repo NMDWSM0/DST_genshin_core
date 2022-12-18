@@ -1,9 +1,8 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
 
 local Artifacts_Scroll = Class(Widget, function(self, listwidth, listheight, artitems, iteminfo, scrollbar_offset, scrollbar_height_offset)
@@ -94,6 +93,8 @@ function Artifacts_Scroll:BuildScrollBar()
         TheFrontEnd:LockFocus(false)
         self:RefreshMarkerPosition()
     end)
+
+    self.scroll_bar_container:Hide(-1)
 end
 
 function Artifacts_Scroll:DoDragScroll()

@@ -1,9 +1,10 @@
-local Widget = require "widgets/widget"
-local Screen = require "widgets/screen"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
+local Screen = require "widgets/genshin_widgets/Gscreen"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local UIAnim = require "widgets/genshin_widgets/Guianim"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local AttributeScreen = require "widgets/attribute_screen"
 local WeaponScreen = require "widgets/weapon_screen"
 local ArtifactsScreen = require "widgets/artifacts_screen"
@@ -93,10 +94,9 @@ local property_main = Class(Screen, function(self, owner)
 	
 	----------------------------------------------------------------------------------------------
 	--关闭按钮
-	self.mainclose = self:AddChild(ImageButton("images/ui/button_off1.xml","button_off1.tex"))
+	self.mainclose = self:AddChild(GMultiLayerButton(GetIconGButtonConfig("close")))
 	self.mainclose:SetPosition(650, 300, 0)
-	self.mainclose:SetScale(1,1,1)
-	self.mainclose.focus_scale = {1.1,1.1,1.1}
+	self.mainclose:SetScale(0.67, 0.67, 0.67)
 	self.mainclose:SetOnClick(function()
 	    if TUNING.CONTROLWITHUI then
 			self:Hide()
@@ -361,8 +361,26 @@ local property_main = Class(Screen, function(self, owner)
 
 	-----------------------------------------------------------
     --监听事件刷新
-    self.inst:ListenForEvent("equip", function() SendModRPCToServer(MOD_RPC["combatdata"]["combat"]) end, owner)
-    self.inst:ListenForEvent("unequip", function() SendModRPCToServer(MOD_RPC["combatdata"]["combat"]) end, owner)
+    self.inst:ListenForEvent("equip", function()
+		if self.shown then
+			SendModRPCToServer(MOD_RPC["combatdata"]["combat"])
+		end
+	end, owner)
+    self.inst:ListenForEvent("unequip", function()
+		if self.shown then
+			SendModRPCToServer(MOD_RPC["combatdata"]["combat"])
+		end
+	end, owner)
+	self.inst:ListenForEvent("itemget", function()
+		if self.shown then
+			SendModRPCToServer(MOD_RPC["combatdata"]["combat"])
+		end
+	end, owner)
+	self.inst:ListenForEvent("itemlose", function()
+		if self.shown then
+			SendModRPCToServer(MOD_RPC["combatdata"]["combat"])
+		end
+	end, owner)
 
 	-----------------------------------------------------------
     --初始化

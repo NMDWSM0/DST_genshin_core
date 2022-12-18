@@ -70,8 +70,8 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
     self.detail_text:SetRegionSize(290, 512)
     self.detail_text:EnableWordWrap(true)
 
-    self.confirm_btn = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("dark", "long", "teleport")))
-    self.confirm_btn:SetScale(0.606)
+    self.confirm_btn = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("dark", "medlong", "teleport")))
+    self.confirm_btn:SetScale(0.642)
     self.confirm_btn:SetPosition(widget_x_offset + 0, -306, 0)
     self.confirm_btn:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "传送" or "Teleport")
     self.confirm_btn:SetOnClick(function ()
@@ -84,15 +84,13 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
         SendModRPCToServer(GetModRPC("genshintp", "tptowaypoint"), x, y, z)
     end)
 
-    self.close = self:AddChild(ImageButton("images/ui/button_off2.xml", "button_off2.tex"))
+    self.close = self:AddChild(GMultiLayerButton(GetSingleGButtonConfig("light", "images/ui/icon_genshin_button.xml", "icon_close.tex")))
     self.close:SetPosition(widget_x_offset + 130, 329, 0)
-    self.close:SetScale(0.4, 0.4, 0.4)
-    self.close:SetFocusScale({1.08, 1.08, 1.08})
+    self.close:SetScale(0.66, 0.66, 0.66)
     self.close:SetOnClick(function ()
         self.parent:HideInfo()
         self:Hide()
     end)
-    -- self:StartUpdating()
 end)
 
 function Teleport_Infopanel:ShowInfo(world_pos, custom_info)
@@ -104,12 +102,5 @@ function Teleport_Infopanel:ShowInfo(world_pos, custom_info)
     end
     self:Show()
 end
-
--- function Teleport_Infopanel:OnUpdate()
---     local r, g, b, a = unpack(self.confirm_btn.text:GetColour())
---     local r1, g1, b1, a1 = self.confirm_btn.text:GetTint()
---     print("colour", r, g, b, a)
---     print("tint", r1, g1, b1, a1)
--- end
 
 return Teleport_Infopanel

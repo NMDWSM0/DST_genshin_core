@@ -1,9 +1,9 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 local ScrollArea = require "widgets/scrollarea"
 
 local function HasDoubleLine(str)
@@ -137,21 +137,14 @@ local talents_popup = Class(Widget, function(self, owner, up1parent, path)
     end)
 
     self.info_button:Select()
-    self.attributelist:Hide()
+    self.attributelist:Hide(-1)
     ------------------------------------------------------------
 
     local string = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "升级" or "Level Up"
-    self.levelup_button = self:AddChild(ImageButton("images/ui/button_talent_levelup.xml", "button_talent_levelup.tex"))
+    self.levelup_button = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("light", "xlong", "ok")))
     self.levelup_button:SetText(string)
-    self.levelup_button:SetFont("genshinfont")
-    self.levelup_button:SetTextSize(50)
-    self.levelup_button:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.levelup_button:SetTextFocusColour(59/255, 66/255, 85/255, 1)
-    self.levelup_button.text:SetPosition(10, 0, 0)
-    self.levelup_button.text:Show()
     self.levelup_button:SetPosition(0, -390, 0)
-    self.levelup_button:SetScale(0.8, 0.8, 0.8)
-    self.levelup_button.focus_scale = {1.07, 1.07, 1.07}
+    self.levelup_button:SetScale(1, 1, 1)
     self.levelup_button:SetOnClick(function()
         self.up1parent:ShowUpgradeWidget(self.current_show)
     end)
@@ -166,8 +159,8 @@ local talents_popup = Class(Widget, function(self, owner, up1parent, path)
     self.max_level_text:SetRegionSize(430, 100)
     self.max_level_text:EnableWordWrap(true)
     
-    self.max_level_bg:Hide()
-    self.max_level_text:Hide()
+    self.max_level_bg:Hide(-1)
+    self.max_level_text:Hide(-1)
 end)
 
 function talents_popup:SetInfoList(num)

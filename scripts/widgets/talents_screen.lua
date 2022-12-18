@@ -1,9 +1,4 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
 local TalentsPopup = require "widgets/talents_popup"
 local TalentsButton = require "widgets/talents_button"
 local TalentsUpgradeWidget = require "widgets/talents_upgrade_widget"
@@ -135,8 +130,8 @@ function talents_screen:HideTalent()
 end
 
 function talents_screen:ShowUpgradeWidget(talent)
-    self.upgradewidget:Show()
     self.upgradewidget:ShowUpgrade(talent)
+    self.upgradewidget:Show()
 end
 
 function talents_screen:UpdateTalentsLevel()
