@@ -34,11 +34,11 @@ function GWidget:ScaleTo(from, to, time, fn)
         to = {x = to, y = to, z = to}
     end
     if from.x == to.x and from.y == to.y and from.z == to.z then
-        return 
+        return fn and fn() or nil
     end
     if time <= 0 then
         self:SetScale(to.x, to.y, to.z)
-        return
+        return fn and fn() or nil
     end
     if not self.inst.components.genshin_uianim then
         self.inst:AddComponent("genshin_uianim")
@@ -79,11 +79,11 @@ function GWidget:MoveTo(from, to, time, fn)
         from = {x = x, y = y, z = z}
     end
     if from.x == to.x and from.y == to.y and from.z == to.z then
-        return 
+        return fn and fn() or nil
     end
     if time <= 0 then
         self:SetPosition(to.x, to.y, to.z)
-        return
+        return fn and fn() or nil
     end
     if not self.inst.components.genshin_uianim then
         self.inst:AddComponent("genshin_uianim")
@@ -114,11 +114,11 @@ function GWidget:RotateTo(from, to, time, fn, infinite)
         from = self.inst.UITransform:GetLocalRotation()
     end
     if from == to then
-        return 
+        return fn and fn() or nil
     end
     if time <= 0 then
         self:SetRotation(to)
-        return
+        return fn and fn() or nil
     end
     if not self.inst.components.genshin_uianim then
         self.inst:AddComponent("genshin_uianim")
@@ -172,11 +172,11 @@ function GWidget:TintTo(from, to, time, fn)
         from = {r = t_r, g = t_g, b = t_b, a = t_a}
     end
     if from.r == to.r and from.g == to.g and from.b == to.b and from.a == to.a then
-        return
+        return fn and fn() or nil
     end
     if time <= 0 then
         self:SetTint(to.r, to.g, to.b, to.a)
-        return
+        return fn and fn() or nil
     end
     if not self.inst.components.genshin_uianim then
         self.inst:AddComponent("genshin_uianim")
