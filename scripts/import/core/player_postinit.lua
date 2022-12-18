@@ -74,6 +74,14 @@ AddPlayerPostInit(function(inst)
 		end
 	end)
 
+    --Sneak these into pristine state for optimization
+    inst:AddTag("_combatstatus")
+    inst:AddTag("_artifactscollector")
+    inst:AddTag("_energyrecharge")
+    inst:AddTag("_elementalcaster")
+    inst:AddTag("_talents")
+    inst:AddTag("_constellation")
+
 	if not TheWorld.ismastersim then
 		inst:ListenForEvent("chargeconditiondirty",synchronize)
         return

@@ -31,7 +31,7 @@ local function OldestBomb(ents)
     for k, v in pairs(ents) do
         if v:GetTimeRemained() > maxtime then
             max = v
-            maxtime = v:GetTimeLeft()
+            maxtime = v:GetTimeRemained()
         end
     end
     return max

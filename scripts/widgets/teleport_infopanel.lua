@@ -1,9 +1,13 @@
-local Widget = require "widgets/widget"
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local Button = require "widgets/button"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
+-- local Widget = require "widgets/widget"
+-- local Text = require "widgets/text"
+-- local Image = require "widgets/image"
+-- local ImageButton = require "widgets/imagebutton"
+local Widget = require "widgets/genshin_widgets/Gwidget"
+local Text = require "widgets/genshin_widgets/Gtext"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
+local GMultiLayerButton = require "widgets/genshin_widgets/Gmultilayerbutton"
+require "widgets/genshin_widgets/Gbtnpresets"
 
 local origin_size = {x = 321, y = 704}  -- 右侧原始大小
 
@@ -36,12 +40,12 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
     self.bg:SetPosition(widget_x_offset, 0, 0)
 
     self.icon = self:AddChild(Image("images/ui/teleport_waypoint_button.xml", "teleport_waypoint_button.tex"))
-    self.icon:SetScale(0.65, 0.65, 0.65)
-    self.icon:SetPosition(widget_x_offset - 130, 330, 0)
+    self.icon:SetScale(0.5, 0.5, 0.5)
+    self.icon:SetPosition(widget_x_offset - 135, 330, 0)
 
     self.title = self:AddChild(Text("genshinfont", 27, TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "传送锚点" or "Teleport Waypoint"
     , {211/255, 188/255, 142/255, 1}))
-    self.title:SetPosition(widget_x_offset + 0, 328, 0)
+    self.title:SetPosition(widget_x_offset - 8, 328, 0)
     self.title:SetHAlign(ANCHOR_LEFT)
     self.title:SetVAlign(ANCHOR_MIDDLE)
     self.title:SetRegionSize(225, 100)
@@ -49,11 +53,11 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
     
     self.custom_text_bg = self:AddChild(Image("images/ui/teleport_loc_bg.xml", "teleport_loc_bg.tex"))
     self.custom_text_bg:SetScale(0.49, 0.49, 0.49)
-    self.custom_text_bg:SetPosition(widget_x_offset + 0, 278, 0)
+    self.custom_text_bg:SetPosition(widget_x_offset + 0, 276, 0)
 
     self.custom_text = self:AddChild(Text("genshinfont", 20, TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "永恒大陆" or "The Constant"
     , {103/255, 107/255, 116/255, 1}))
-    self.custom_text:SetPosition(widget_x_offset + 18, 277, 0)
+    self.custom_text:SetPosition(widget_x_offset + 20, 275, 0)
     self.custom_text:SetHAlign(ANCHOR_LEFT)
     self.custom_text:SetVAlign(ANCHOR_MIDDLE)
     self.custom_text:SetRegionSize(280, 100)
@@ -66,17 +70,10 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
     self.detail_text:SetRegionSize(290, 512)
     self.detail_text:EnableWordWrap(true)
 
-    self.confirm_btn = self:AddChild(ImageButton("images/ui/button_tpconfirm.xml", "button_tpconfirm.tex"))
-    self.confirm_btn:SetPosition(widget_x_offset + 0, -310, 0)
+    self.confirm_btn = self:AddChild(GMultiLayerButton(GetDefaultGButtonConfig("dark", "long", "teleport")))
+    self.confirm_btn:SetScale(0.606)
+    self.confirm_btn:SetPosition(widget_x_offset + 0, -306, 0)
     self.confirm_btn:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "传送" or "Teleport")
-    self.confirm_btn:SetFont("genshinfont")
-    self.confirm_btn:SetTextSize(25)
-    self.confirm_btn:SetTextColour(236/255, 229/255, 216/255, 1)
-    self.confirm_btn:SetTextFocusColour(236/255, 229/255, 216/255, 1)
-    self.confirm_btn.text:SetPosition(10, 0, 0)
-    self.confirm_btn.text:Show()
-    self.confirm_btn:SetNormalScale({0.49, 0.49, 0.49})
-    self.confirm_btn:SetFocusScale({0.51, 0.51, 0.51})
     self.confirm_btn:SetOnClick(function ()
         local x, y, z = self.world_pos:Get()
         -- 关闭地图界面：
@@ -88,12 +85,14 @@ local Teleport_Infopanel = Class(Widget, function(self, owner, w, h)
     end)
 
     self.close = self:AddChild(ImageButton("images/ui/button_off2.xml", "button_off2.tex"))
-    self.close:SetPosition(widget_x_offset + 140, 329, 0)
-    self.close:SetScale(0.42, 0.42, 0.42)
+    self.close:SetPosition(widget_x_offset + 130, 329, 0)
+    self.close:SetScale(0.4, 0.4, 0.4)
+    self.close:SetFocusScale({1.08, 1.08, 1.08})
     self.close:SetOnClick(function ()
         self.parent:HideInfo()
         self:Hide()
     end)
+    -- self:StartUpdating()
 end)
 
 function Teleport_Infopanel:ShowInfo(world_pos, custom_info)
@@ -105,5 +104,12 @@ function Teleport_Infopanel:ShowInfo(world_pos, custom_info)
     end
     self:Show()
 end
+
+-- function Teleport_Infopanel:OnUpdate()
+--     local r, g, b, a = unpack(self.confirm_btn.text:GetColour())
+--     local r1, g1, b1, a1 = self.confirm_btn.text:GetTint()
+--     print("colour", r, g, b, a)
+--     print("tint", r1, g1, b1, a1)
+-- end
 
 return Teleport_Infopanel

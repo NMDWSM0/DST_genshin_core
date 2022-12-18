@@ -1,0 +1,21 @@
+<Atlas>
+	<Texture filename="default_genshin_button.tex"/>
+	<Elements>
+		<Element name="btn_xlong.tex" u1="0.000000" u2="0.860000" v1="0.250000" v2="0.369403"/>
+		<Element name="icon_teleport.tex" u1="0.816667" u2="0.890000" v1="0.041045" v2="0.123134"/>
+		<Element name="border_short.tex" u1="0.000000" u2="0.393333" v1="0.623134" v2="0.746269"/>
+		<Element name="border_xlong.tex" u1="0.000000" u2="0.863333" v1="0.496269" v2="0.619403"/>
+		<Element name="btn_xxlong.tex" u1="0.000000" u2="0.923333" v1="0.373134" v2="0.492537"/>
+		<Element name="icon_setting.tex" u1="0.863333" u2="0.936667" v1="0.287313" v2="0.369403"/>
+		<Element name="icon_cancel.tex" u1="0.926667" u2="1.000000" v1="0.410448" v2="0.492537"/>
+		<Element name="icon_refresh.tex" u1="0.820000" u2="0.893333" v1="0.917910" v2="1.000000"/>
+		<Element name="icon_delete.tex" u1="0.866667" u2="0.940000" v1="0.537313" v2="0.619403"/>
+		<Element name="icon_ok.tex" u1="0.896667" u2="0.970000" v1="0.917910" v2="1.000000"/>
+		<Element name="btn_long.tex" u1="0.000000" u2="0.813333" v1="0.003731" v2="0.123134"/>
+		<Element name="btn_medium.tex" u1="0.393333" u2="0.993333" v1="0.126866" v2="0.246269"/>
+		<Element name="border_xxlong.tex" u1="0.000000" u2="0.926667" v1="0.750000" v2="0.873134"/>
+		<Element name="border_medium.tex" u1="0.396667" u2="1.000000" v1="0.623134" v2="0.746269"/>
+		<Element name="border_long.tex" u1="0.000000" u2="0.816667" v1="0.876866" v2="1.000000"/>
+		<Element name="btn_short.tex" u1="0.000000" u2="0.390000" v1="0.126866" v2="0.246269"/>
+	</Elements>
+</Atlas>

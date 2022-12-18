@@ -1,10 +1,8 @@
 local Widget = require "widgets/widget"
 local Text = require "widgets/text"
 local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
 local Button = require "widgets/button"
 local ImageButton = require "widgets/imagebutton"
-local TextButton = require "widgets/textbutton"
 local ScrollArea = require "widgets/scrollarea"
 
 local FilterItem = Class(Button, function (self, atlas, image_normal, image_highlight, image_selected, name, iconatlas, iconimage, iconimage2)
@@ -84,7 +82,7 @@ local s = {
 }
 
 local Artifacts_FilterPanel = Class(Widget, function(self, owner, parent)
-    Widget._ctor(self, "Artifacts_SortPanel")
+    Widget._ctor(self, "Artifacts_FilterPanel")
     self.owner = owner
     self.pr = parent
 ----------------------------------------------------------

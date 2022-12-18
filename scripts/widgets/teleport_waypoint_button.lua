@@ -1,34 +1,47 @@
-local Text = require "widgets/text"
-local Image = require "widgets/image"
-local UIAnim = require "widgets/uianim"
-local ImageButton = require "widgets/imagebutton"
+local GWidget = require "widgets/genshin_widgets/Gwidget"
+local Image = require "widgets/genshin_widgets/Gimage"
+local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
 
-local teleport_waypoint_button = Class(ImageButton, function(self, owner, waypoint_id, world_pos, custom_info)
-    ImageButton._ctor(self, "images/ui/teleport_waypoint_button.xml", "teleport_waypoint_button.tex")
-    self.focus_scale = {1.15, 1.15, 1.15}
-    self.normal_scale = {1, 1, 1}
-
+local teleport_waypoint_button = Class(GWidget, function(self, owner, waypoint_id, world_pos, custom_info)
+    GWidget._ctor(self, "Teleport_Waypoint_Button")
+    
     self.owner = owner
     self.waypoint_id = waypoint_id
     self.world_pos = world_pos
     self.custom_info = custom_info
 
     self.ring = self:AddChild(Image("images/ui/tp_select_ring.xml", "tp_select_ring.tex"))
-    self.ring:Hide()
-    self.ring:SetPosition(-2, 0, 0)
+    self.ring:Hide(-1)
+    self.ring:SetPosition(-2.5, 0, 0)
 
-    self:SetOnSelect(function()
-        self.image:SetScale(self.focus_scale[1], self.focus_scale[2], self.focus_scale[3])
+    self.btn = self:AddChild(ImageButton("images/ui/teleport_waypoint_button.xml", "teleport_waypoint_button.tex"))
+    self.btn:SetPosition(0, 0, 0)
+    self.btn.focus_scale = {1.15, 1.15, 1.15}
+    self.btn.normal_scale = {1, 1, 1}
+    self.btn:SetOnSelect(function()
+        self.btn.image:TransitScale(self.btn.focus_scale[1], self.btn.focus_scale[2], self.btn.focus_scale[3])
         self.ring:Show()
     end)
-    self:SetOnUnSelect(function()
-        self.image:SetScale(self.normal_scale[1], self.normal_scale[2], self.normal_scale[3])
+    self.btn:SetOnUnSelect(function()
+        self.btn.image:TransitScale(self.btn.normal_scale[1], self.btn.normal_scale[2], self.btn.normal_scale[3])
         self.ring:Hide()
     end)
 
     self:SetScale(1.1, 1.1, 1.1)
     self:StartUpdating()
 end)
+
+function teleport_waypoint_button:Select()
+    self.btn:Select()
+end
+
+function teleport_waypoint_button:Unselect()
+    self.btn:Unselect()
+end
+
+function teleport_waypoint_button:SetOnClick(fn)
+    self.btn:SetOnClick(fn)
+end
 
 function teleport_waypoint_button:OnUpdate()
     if not self.parent or not self.parent.minimap or not self.world_pos then

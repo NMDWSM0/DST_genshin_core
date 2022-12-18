@@ -1,140 +1,239 @@
 local function onweapon(self, weapon)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._weapon:set(weapon ~= nil and weapon or self.inst)
 end
 
 local function onweapondmg(self, weapondmg)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._weapondmg:set(weapondmg ~= nil and weapondmg or 0)
 end
 
 --------------------------------------------------------
 
 local function onbase_hp(self, base_hp)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._base_hp:set(base_hp)
 end
 
 local function onhp(self, hp)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._hp:set(hp)
 end
 
 local function onbase_atk(self, base_atk)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._base_atk:set(base_atk)
 end
 
 local function onatk(self, atk)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._atk:set(atk)
 end
 
 local function onbase_def(self, base_def)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._base_def:set(base_def)
 end
 
 local function ondef(self, def)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._def:set(def)
 end
 
 local function onelement_mastery(self, element_mastery)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._element_mastery:set(element_mastery)
 end
 
 local function oncrit_rate(self, crit_rate)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._crit_rate:set(crit_rate)
 end
 
 local function oncrit_dmg(self, crit_dmg)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._crit_dmg:set(crit_dmg)
 end
 
 local function onrecharge(self, recharge)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._recharge:set(recharge)
 end
 
 ---------------------------------------------------------
 
 local function onpyro_bonus(self, pyro_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._pyro_bonus:set(pyro_bonus)
 end
 
 local function oncryo_bonus(self, cryo_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._cryo_bonus:set(cryo_bonus)
 end
 
 local function onhydro_bonus(self, hydro_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._hydro_bonus:set(hydro_bonus)
 end
 
 local function onelectro_bonus(self, electro_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._electro_bonus:set(electro_bonus)
 end
 
 local function onanemo_bonus(self, anemo_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._anemo_bonus:set(anemo_bonus)
 end
 
 local function ongeo_bonus(self, geo_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._geo_bonus:set(geo_bonus)
 end
 
 local function ondendro_bonus(self, dendro_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._dendro_bonus:set(dendro_bonus)
 end
 
 local function onphysical_bonus(self, physical_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._physical_bonus:set(physical_bonus)
 end
 
 ---------------------------------------------------------
 
 local function onpyro_res_bonus(self, pyro_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._pyro_res_bonus:set(pyro_res_bonus)
 end
 
 local function oncryo_res_bonus(self, cryo_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._cryo_res_bonus:set(cryo_res_bonus)
 end
 
 local function onhydro_res_bonus(self, hydro_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._hydro_res_bonus:set(hydro_res_bonus)
 end
 
 local function onelectro_res_bonus(self, electro_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._electro_res_bonus:set(electro_res_bonus)
 end
 
 local function onanemo_res_bonus(self, anemo_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._anemo_res_bonus:set(anemo_res_bonus)
 end
 
 local function ongeo_res_bonus(self, geo_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._geo_res_bonus:set(geo_res_bonus)
 end
 
 local function ondendro_res_bonus(self, dendro_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._dendro_res_bonus:set(dendro_res_bonus)
 end
 
 local function onphysical_res_bonus(self, physical_res_bonus)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._physical_res_bonus:set(physical_res_bonus)
 end
 
 ---------------------------------------------------------
 
 local function onclothing_base(self, clothing_base)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._clothing_base:set(clothing_base or "")
 end
 
 local function onclothing_body(self, clothing_body)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._clothing_body:set(clothing_body or "")
 end
 
 local function onclothing_hand(self, clothing_hand)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._clothing_hand:set(clothing_hand or "")
 end
 
 local function onclothing_legs(self, clothing_legs)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._clothing_legs:set(clothing_legs or "")
 end
 
 local function onclothing_feet(self, clothing_feet)
+    if not self.inst.replica.combatstatus then
+        return
+    end
     self.inst.replica.combatstatus._clothing_feet:set(clothing_feet or "")
 end
 

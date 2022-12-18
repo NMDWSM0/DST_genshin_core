@@ -112,6 +112,11 @@ Assets = {
 
 --全都是UI图片
 	---------------------------------------------
+	--通用按钮
+	Asset("IMAGE", "images/ui/default_genshin_button.tex"),
+    Asset("ATLAS", "images/ui/default_genshin_button.xml"),
+
+	---------------------------------------------
 	--地图界面图片，传送相关
 	Asset("IMAGE", "images/ui/teleport_waypoint_button.tex"),
     Asset("ATLAS", "images/ui/teleport_waypoint_button.xml"),

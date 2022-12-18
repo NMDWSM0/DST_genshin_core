@@ -84,7 +84,7 @@ AddClassPostConstruct("screens/mapscreen", function(self)  -- 给小地图添加
 	self.TP_Panel = self:AddChild(Teleport_Infopanel(self.owner, w, h))
 	-- self.TP_Panel:SetScale(scale, scale, scale)
 	self.TP_Panel:SetPosition(0.5 * w, 0.5 * h, 0)
-	self.TP_Panel:Hide()
+	self.TP_Panel:Hide(-1)
 
 	function self:ShowInfo(wp_id)
 		for k, v in pairs(self.wp_btns) do
@@ -110,7 +110,6 @@ AddClassPostConstruct("screens/mapscreen", function(self)  -- 给小地图添加
 	--禁止在打开状态点击其它东西比如转视角
 	local old_OnControl = self.OnControl
 	function self:OnControl(control, down)
-		print(self.tp_panel_open)
 		if self.tp_panel_open then
 			for k, v in pairs(self.wp_btns) do
 				if v:OnControl(control, down) then
