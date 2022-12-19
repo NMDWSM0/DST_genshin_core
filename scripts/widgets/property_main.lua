@@ -25,6 +25,34 @@ local function removeskinstring(str)
 	return copedstr
 end
 
+local player_states = 
+{
+	attribute = {
+		enter = nil,
+		exit = nil,
+	},
+	weapons = {
+		enter = "equip",
+		exit = "unequip",
+	},
+	artifacts = {
+		enter = "arti_enter",  -- 会有的
+		exit = "arti_exit",   -- 会有的
+	},
+	constellation = {  --肯定是nil
+		enter = nil,
+		exit = nil,
+	},
+	talents = {
+		enter = nil,  -- 会有的
+		exit = nil,   -- 会有的
+	},
+	profile = {
+		enter = nil,
+		exit = nil,
+	}
+}
+
 local property_main = Class(Screen, function(self, owner)
     Screen._ctor(self, "property_mainscreen")
 	self.owner = owner
@@ -69,6 +97,7 @@ local property_main = Class(Screen, function(self, owner)
 	self.playeranim:GetAnimState():SetBank("wilson")
 	self.playeranim:GetAnimState():SetBuild(self.owner.AnimState:GetBuild())
 	self.playeranim:SetFacing(FACING_DOWN)
+	self.playeranim.inst:SetStateGraph("SGwilson_uianim")
 
 	self.defaultanim = "idle_loop"
     --不得不放到这里
@@ -230,11 +259,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_attribute:SetOnClick(function()
 	    self.button_attribute:Select()
 		self.attribute_screen:Show()
-		self.playeranim:GetAnimState():Show("ARM_normal")
-		self.playeranim:GetAnimState():Hide("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- self.playeranim:GetAnimState():Show("ARM_normal")
+		-- self.playeranim:GetAnimState():Hide("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "attribute"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_attribute then
 			    v:Unselect()
@@ -252,11 +294,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_weapons:SetOnClick(function()
 	    self.button_weapons:Select()
 		self.weapon_screen:Show()
-		self.playeranim:GetAnimState():Hide("ARM_normal")
-		self.playeranim:GetAnimState():Show("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- self.playeranim:GetAnimState():Hide("ARM_normal")
+		-- self.playeranim:GetAnimState():Show("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "weapons"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_weapons then
 			    v:Unselect()
@@ -274,11 +329,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_artifacts:SetOnClick(function()
 	    self.button_artifacts:Select()
 		self.artifacts_screen:Show()
-		self.playeranim:GetAnimState():Show("ARM_normal")
-		self.playeranim:GetAnimState():Hide("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--用什么动画呢
+		-- self.playeranim:GetAnimState():Show("ARM_normal")
+		-- self.playeranim:GetAnimState():Hide("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--用什么动画呢
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "artifacts"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_artifacts then
 			    v:Unselect()
@@ -296,11 +364,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_constellation:SetOnClick(function()
 	    self.button_constellation:Select()
 		self.constellation_screen:Show()
-		self.playeranim:GetAnimState():Show("ARM_normal")
-		self.playeranim:GetAnimState():Hide("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--不需要设置什么动画
+		-- self.playeranim:GetAnimState():Show("ARM_normal")
+		-- self.playeranim:GetAnimState():Hide("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--不需要设置什么动画
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "constellation"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_constellation then
 			    v:Unselect()
@@ -318,11 +399,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_talents:SetOnClick(function()
 	    self.button_talents:Select()
 		self.talents_screen:Show()
-		self.playeranim:GetAnimState():Show("ARM_normal")
-		self.playeranim:GetAnimState():Hide("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--用什么动画呢
+		-- self.playeranim:GetAnimState():Show("ARM_normal")
+		-- self.playeranim:GetAnimState():Hide("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)--用什么动画呢
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "talents"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_talents then
 			    v:Unselect()
@@ -340,11 +434,24 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_profile:SetOnClick(function()
 	    self.button_profile:Select()
 		--self.profile_screen:Show()
-		self.playeranim:GetAnimState():Show("ARM_normal")
-		self.playeranim:GetAnimState():Hide("ARM_carry")
-		if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
-	        self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- self.playeranim:GetAnimState():Show("ARM_normal")
+		-- self.playeranim:GetAnimState():Hide("ARM_carry")
+		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
+	    --     self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+		-- end
+		---------------------------------------------------
+		local pre_screen = self.current_subscreen
+		local exit_state = player_states[pre_screen].exit
+		if exit_state ~= nil then
+			self.playeranim.inst.sg:GoToState(exit_state, true)
 		end
+		self.current_subscreen = "profile"
+		local cur_screen = self.current_subscreen
+		local enter_state = player_states[cur_screen].enter
+		if enter_state ~= nil then
+			self.playeranim.inst.sg:GoToState(enter_state, true)
+		end
+		---------------------------------------------------
 		for k,v in pairs(choosebuttons) do
 		    if v ~= self.button_profile then
 			    v:Unselect()
@@ -384,6 +491,7 @@ local property_main = Class(Screen, function(self, owner)
 
 	-----------------------------------------------------------
     --初始化
+	self.current_subscreen = "attribute"
 	self.button_attribute:Select()
 
 	self.attribute_screen:Show()
@@ -396,8 +504,13 @@ local property_main = Class(Screen, function(self, owner)
 	self.talentsbg:Hide()
 	----------------------------
 	self.playeranim:GetAnimState():Hide("ARM_carry")
-	self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+	-- self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
+	self.playeranim.inst.sg:GoToState("idle")
 	self:StartUpdating()
+
+	if not TUNING.CONTROLWITHUI then
+		SetAutopaused(true)
+	end
 end)
 
 ---------------------------------------------------------------------------------------
@@ -522,6 +635,9 @@ function property_main:UpdateWeapon()
 end
 
 function property_main:OnUpdate(dt)
+	if not self.shown then
+		return
+	end
     --人物
     self:UpdatePlayer()
 	---------------------------------------------------
@@ -530,16 +646,29 @@ function property_main:OnUpdate(dt)
 	return true
 end
 
+function property_main:OnShow()
+	if not TUNING.CONTROLWITHUI then
+		SetAutopaused(true)
+	end
+end
+
+function property_main:OnHide()
+	if not TUNING.CONTROLWITHUI then
+		SetAutopaused(false)
+	end
+end
+
 function property_main:OnDestroy()
 	self:Hide()
 end
 
 function property_main:OnBecomeInactive()
+	property_main._base.OnBecomeInactive(self)
 	self.last_focus = self:GetDeepestFocus()
-	self:Hide()
 end
 
 function property_main:OnBecomeActive()
+	property_main._base.OnBecomeActive(self)
 	TheSim:SetUIRoot(self.inst.entity)
 	if self.last_focus and self.last_focus.inst.entity:IsValid() then
 		self.last_focus:SetFocus()
@@ -549,8 +678,9 @@ function property_main:OnBecomeActive()
 			self.default_focus:SetFocus()
 		end
 	end
-
-	self:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+	--设置位置
+	local screen_width, screen_height = TheSim:GetScreenSize()
+	self:SetPosition(screen_width / 2, screen_height / 2, 0)
 	self:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
     self:Show()
 end

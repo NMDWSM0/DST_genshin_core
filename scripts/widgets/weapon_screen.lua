@@ -121,7 +121,22 @@ local weapon_screen = Class(Widget, function(self, owner)
     self:StartUpdating()
 end)
 
+function weapon_screen:OnShow(was_hidden)
+    if was_hidden then
+        self.parent.playeranim:GetAnimState():PlayAnimation("item_out")
+    end
+end
+
+function weapon_screen:OnHide(was_visible)
+    if was_visible then
+        self.parent.playeranim:GetAnimState():PlayAnimation("item_in")
+    end
+end
+
 function weapon_screen:OnUpdate(dt)
+    if not self.shown or not self.parent.shown then
+        return
+    end
     --获取数据
 	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     if combatstatus == nil then

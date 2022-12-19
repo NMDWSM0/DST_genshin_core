@@ -1,0 +1,11 @@
+<Atlas>
+	<Texture filename="artselect_genshin_button.tex"/>
+	<Elements>
+		<Element name="icon_filter.tex" u1="0.000000" u2="0.996183" v1="0.465517" v2="0.715517"/>
+		<Element name="border_filter.tex" u1="0.125954" u2="0.954198" v1="0.775862" v2="1.000000"/>
+		<Element name="button_sort.tex" u1="0.103053" u2="0.198473" v1="0.241379" v2="0.456897"/>
+		<Element name="button_filter.tex" u1="0.000000" u2="0.824427" v1="0.008621" v2="0.224138"/>
+		<Element name="border_sort.tex" u1="0.000000" u2="0.099237" v1="0.232759" v2="0.456897"/>
+		<Element name="icon_sort.tex" u1="0.000000" u2="0.122137" v1="0.724138" v2="1.000000"/>
+	</Elements>
+</Atlas>

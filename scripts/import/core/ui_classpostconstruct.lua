@@ -51,7 +51,8 @@ AddClassPostConstruct("widgets/controls",function(self)
 		self.property_main = PropertyMain(self.owner)
 		if TUNING.CONTROLWITHUI then
 			self:AddChild(self.property_main)
-			self.property_main:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)
+			local screen_width, screen_height = TheSim:GetScreenSize()
+			self.property_main:SetPosition(screen_width / 2, screen_height / 2, 0)
 			self.property_main:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
 		end
 		--self.property_main:SetPosition(155 + 800 * TUNING.GENSHINCORE_UISCALE, 120 + 400 * TUNING.GENSHINCORE_UISCALE, 0)

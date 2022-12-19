@@ -101,8 +101,8 @@ if ischinese then
             hover = "关闭后，打开面板时不能操作游戏，但操作面板时不会引起视角变化",
             options =
             {
-                { description = "开启", data = true, hover = "打开属性主面板时无法操作装备栏等游戏元素" },
-                { description = "关闭", data = false, hover = "打开属性主面板时可以正常游戏，但是鼠标滚轮会引起视角缩放" },
+                { description = "开启", data = true, hover = "打开属性主面板时可以正常游戏，但是鼠标滚轮会引起视角缩放" },
+                { description = "关闭", data = false, hover = "打开属性主面板时无法操作装备栏等游戏元素" },
             },
             default = true,
         },

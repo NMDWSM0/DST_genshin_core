@@ -122,6 +122,13 @@ Assets = {
 	Asset("IMAGE", "images/ui/icon_genshin_button.tex"),
     Asset("ATLAS", "images/ui/icon_genshin_button.xml"),
 
+	Asset("IMAGE", "images/ui/artselect_genshin_button.tex"),
+    Asset("ATLAS", "images/ui/artselect_genshin_button.xml"),
+
+	---------------------------------------------
+	--UI人物动作
+	Asset( "ANIM", "anim/genshinui_anims.zip"),
+
 	---------------------------------------------
 	--地图界面图片，传送相关
 	Asset("IMAGE", "images/ui/teleport_waypoint_button.tex"),

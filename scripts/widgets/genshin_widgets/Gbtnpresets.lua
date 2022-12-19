@@ -329,13 +329,13 @@ end
 --      不带icon的，50宽度的按钮
 --------------------------------------------------------------------------------------------
 local noicon_btn_size = {
-    short = {x = 234, y = 64},
-    medshort = {x = 360, y = 64},
-    medium = {x = 432, y = 64},
-    medlong = {x = 460, y = 64},
-    long = {x = 488, y = 64},
-    xlong = {x = 516, y = 64},
-    xxlong = {x = 554, y = 64},
+    short = {x = 234, y = 50},
+    medshort = {x = 360, y = 50},
+    medium = {x = 432, y = 50},
+    medlong = {x = 460, y = 50},
+    long = {x = 488, y = 50},
+    xlong = {x = 516, y = 50},
+    xxlong = {x = 554, y = 50},
 }
 
 local function GetNoiconBorderNormalScale(length)
@@ -681,8 +681,9 @@ function GetIconGButtonConfig(icontype)
     }
 end
 
+
 --------------------------------------------------------------------------------------------
---      特殊按钮：单层按钮，颜色是后设的，现在只有那两个单层关闭
+--      单层按钮，颜色是后设的，现在只有那两个单层关闭
 --------------------------------------------------------------------------------------------
 
 -- type是亮暗, image和atlas不用我多解释
@@ -759,5 +760,256 @@ function GetSingleGButtonConfig(type, atlas, image)
                 disable = {1, 1, 1, 0.05}
             }
         },
+    }
+end
+
+
+--------------------------------------------------------------------------------------------
+--      两个圣遗物界面的按钮
+--------------------------------------------------------------------------------------------
+
+------------------------------------------------------------
+-- icontype：sort和filter
+-- filter是432*50条形有图标和文字按钮
+-- sort是圆形50直径仅图标按钮
+------------------------------------------------------------
+function GetArtiGButtonConfig(icontype, fontsize)
+    fontsize = fontsize or 37
+    return icontype == "filter" and
+    {
+        -- [1] focus时的border层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",  --实际上，使用同一张图即可，都是白的
+                change = false,
+                normal = "border_"..icontype..".tex",
+                focus = "border_"..icontype..".tex",
+                down = "border_"..icontype..".tex",
+                selected = "border_"..icontype..".tex",
+                disable = "border_"..icontype..".tex",
+            },
+            scale = {
+                normal = {0.993, 0.942, 1},  --GetDefaultBorderNormalScale(length)
+                focus = {1, 1, 1},
+                down = {0.9954, 0.9615, 1},  --GetDefaultBorderDownScale(length)
+                selected = {0.993, 0.942, 1},
+                disable = {0.9954, 0.9615, 1}
+            },
+            tint = {
+                normal = {1, 1, 1, 0},
+                focus = {1, 1, 1, 1},
+                down = {143/255, 142/255, 147/255, 0.55},
+                selected = {255/255, 230/255, 178/255, 0},
+                disable = {1, 1, 1, 0.1}
+            }
+        },
+        -- [2] 普通按钮层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",  --同一张白色图即可
+                change = false,
+                normal = "button_"..icontype..".tex",
+                focus = "button_"..icontype..".tex",
+                down = "button_"..icontype..".tex",
+                selected = "button_"..icontype..".tex",
+                disable = "button_"..icontype..".tex",
+            },
+            scale = {
+                normal = {1, 1, 1},
+                focus = {0.986, 0.88, 1},  --GetDefaultButtonFocusScale(length)
+                down = {0.986, 0.88, 1},
+                selected = {1, 1, 1},
+                disable = {0.986, 0.88, 1}
+            },
+            tint = {
+                normal = {236/255, 229/255, 216/255, 1},
+                focus = {236/255, 229/255, 216/255, 1},
+                down = {179/255, 165/255, 143/255, 1},
+                selected = {59/255, 66/255, 85/255, 1},
+                disable = {62/255, 69/255, 86/255, 1}
+            }
+        },
+        -- [3] 图标层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",   --同一张图，各种icon:ok, cancel, refresh, delete, setting
+                change = false,
+                normal = "icon_"..icontype..".tex",
+                focus = "icon_"..icontype..".tex",
+                down = "icon_"..icontype..".tex",
+                selected = "icon_"..icontype..".tex",
+                disable = "icon_"..icontype..".tex",
+            },
+            scale = {
+                normal = {0.909, 0.909, 0.909},
+                focus = {0.909, 0.909, 0.909},
+                down = {0.909, 0.909, 0.909},
+                selected = {0.909, 0.909, 0.909},
+                disable = {1, 1, 1}
+            },
+            tint = {
+                normal = {59/255, 66/255, 85/255, 1},
+                focus = {59/255, 66/255, 85/255, 1},
+                down = {255/255, 253/255, 212/255, 1},
+                selected = {236/255, 229/255, 216/255, 1},
+                disable = {150/255, 150/255, 150/255, 1}
+            }
+        },
+        -- but the last layer shows whether to have text shown
+        -- [3]: the text layer
+        {
+            type = "text",
+            font = "genshinfont",
+            position = {
+                normal = {18, -1, 0},
+                focus = {18, -1, 0},
+                down = {18, -1, 0},
+                selected = {18, -1, 0},
+                disable = {18, -1, 0}
+            },
+            colors = {
+                normal = {59/255, 66/255, 85/255, 1},
+                focus = {59/255, 66/255, 85/255, 1},
+                down = {255/255, 253/255, 212/255, 1},
+                selected = {236/255, 229/255, 216/255, 1},
+                disable = {150/255, 150/255, 150/255, 1}
+            },
+            sizes = {
+                normal = fontsize,
+                focus = fontsize,
+                down = fontsize,
+                selected = fontsize,
+                disable = fontsize
+            }
+        }
+    }
+    or
+    {
+        -- [1] focus时的border层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",  --实际上，使用同一张图即可，都是白的
+                change = false,
+                normal = "border_"..icontype..".tex",
+                focus = "border_"..icontype..".tex",
+                down = "border_"..icontype..".tex",
+                selected = "border_"..icontype..".tex",
+                disable = "border_"..icontype..".tex",
+            },
+            scale = {
+                normal = {0.942, 0.942, 0.942},  --GetDefaultBorderNormalScale(length)
+                focus = {1, 1, 1},
+                down = {0.9615, 0.9615, 0.9615},  --GetDefaultBorderDownScale(length)
+                selected = {0.942, 0.942, 0.942},
+                disable = {0.9615, 0.9615, 0.9615}
+            },
+            tint = {
+                normal = {1, 1, 1, 0},
+                focus = {1, 1, 1, 1},
+                down = {143/255, 142/255, 147/255, 0.55},
+                selected = {255/255, 230/255, 178/255, 0},
+                disable = {1, 1, 1, 0.1}
+            }
+        },
+        -- [2] 普通按钮层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",  --同一张白色图即可
+                change = false,
+                normal = "button_"..icontype..".tex",
+                focus = "button_"..icontype..".tex",
+                down = "button_"..icontype..".tex",
+                selected = "button_"..icontype..".tex",
+                disable = "button_"..icontype..".tex",
+            },
+            scale = {
+                normal = {1, 1, 1},
+                focus = {0.88, 0.88, 0.88},  --GetDefaultButtonFocusScale(length)
+                down = {0.88, 0.88, 0.88},
+                selected = {1, 1, 1},
+                disable = {0.88, 0.88, 0.88}
+            },
+            tint = {
+                normal = {236/255, 229/255, 216/255, 1},
+                focus = {236/255, 229/255, 216/255, 1},
+                down = {179/255, 165/255, 143/255, 1},
+                selected = {59/255, 66/255, 85/255, 1},
+                disable = {62/255, 69/255, 86/255, 1}
+            }
+        },
+        -- [3] 图标层
+        {
+            type = "image",
+            position = {
+                normal = {0, 0, 0},
+                focus = {0, 0, 0},
+                down = {0, 0, 0},
+                selected = {0, 0, 0},
+                disable = {0, 0, 0}
+            },
+            textures = {
+                atlas = "images/ui/artselect_genshin_button.xml",   --同一张图，各种icon:ok, cancel, refresh, delete, setting
+                change = false,
+                normal = "icon_"..icontype..".tex",
+                focus = "icon_"..icontype..".tex",
+                down = "icon_"..icontype..".tex",
+                selected = "icon_"..icontype..".tex",
+                disable = "icon_"..icontype..".tex",
+            },
+            scale = {
+                normal = {0.94, 0.94, 0.94},
+                focus = {0.94, 0.94, 0.94},
+                down = {0.94, 0.94, 0.94},
+                selected = {0.94, 0.94, 0.94},
+                disable = {0.94, 0.94, 0.94}
+            },
+            tint = {
+                normal = {59/255, 66/255, 85/255, 1},
+                focus = {59/255, 66/255, 85/255, 1},
+                down = {255/255, 253/255, 212/255, 1},
+                selected = {236/255, 229/255, 216/255, 1},
+                disable = {150/255, 150/255, 150/255, 1}
+            }
+        }
     }
 end

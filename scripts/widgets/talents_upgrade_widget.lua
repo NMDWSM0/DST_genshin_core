@@ -128,11 +128,30 @@ local talents_upgrade_widget = Class(Widget, function(self, owner)
     end)
 
     ----------------------------------------------------------------
-    self.inst:ListenForEvent("itemget", function() 
-        self:UpdateTalentIngredients(self.current_talent)
+    self.inst:ListenForEvent("itemget", function()
+        if self.shown then
+            self:UpdateTalentIngredients(self.current_talent)
+        end
     end, owner)
-    self.inst:ListenForEvent("itemlose", function() 
-        self:UpdateTalentIngredients(self.current_talent)
+    self.inst:ListenForEvent("itemlose", function()
+        if self.shown then
+            self:UpdateTalentIngredients(self.current_talent)
+        end
+    end, owner)
+    self.inst:ListenForEvent("stacksizechange", function()
+        if self.shown then
+            self:UpdateTalentIngredients(self.current_talent)
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshcrafting", function()
+        if self.shown then
+            self:UpdateTalentIngredients(self.current_talent)
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshinventory", function()
+        if self.shown then
+            self:UpdateTalentIngredients(self.current_talent)
+        end
     end, owner)
 end)
 

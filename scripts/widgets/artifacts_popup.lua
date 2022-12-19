@@ -66,10 +66,9 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.sort_panel:SetPosition(-520, -5, 0)
     self.sort_panel:Hide(-1)
 
-    self.sort_button = self:AddChild(ImageButton("images/ui/button_art_sort.xml","button_art_sort.tex"))
+    self.sort_button = self:AddChild(GMultiLayerButton(GetArtiGButtonConfig("sort")))
     self.sort_button:SetPosition(-330, -320, 0)
-	self.sort_button:SetScale(0.8, 0.8, 0.8)
-	self.sort_button.focus_scale = {1.1,1.1,1.1}
+	self.sort_button:SetScale(0.85, 0.85, 0.85)
     self.sort_button:SetOnClick(function ()
         if self.sort_panel.shown then
             self:HideTwoPanels()
@@ -84,21 +83,14 @@ local artifacts_popup = Class(Widget, function(self, owner)
     self.filter_panel:SetPosition(-520, -10, 0)
     self.filter_panel:Hide(-1)
 
-    self.filter_button = self:AddChild(ImageButton("images/ui/button_art_filter.xml","button_art_filter.tex"))
+    self.filter_button = self:AddChild(GMultiLayerButton(GetArtiGButtonConfig("filter")))
     self.filter_button:SetText("")
-    self.filter_button:SetFont("genshinfont")
-    self.filter_button:SetTextSize(40)
-    self.filter_button:SetTextColour(59/255, 66/255, 85/255, 1)
-    self.filter_button:SetTextFocusColour(59/255, 66/255, 85/255, 1)
     self.filter_button.text:SetHAlign(ANCHOR_LEFT)
     self.filter_button.text:SetVAlign(ANCHOR_MIDDLE)
     self.filter_button.text:SetRegionSize(360, 80)
     self.filter_button.text:EnableWordWrap(true)
-    self.filter_button.text:SetPosition(2.5, -2.5, 0)
-    self.filter_button.text:Show()
     self.filter_button:SetPosition(-550, -320, 0)
-	self.filter_button:SetScale(0.75, 0.75, 0.75)
-	self.filter_button.focus_scale = {1.05, 1.05, 1.05}
+	self.filter_button:SetScale(0.83, 0.83, 0.83)
     self.filter_button:SetOnClick(function ()
         if self.filter_panel.shown then
             self:HideTwoPanels()
@@ -256,7 +248,7 @@ local artifacts_popup = Class(Widget, function(self, owner)
     ----------------------------------------------------------------------------------------------
     --卸下和切换按钮
     self.button_switch = self:AddChild(GMultiLayerButton(GetNoiconGButtonConfig("light", "long")))
-    self.button_switch:SetPosition(455, -300, 0)
+    self.button_switch:SetPosition(455, -310, 0)
     self.button_switch:SetScale(0.8, 0.8, 0.8)
     self.button_switch:SetText(TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "切换" or "Switch")
 

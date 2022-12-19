@@ -151,6 +151,21 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
             self:UpdateIngredient()
         end
     end, owner)
+    self.inst:ListenForEvent("stacksizechange", function()
+        if self.shown then
+            self:UpdateIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshcrafting", function()
+        if self.shown then
+            self:UpdateIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshinventory", function()
+        if self.shown then
+            self:UpdateIngredient()
+        end
+    end, owner)
     self:StartUpdating()
 end)
 
@@ -274,6 +289,9 @@ function weapon_refine_screen:UpdateWeapon(weapon)
 end
 
 function weapon_refine_screen:OnUpdate(dt)
+    if not self.shown or not self.parent.shown then
+        return
+    end
     --获取数据
 	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
     if combatstatus == nil then
@@ -338,7 +356,7 @@ function weapon_refine_screen:OnUpdate(dt)
             or (type(weapon.description) == "string" and weapon.description or "")
         local index = string.find(oridesc, "\n")
         local title = string.sub(oridesc, 1, index - 1)
-        local desc = string.sub(oridesc, index + 4)
+        local desc = string.sub(oridesc, index + 3)
         local ranktext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前效果:" or "Current:"
         self.effect_title:SetString("• "..title.." •")
         self.effect_text1:SetString("·"..ranktext..desc)

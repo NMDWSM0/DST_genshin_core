@@ -111,8 +111,31 @@ local constellation_popup = Class(Widget, function(self, owner, up1parent, path)
     self.starnumber:EnableWordWrap(true)
 
 -------------------------------------------------------------------------
-    self.inst:ListenForEvent("itemget", function() self:CheckIngredient() end, owner)
-    self.inst:ListenForEvent("itemlose", function() self:CheckIngredient() end, owner)
+    self.inst:ListenForEvent("itemget", function()
+        if self.shown then
+            self:CheckIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("itemlose", function()
+        if self.shown then
+            self:CheckIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("stacksizechange", function()
+        if self.shown then
+            self:CheckIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshcrafting", function()
+        if self.shown then
+            self:CheckIngredient()
+        end
+    end, owner)
+    self.inst:ListenForEvent("refreshinventory", function()
+        if self.shown then
+            self:CheckIngredient()
+        end
+    end, owner)
 end)
 
 function constellation_popup:ShowLevel(level)

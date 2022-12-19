@@ -644,6 +644,9 @@ local attribute_screen = Class(Widget, function(self, owner)
 end)
 
 function attribute_screen:OnUpdate(dt)
+	if not self.shown or not self.parent.shown then
+		return
+	end
     --获取数据
 	local combatstatus = TheWorld.ismastersim and self.owner.components.combatstatus or self.owner.replica.combatstatus
 
