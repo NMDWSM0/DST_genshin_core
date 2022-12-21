@@ -14,7 +14,7 @@ local constellation_screen = Class(Widget, function(self, owner)
     self.decription = self.owner.constellation_decription or TUNING.DEFAULT_CONSTELLATION_DESC
 
     self.constellation_image = self:AddChild(ConstellationImage(owner, path.."/constellation_image.xml", "constellation_image.tex", positions, lines))
-    self.constellation_image:SetPosition(0, 0, 0)
+    self.constellation_image:SetPosition(0, 300, 0)
 	self.constellation_image:SetOnClick(function()
 	    self:HideConstellation()
 	end)
@@ -63,6 +63,20 @@ local constellation_screen = Class(Widget, function(self, owner)
         end
     end, owner)
 end)
+
+-----------------------------------------------------------------
+--
+function constellation_screen:OnShow(was_hidden)
+    if was_hidden then
+        self.constellation_image:TransitPosition(0, 0, 0, 0.4)
+    end
+end
+
+function constellation_screen:OnHide(was_visible)
+    if was_visible then
+        self.constellation_image:TransitPosition(0, 300, 0, 0.4)
+    end
+end
 
 -----------------------------------------------------------------
 --功能

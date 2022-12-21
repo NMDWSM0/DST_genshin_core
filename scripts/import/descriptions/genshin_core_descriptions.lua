@@ -279,6 +279,7 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 	}
 
     TUNING.NOARTIFACTS_WARNING = "暂未拥有当前位置圣遗物"
+	TUNING.NOWEAPON_WARNING = "暂未装备武器"
 
 	TUNING.IMMUNED_TEXT = "免疫"
     TUNING.OVERLOAD_TEXT = "超载"
@@ -662,6 +663,7 @@ else
 	}
 
     TUNING.NOARTIFACTS_WARNING = "No artifacts available for this slot"
+	TUNING.NOWEAPON_WARNING = "No weapons equipped"
 
 	TUNING.IMMUNED_TEXT = "Immuned"
     TUNING.OVERLOAD_TEXT = "Overloaded"

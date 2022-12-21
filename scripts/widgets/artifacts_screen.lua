@@ -252,12 +252,34 @@ function artifacts_screen:OnHide()
 end
 
 function artifacts_screen:OnShow()
-    -- 与上面的OnHide对应，此处需要立即显示
-    self.artifacts_slots_flower:Show(-1)
-	self.artifacts_slots_plume:Show(-1)
-	self.artifacts_slots_sands:Show(-1)
-	self.artifacts_slots_goblet:Show(-1)
-	self.artifacts_slots_circlet:Show(-1)
+	-- 设置初值
+	self.artifacts_slots_flower:SetPosition(0, -100, 0)
+	self.artifacts_slots_flower:SetScale(0.5, 0.5, 0.5)
+	self.artifacts_slots_plume:SetPosition(0, -100, 0)
+	self.artifacts_slots_plume:SetScale(0.5, 0.5, 0.5)
+	self.artifacts_slots_sands:SetPosition(0, -100, 0)
+	self.artifacts_slots_sands:SetScale(0.5, 0.5, 0.5)
+	self.artifacts_slots_goblet:SetPosition(0, -100, 0)
+	self.artifacts_slots_goblet:SetScale(0.5, 0.5, 0.5)
+	self.artifacts_slots_circlet:SetPosition(0, -100, 0)
+	self.artifacts_slots_circlet:SetScale(0.5, 0.5, 0.5)
+    -- 与上面的OnHide对应，此处需要显示
+    self.artifacts_slots_flower:Show()
+	self.artifacts_slots_plume:Show()
+	self.artifacts_slots_sands:Show()
+	self.artifacts_slots_goblet:Show()
+	self.artifacts_slots_circlet:Show()
+	-- 向外展现
+	self.artifacts_slots_flower:TransitPosition(-215, -50, 0, 0.3)
+	self.artifacts_slots_flower:TransitScale(1.8, 1.8, 1.8, 0.2)
+	self.artifacts_slots_plume:TransitPosition(-320, -135, 0, 0.3)
+	self.artifacts_slots_plume:TransitScale(1.8, 1.8, 1.8, 0.2)
+	self.artifacts_slots_sands:TransitPosition(-20, -220, 0, 0.3)
+	self.artifacts_slots_sands:TransitScale(1.8, 1.8, 1.8, 0.2)
+	self.artifacts_slots_goblet:TransitPosition(280, -135, 0, 0.3)
+	self.artifacts_slots_goblet:TransitScale(1.8, 1.8, 1.8, 0.2)
+	self.artifacts_slots_circlet:TransitPosition(175, -50, 0, 0.3)
+	self.artifacts_slots_circlet:TransitScale(1.8, 1.8, 1.8, 0.2)
 end
 
 function artifacts_screen:ShowPopup(type)

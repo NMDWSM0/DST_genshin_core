@@ -1,4 +1,3 @@
-
 local states =
 {
     State{
@@ -119,7 +118,6 @@ local states =
             end),
         },
     },
-    
 }
 
 return StateGraph("wilson_uianim", states, {}, "idle")

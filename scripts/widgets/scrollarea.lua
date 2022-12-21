@@ -4,7 +4,7 @@ local Image = require "widgets/genshin_widgets/Gimage"
 
 local function GetActualStringHeight(str, maxwidth, fontsize)
     local temptextwidget = Text("genshinfont", fontsize, "")
-    temptextwidget:Hide()
+    temptextwidget:Hide(-1)
     temptextwidget:SetMultilineTruncatedString(str, 100, maxwidth, nil, "...")
     local realwidth, realheight = temptextwidget:GetRegionSize()
     temptextwidget:Kill()
@@ -56,6 +56,7 @@ function ScrollArea:AddItem(item, level, selfheight, fontsize)
     table.insert(self.scrollcontent.fontsizes, fontsize or 36)
 
     self:UpdateContentHeight()
+    return item
 end
 
 function ScrollArea:ClearItemsInfo(nokill)

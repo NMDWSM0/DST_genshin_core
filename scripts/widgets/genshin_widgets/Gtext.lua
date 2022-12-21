@@ -1,6 +1,24 @@
 local easing = require("easing")
 local GWidget = require "widgets/genshin_widgets/Gwidget"
 
+--我不知道为什么，单个中文字符输进去就是会没有任何报错的炸掉
+--是我的字体有问题吗？
+--可是这个中文字哪怕多加一个空格都没问题
+local function StringHasChineseChar(str)
+    if str == nil then
+        return false
+    end
+    local l = #string.gsub(str, "[^\128-\191]", "")
+    return (l ~= 0)
+end
+
+local function FixSingleChineseChar(str)
+    if StringHasChineseChar(str) and string.len(str) == 3 then  --单个中文字符
+        return ' '..str
+    end
+    return str
+end
+
 -- GText
 local GText = Class(GWidget, function(self, font, size, text, colour)
     GWidget._ctor(self, "Text")
@@ -138,6 +156,7 @@ function GText:ResetRegionSize()
 end
 
 function GText:SetString(str)
+    str = FixSingleChineseChar(str)
     self.string = str
     self.inst.TextWidget:SetString(str or "")
 end

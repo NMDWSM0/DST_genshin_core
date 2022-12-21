@@ -12,7 +12,16 @@ local weapon_screen = Class(Widget, function(self, owner)
 	self.owner = owner
     self.previous_name = ""
     self.previous_level = 0
-	
+
+    -- 无武器提示
+    self.noweapon_text = self:AddChild(Text("genshinfont", 50, TUNING.NOWEAPON_WARNING, {1, 1, 1, 1}))
+    self.noweapon_text:SetHAlign(ANCHOR_MIDDLE)
+    self.noweapon_text:SetVAlign(ANCHOR_MIDDLE)
+    self.noweapon_text:SetRegionSize(400, 100)
+    self.noweapon_text:EnableWordWrap(true)
+    self.noweapon_text:SetPosition(485, 10, 0)
+    self.noweapon_text:Hide(-1)
+    ---------------------------------------------------------
     --右侧武器详细显示区
     self.detail_list = self:AddChild(ScrollArea(420, 610, 1100))
     self.detail_list:SetPosition(550, 20, 0)
@@ -121,18 +130,6 @@ local weapon_screen = Class(Widget, function(self, owner)
     self:StartUpdating()
 end)
 
-function weapon_screen:OnShow(was_hidden)
-    if was_hidden then
-        self.parent.playeranim:GetAnimState():PlayAnimation("item_out")
-    end
-end
-
-function weapon_screen:OnHide(was_visible)
-    if was_visible then
-        self.parent.playeranim:GetAnimState():PlayAnimation("item_in")
-    end
-end
-
 function weapon_screen:OnUpdate(dt)
     if not self.shown or not self.parent.shown then
         return
@@ -145,20 +142,21 @@ function weapon_screen:OnUpdate(dt)
     local weapon = combatstatus:GetWeapon()
 
     if weapon == nil or weapon:HasTag("player") or combatstatus == nil then
-        self.name_text:Hide()
-        self.type_text:Hide()
-        self.main_textbar:Hide()
-        self.main_text:Hide()
-        self.main_number:Hide()
-        self.sub_textbar:Hide()
-        self.sub_text:Hide()
-        self.sub_number:Hide()
-        self.stars:Hide()
-        self.refine_text:Hide()
-        self.effect_text:Hide()
-        self.refineopen:Hide()
+        self.name_text:Hide(-1)
+        self.type_text:Hide(-1)
+        self.main_textbar:Hide(-1)
+        self.main_text:Hide(-1)
+        self.main_number:Hide(-1)
+        self.sub_textbar:Hide(-1)
+        self.sub_text:Hide(-1)
+        self.sub_number:Hide(-1)
+        self.stars:Hide(-1)
+        self.refine_text:Hide(-1)
+        self.effect_text:Hide(-1)
+        self.refineopen:Hide(-1)
         self.previous_name = nil
         self.previous_level = 0
+        self.noweapon_text:Show()
         return
     end
 
@@ -185,6 +183,7 @@ function weapon_screen:OnUpdate(dt)
     self.main_text:Show()
     self.main_number:Show()
     self.stars:Show()
+    self.noweapon_text:Hide()
     if weapon:HasTag("subtextweapon") then
         local desc = refineable ~= nil and type(weapon.description) == "table" and weapon.description[current_level]
             or (type(weapon.description) == "string" and weapon.description or "")

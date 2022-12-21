@@ -10,6 +10,7 @@ local WeaponScreen = require "widgets/weapon_screen"
 local ArtifactsScreen = require "widgets/artifacts_screen"
 local ConstellationScreen = require "widgets/constellation_screen"
 local TalentsScreen = require "widgets/talents_screen"
+local ProfileScreen = require "widgets/profile_screen"
 
 local function removeskinstring(str)
     local pos = 0
@@ -234,7 +235,8 @@ local property_main = Class(Screen, function(self, owner)
 	self.talents_screen:SetScale(0.9, 0.9, 0.9)
 	----------------------------------------------------------------------------------------------
 	--Profile界面
-
+	self.profile_screen = self:AddChild(ProfileScreen(self.owner))
+	self.profile_screen:SetScale(0.9, 0.9, 0.9)
 	----------------------------------------------------------------------------------------------
 	----------------------------------------------------------------------------------------------
 
@@ -253,12 +255,13 @@ local property_main = Class(Screen, function(self, owner)
 		self.artifacts_screen,
 		self.constellation_screen,
 		self.talents_screen,
-		--self.profile_screen,
+		self.profile_screen,
 	}
 
 	self.button_attribute:SetOnClick(function()
 	    self.button_attribute:Select()
 		self.attribute_screen:Show()
+		self:PlayerAnimOnConst(true)
 		-- self.playeranim:GetAnimState():Show("ARM_normal")
 		-- self.playeranim:GetAnimState():Hide("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -294,6 +297,7 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_weapons:SetOnClick(function()
 	    self.button_weapons:Select()
 		self.weapon_screen:Show()
+		self:PlayerAnimOnConst(true)
 		-- self.playeranim:GetAnimState():Hide("ARM_normal")
 		-- self.playeranim:GetAnimState():Show("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -329,6 +333,7 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_artifacts:SetOnClick(function()
 	    self.button_artifacts:Select()
 		self.artifacts_screen:Show()
+		self:PlayerAnimOnConst(true)
 		-- self.playeranim:GetAnimState():Show("ARM_normal")
 		-- self.playeranim:GetAnimState():Hide("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -364,6 +369,7 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_constellation:SetOnClick(function()
 	    self.button_constellation:Select()
 		self.constellation_screen:Show()
+		self:PlayerAnimOnConst(false)
 		-- self.playeranim:GetAnimState():Show("ARM_normal")
 		-- self.playeranim:GetAnimState():Hide("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -399,6 +405,7 @@ local property_main = Class(Screen, function(self, owner)
 	self.button_talents:SetOnClick(function()
 	    self.button_talents:Select()
 		self.talents_screen:Show()
+		self:PlayerAnimOnConst(true)
 		-- self.playeranim:GetAnimState():Show("ARM_normal")
 		-- self.playeranim:GetAnimState():Hide("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -433,7 +440,8 @@ local property_main = Class(Screen, function(self, owner)
 
 	self.button_profile:SetOnClick(function()
 	    self.button_profile:Select()
-		--self.profile_screen:Show()
+		self.profile_screen:Show()
+		self:PlayerAnimOnConst(true)
 		-- self.playeranim:GetAnimState():Show("ARM_normal")
 		-- self.playeranim:GetAnimState():Hide("ARM_carry")
 		-- if not self.playeranim:GetAnimState():IsCurrentAnimation(self.defaultanim) then
@@ -458,9 +466,9 @@ local property_main = Class(Screen, function(self, owner)
 			end
 		end
 		for k,v in pairs(screens) do
-		    --if v ~= self.profile_screen then
+		    if v ~= self.profile_screen then
 			    v:Hide()
-			--end
+			end
 		end
 		self.constellationbg:Hide()
 		self.talentsbg:Hide()
@@ -494,14 +502,15 @@ local property_main = Class(Screen, function(self, owner)
 	self.current_subscreen = "attribute"
 	self.button_attribute:Select()
 
-	self.attribute_screen:Show()
-	self.weapon_screen:Hide()
-	self.artifacts_screen:Hide()
-	self.constellation_screen:Hide()
-	self.talents_screen:Hide()
+	self.attribute_screen:Show(-1)
+	self.weapon_screen:Hide(-1)
+	self.artifacts_screen:Hide(-1)
+	self.constellation_screen:Hide(-1)
+	self.talents_screen:Hide(-1)
+	self.profile_screen:Hide(-1)
 
-	self.constellationbg:Hide()
-	self.talentsbg:Hide()
+	self.constellationbg:Hide(-1)
+	self.talentsbg:Hide(-1)
 	----------------------------
 	self.playeranim:GetAnimState():Hide("ARM_carry")
 	-- self.playeranim:GetAnimState():PlayAnimation(self.defaultanim, true)
@@ -512,6 +521,14 @@ local property_main = Class(Screen, function(self, owner)
 		SetAutopaused(true)
 	end
 end)
+
+function property_main:PlayerAnimOnConst(normal)
+	if normal then
+		self.playeranim:TransitPosition(-18, -200, 0, 0.4)
+	else
+		self.playeranim:TransitPosition(-18, -400, 0, 0.4)
+	end
+end
 
 ---------------------------------------------------------------------------------------
 --------------------------------------Update-------------------------------------------
