@@ -1,7 +1,7 @@
 local EnergyRecharge = Class(function(self, inst)
 	self.inst = inst 
-	self._current = net_float(inst.GUID, "energyrecharge._current", "currentenergydirty")
-    self._max = net_float(inst.GUID, "energyrecharge._max", "maxenergydirty")
+	self._current = net_byte(inst.GUID, "energyrecharge._current", "currentenergydirty")  --byte即可，0-255够了，而且UI上只显整数
+    self._max = net_byte(inst.GUID, "energyrecharge._max", "maxenergydirty")
 end)
 
 function EnergyRecharge:SetMax(max)

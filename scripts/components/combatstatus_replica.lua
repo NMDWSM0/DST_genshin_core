@@ -2,36 +2,26 @@ local CombatStatus = Class(function(self, inst)
 	self.inst = inst 
 
     self._weapon = net_entity(inst.GUID, "combatstatus._weapon", "combatstatusdirty")
-    self._weapondmg = net_int(inst.GUID, "combatstatus._weapondmg", "combatstatusdirty")
+    self._weapondmg = net_ushortint(inst.GUID, "combatstatus._weapondmg", "combatstatusdirty")
 
-    self._base_hp = net_int(inst.GUID, "combatstatus._base_hp", "combatstatusdirty")
-	self._hp = net_int(inst.GUID, "combatstatus._hp", "combatstatusdirty")
-	self._base_atk = net_int(inst.GUID, "combatstatus._base_atk", "combatstatusdirty")
-	self._atk = net_int(inst.GUID, "combatstatus._atk", "combatstatusdirty")
-	self._base_def = net_int(inst.GUID, "combatstatus._base_def", "combatstatusdirty")
-	self._def = net_int(inst.GUID, "combatstatus._def", "combatstatusdirty")
-	self._element_mastery = net_int(inst.GUID, "combatstatus._element_mastery", "combatstatusdirty")
-	self._crit_rate = net_float(inst.GUID, "combatstatus._crit_rate", "combatstatusdirty")
-	self._crit_dmg = net_float(inst.GUID, "combatstatus._crit_dmg", "combatstatusdirty")
-    self._recharge = net_float(inst.GUID, "combatstatus._recharge", "combatstatusdirty")
+    self._base_hp = net_ushortint(inst.GUID, "combatstatus._base_hp", "combatstatusdirty")
+	self._hp = net_ushortint(inst.GUID, "combatstatus._hp", "combatstatusdirty")
+	self._base_atk = net_ushortint(inst.GUID, "combatstatus._base_atk", "combatstatusdirty")
+	self._atk = net_ushortint(inst.GUID, "combatstatus._atk", "combatstatusdirty")
+	self._base_def = net_ushortint(inst.GUID, "combatstatus._base_def", "combatstatusdirty")
+	self._def = net_ushortint(inst.GUID, "combatstatus._def", "combatstatusdirty")
+	self._element_mastery = net_ushortint(inst.GUID, "combatstatus._element_mastery", "combatstatusdirty")
+	self._crit_rate_dmg = net_uint(inst.GUID, "combatstatus._crit_rate_dmg", "combatstatusdirty")
+    self._recharge = net_ushortint(inst.GUID, "combatstatus._recharge", "combatstatusdirty")
 
-	self._pyro_bonus = net_float(inst.GUID, "combatstatus._pyro_bonus", "combatstatusdirty")
-    self._cryo_bonus = net_float(inst.GUID, "combatstatus._cryo_bonus", "combatstatusdirty")
-    self._hydro_bonus = net_float(inst.GUID, "combatstatus._hydro_bonus", "combatstatusdirty")
-    self._electro_bonus = net_float(inst.GUID, "combatstatus._electro_bonus", "combatstatusdirty")
-    self._anemo_bonus = net_float(inst.GUID, "combatstatus._anemo_bonus", "combatstatusdirty")
-    self._geo_bonus = net_float(inst.GUID, "combatstatus._geo_bonus", "combatstatusdirty")
-    self._dendro_bonus = net_float(inst.GUID, "combatstatus._dendro_bonus", "combatstatusdirty")
-    self._physical_bonus = net_float(inst.GUID, "combatstatus._physical_bonus", "combatstatusdirty")
-
-    self._pyro_res_bonus = net_float(inst.GUID, "combatstatus._pyro_res_bonus", "combatstatusdirty")
-    self._cryo_res_bonus = net_float(inst.GUID, "combatstatus._cryo_res_bonus", "combatstatusdirty")
-    self._hydro_res_bonus = net_float(inst.GUID, "combatstatus._hydro_res_bonus", "combatstatusdirty")
-    self._electro_res_bonus = net_float(inst.GUID, "combatstatus._electro_res_bonus", "combatstatusdirty")
-    self._anemo_res_bonus = net_float(inst.GUID, "combatstatus._anemo_res_bonus", "combatstatusdirty")
-    self._geo_res_bonus = net_float(inst.GUID, "combatstatus._geo_res_bonus", "combatstatusdirty")
-    self._dendro_res_bonus = net_float(inst.GUID, "combatstatus._dendro_res_bonus", "combatstatusdirty")
-    self._physical_res_bonus = net_float(inst.GUID, "combatstatus._physical_res_bonus", "combatstatusdirty")
+	self._pyro_pres = net_uint(inst.GUID, "combatstatus._pyro_pres", "combatstatusdirty")
+    self._cryo_cres = net_uint(inst.GUID, "combatstatus._cryo_cres", "combatstatusdirty")
+    self._hydro_hyres = net_uint(inst.GUID, "combatstatus._hydro_hyres", "combatstatusdirty")
+    self._electro_eres = net_uint(inst.GUID, "combatstatus._electro_eres", "combatstatusdirty")
+    self._anemo_ares = net_uint(inst.GUID, "combatstatus._anemo_ares", "combatstatusdirty")
+    self._geo_gres = net_uint(inst.GUID, "combatstatus._geo_gres", "combatstatusdirty")
+    self._dendro_dres = net_uint(inst.GUID, "combatstatus._dendro_dres", "combatstatusdirty")
+    self._physical_phres = net_uint(inst.GUID, "combatstatus._physical_phres", "combatstatusdirty")
 
     self._clothing_base = net_string(inst.GUID, "combatstatus._clothing_base", "combatstatusdirty")
     self._clothing_body = net_string(inst.GUID, "combatstatus._clothing_body", "combatstatusdirty")
@@ -39,6 +29,12 @@ local CombatStatus = Class(function(self, inst)
     self._clothing_legs = net_string(inst.GUID, "combatstatus._clothing_legs", "combatstatusdirty")
     self._clothing_feet = net_string(inst.GUID, "combatstatus._clothing_feet", "combatstatusdirty")
 end)
+
+local function ExtractSmallFloat(uint32)
+    local uint16_1 = uint32 / 65536
+    local uint16_2 = uint32 % 65536
+    return { uint16_1 / 1000, uint16_2 / 1000 }
+end
 
 function CombatStatus:GetWeapon()
     return self._weapon:value()
@@ -77,80 +73,80 @@ function CombatStatus:GetElementMastery()
 end
 
 function CombatStatus:GetCritRate()
-    return self._crit_rate:value()
+    return ExtractSmallFloat(self._crit_rate_dmg:value())[1]
 end
 
 function CombatStatus:GetCritDMG()
-    return self._crit_dmg:value()
+    return ExtractSmallFloat(self._crit_rate_dmg:value())[2]
 end
 
 function CombatStatus:GetRecharge()
-    return self._recharge:value()
+    return self._recharge:value() / 1000
 end
 
 -------------------------------------
 function CombatStatus:GetPyroBonus()
-    return self._pyro_bonus:value()
+    return ExtractSmallFloat(self._pyro_pres:value())[1]
 end
 
 function CombatStatus:GetCryoBonus()
-    return self._cryo_bonus:value()
+    return ExtractSmallFloat(self._cryo_cres:value())[1]
 end
 
 function CombatStatus:GetHydroBonus()
-    return self._hydro_bonus:value()
+    return ExtractSmallFloat(self._hydro_hyres:value())[1]
 end
 
 function CombatStatus:GetElectroBonus()
-    return self._electro_bonus:value()
+    return ExtractSmallFloat(self._electro_eres:value())[1]
 end
 
 function CombatStatus:GetAnemoBonus()
-    return self._anemo_bonus:value()
+    return ExtractSmallFloat(self._anemo_ares:value())[1]
 end
 
 function CombatStatus:GetGeoBonus()
-    return self._geo_bonus:value()
+    return ExtractSmallFloat(self._geo_gres:value())[1]
 end
 
 function CombatStatus:GetDendroBonus()
-    return self._dendro_bonus:value()
+    return ExtractSmallFloat(self._dendro_dres:value())[1]
 end
 
 function CombatStatus:GetPhysicalBonus()
-    return self._physical_bonus:value()
+    return ExtractSmallFloat(self._physical_phres:value())[1]
 end
 -------------------------------------
 function CombatStatus:GetPyroResBonus()
-    return self._pyro_res_bonus:value()
+    return ExtractSmallFloat(self._pyro_pres:value())[2]
 end
 
 function CombatStatus:GetCryoResBonus()
-    return self._cryo_res_bonus:value()
+    return ExtractSmallFloat(self._cryo_cres:value())[2]
 end
 
 function CombatStatus:GetHydroResBonus()
-    return self._hydro_res_bonus:value()
+    return ExtractSmallFloat(self._hydro_hyres:value())[2]
 end
 
 function CombatStatus:GetElectroResBonus()
-    return self._electro_res_bonus:value()
+    return ExtractSmallFloat(self._electro_eres:value())[2]
 end
 
 function CombatStatus:GetAnemoResBonus()
-    return self._anemo_res_bonus:value()
+    return ExtractSmallFloat(self._anemo_ares:value())[2]
 end
 
 function CombatStatus:GetGeoResBonus()
-    return self._geo_res_bonus:value()
+    return ExtractSmallFloat(self._geo_gres:value())[2]
 end
 
 function CombatStatus:GetDendroResBonus()
-    return self._dendro_res_bonus:value()
+    return ExtractSmallFloat(self._dendro_dres:value())[2]
 end
 
 function CombatStatus:GetPhysicalResBonus()
-    return self._physical_res_bonus:value()
+    return ExtractSmallFloat(self._physical_phres:value())[2]
 end
 -------------------------------------
 function CombatStatus:GetClothing()

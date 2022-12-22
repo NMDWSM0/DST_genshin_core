@@ -517,9 +517,9 @@ local property_main = Class(Screen, function(self, owner)
 	self.playeranim.inst.sg:GoToState("idle")
 	self:StartUpdating()
 
-	if not TUNING.CONTROLWITHUI then
-		SetAutopaused(true)
-	end
+	-- if not TUNING.CONTROLWITHUI and not TheWorld.ismastersim then
+	-- 	SetAutopaused(true)
+	-- end
 end)
 
 function property_main:PlayerAnimOnConst(normal)
@@ -663,18 +663,6 @@ function property_main:OnUpdate(dt)
 	return true
 end
 
-function property_main:OnShow()
-	if not TUNING.CONTROLWITHUI then
-		SetAutopaused(true)
-	end
-end
-
-function property_main:OnHide()
-	if not TUNING.CONTROLWITHUI then
-		SetAutopaused(false)
-	end
-end
-
 function property_main:OnDestroy()
 	self:Hide()
 end
@@ -682,6 +670,7 @@ end
 function property_main:OnBecomeInactive()
 	property_main._base.OnBecomeInactive(self)
 	self.last_focus = self:GetDeepestFocus()
+	SetAutopaused(false)
 end
 
 function property_main:OnBecomeActive()
@@ -700,6 +689,7 @@ function property_main:OnBecomeActive()
 	self:SetPosition(screen_width / 2, screen_height / 2, 0)
 	self:SetScale(TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE, TUNING.GENSHINCORE_UISCALE)
     self:Show()
+	SetAutopaused(true)
 end
 
 return property_main
