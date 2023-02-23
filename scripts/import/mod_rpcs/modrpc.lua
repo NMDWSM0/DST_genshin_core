@@ -16,7 +16,7 @@ local function calculatestatus(inst)
     --生命值
 	local base_atk = weapon ~= nil and weapon.components.weapon and weapon.components.weapon:GetDamage(inst, inst) or inst.components.combat.defaultdamage
 	--基础攻击力，人物白字加武器白字  (官方的武器是直接覆盖掉人物白字的，如果按照原神的设定，武器伤害请使用函数返回人物白字加武器白字)
-	local atk = base_atk * inst.components.combat.external_atk_multipliers:Get() + (inst.components.combat.atkbonus ~= nil and inst.components.combat.atkbonus or 0)
+	local atk = base_atk * inst.components.combat.external_atk_multipliers:Get() + (inst.components.combat.atkbonus ~= nil and inst.components.combat.atkbonus or 0) + inst.components.combat.external_atkbonus_multipliers:Get()
 	--攻击力 = 基础攻击力 * 攻击力加成 + 小公鸡
     local base_def = inst.components.combat.defense
 	--基础防御力

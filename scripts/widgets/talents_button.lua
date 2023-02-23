@@ -2,6 +2,13 @@ local Text = require "widgets/genshin_widgets/Gtext"
 local Image = require "widgets/genshin_widgets/Gimage"
 local ImageButton = require "widgets/genshin_widgets/Gimagebutton"
 
+local function HasDoubleLine(str)
+    if str:find("\n") ~= nil or str:find("\v") ~= nil or str:find("\f") ~= nil or str:find("\r") ~= nil then
+        return true
+    end
+    return false
+end
+
 local talents_button = Class(ImageButton, function(self, image1_atlas, image1_texture, name)
     ImageButton._ctor(self, image1_atlas, image1_texture, nil, nil, nil, image1_texture, {0.35, 0.35, 0.35})
     self.focus_scale = {0.38, 0.38, 0.38}
@@ -14,7 +21,7 @@ local talents_button = Class(ImageButton, function(self, image1_atlas, image1_te
     self.bg_image:SetScale(0.8, 0.8, 0.8)
     self.bg_image:SetTint(1, 1, 1, 0) --隐藏
 
-    self.name = self:AddChild(Text("genshinfont", 28, name, {236/255, 229/255, 216/255, 1}))
+    self.name = self:AddChild(Text("genshinfont", HasDoubleLine(name) and 22 or 28, name, {236/255, 229/255, 216/255, 1}))
     self.name:SetPosition(-250, 10, 0)
     self.name:SetHAlign(ANCHOR_RIGHT)
     self.name:SetVAlign(ANCHOR_MIDDLE)
@@ -22,7 +29,7 @@ local talents_button = Class(ImageButton, function(self, image1_atlas, image1_te
     self.name:EnableWordWrap(true)
 
     self.leveltext = self:AddChild(Text("genshinfont", 28, "Lv. 1", {236/255, 229/255, 216/255, 1}))
-    self.leveltext:SetPosition(-200, -12, 0)
+    self.leveltext:SetPosition(-200, HasDoubleLine(name) and -20 or -12, 0)
     self.leveltext:SetHAlign(ANCHOR_RIGHT)
     self.leveltext:SetVAlign(ANCHOR_MIDDLE)
     self.leveltext:SetRegionSize(300, 100)

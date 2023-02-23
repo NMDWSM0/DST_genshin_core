@@ -78,8 +78,9 @@ AddComponentPostInit("combat", function(self)
 	--自己定义攻击力调节器，改为加算
 	self.external_atk_multipliers = SourceModifierList(self.inst, 1, SourceModifierList.additive)
 	self.atkbonus = 0
+	self.external_atkbonus_multipliers = SourceModifierList(self.inst, 0, SourceModifierList.additive)  --数值攻击加成器
     --暴击爆伤
-    self.critical_rate = 0.05 
+    self.critical_rate = 0.05
 	self.external_critical_rate_multipliers = ExtendedModifierList(self.inst, 0, ExtendedModifierList.additive)
 	self.critical_damage = 0.5
 	self.external_critical_damage_multipliers = ExtendedModifierList(self.inst, 0, ExtendedModifierList.additive)
@@ -91,6 +92,7 @@ AddComponentPostInit("combat", function(self)
 	self.defense = 750
 	self.external_defense_multipliers = SourceModifierList(self.inst, 1, SourceModifierList.additive)
 	self.defensebonus = 0
+	self.external_defensebonus_multipliers = SourceModifierList(self.inst, 0, SourceModifierList.additive)  --数值防御加成器
 	--元素伤害
 	self.pyro = 0
 	self.external_pyro_multipliers = SourceModifierList(self.inst, 1, SourceModifierList.additive)
@@ -292,7 +294,7 @@ AddComponentPostInit("combat", function(self)
     ------------------- CalcDefense ---------------------
 	
 	function self:CalcDefense(attacker, weapon, atk_elements, attackkey)
-	    local defense = self.defense * self.external_defense_multipliers:Get() + self.defensebonus
+	    local defense = self.defense * self.external_defense_multipliers:Get() + self.defensebonus + self.external_defensebonus_multipliers:Get()
 		local defense_ignorance = attacker and attacker.components.combat and attacker.components.combat.defense_ignorefn ~= nil and attacker.components.combat.defense_ignorefn(attacker, self.inst, weapon, atk_elements, attackkey) or 0
 		defense = defense * ((1-defense_ignorance) > 0 and (1-defense_ignorance) or 0)                                                                                         --inst, target, weapon, atk_elements, attackkey
 		return (1 - defense / (defense + 950))
@@ -492,7 +494,7 @@ AddComponentPostInit("combat", function(self)
 		end
 
 		--增伤数值
-		local dmgadd = self.external_dmgaddnumber_multipliers:Get()
+		local dmgadd = self.external_dmgaddnumber_multipliers:CalculateModifierFromFilter({attacker = attacker, target = inst, atk_elements = atk_elements, atk_key = attackkey_copied})
 
 		--最终传递给敌人的伤害（后面再去穿透护甲和伤害重定向）
 		if damage ~= 0 and attackkey_copied ~= "elementreaction" then
@@ -588,7 +590,7 @@ AddComponentPostInit("combat", function(self)
     	    end
     	end
 
-    	return (basedamage * (self.external_atk_multipliers:Get() - 1) + self.atkbonus)
+    	return (basedamage * (self.external_atk_multipliers:Get() - 1) + self.atkbonus + self.external_atkbonus_multipliers:Get())
     	    * (basemultiplier or 1)
     	    * externaldamagemultipliers:Get()
     	    * (multiplier or 1)

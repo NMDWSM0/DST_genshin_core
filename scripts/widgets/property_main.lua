@@ -609,7 +609,9 @@ function property_main:UpdateWeapon()
 			swap_weaponbuild = "swap_" .. weaponbuild
 		end
 		--设置build
-		if skin_build ~= nil then
+		if weapon.swap_config ~= nil and weapon.swap_config[1] ~= nil then
+            self.playeranim:GetAnimState():OverrideSymbol("swap_object", weapon.swap_config[1], weapon.swap_config[2] or weapon.swap_config[1])
+        elseif skin_build ~= nil then
 			if string.find(weaponbuild, "staff") ~= nil then
 				if weapon.prefab == "firestaff" then
 					swap_weaponbuild = "swap_redstaff"

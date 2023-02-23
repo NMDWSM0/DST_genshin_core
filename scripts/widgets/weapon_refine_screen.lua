@@ -238,7 +238,9 @@ function weapon_refine_screen:UpdateWeapon(weapon)
             swap_weaponbuild = "swap_" .. weaponbuild
         end
         --设置build
-        if skin_build ~= nil then
+        if weapon.swap_config ~= nil and weapon.swap_config[1] ~= nil then
+            self.weaponanim:GetAnimState():OverrideSymbol("swap_object", weapon.swap_config[1], weapon.swap_config[2] or weapon.swap_config[1])
+        elseif skin_build ~= nil then
             if string.find(weaponbuild, "staff") ~= nil then
                 if weapon.prefab == "firestaff" then
                     swap_weaponbuild = "swap_redstaff"
@@ -355,12 +357,18 @@ function weapon_refine_screen:OnUpdate(dt)
         local oridesc = refineable ~= nil and type(weapon.description) == "table" and weapon.description[current_level]
             or (type(weapon.description) == "string" and weapon.description or "")
         local index = string.find(oridesc, "\n")
-        local title = string.sub(oridesc, 1, index - 1)
-        local desc = string.sub(oridesc, index + 3)
-        local ranktext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前效果:" or "Current:"
-        self.effect_title:SetString("• "..title.." •")
-        self.effect_text1:SetString("·"..ranktext..desc)
-        self.effect_text2:Hide()
+        if index == nil then
+            self.effect_title:SetString("•  •")
+            self.effect_text1:SetString("·   ")
+            self.effect_text2:Hide()
+        else
+            local title = string.sub(oridesc, 1, index - 1)
+            local desc = string.sub(oridesc, index + 3)
+            local ranktext = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "当前效果:" or "Current:"
+            self.effect_title:SetString("• " .. title .. " •")
+            self.effect_text1:SetString("·" .. ranktext .. desc)
+            self.effect_text2:Hide()
+        end
     else
         local oridesc1 = weapon.description[current_level]
         local oridesc2 = weapon.description[current_level + 1]

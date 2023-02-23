@@ -84,6 +84,32 @@ function table.contains(t, element)
     return false
 end
 
+function table.isequal(a, b)
+    if a == nil or b == nil then
+        return false
+    end
+    if type(a) ~= "table" or type(b) ~= "table" then
+        return false
+    end
+    local _a, _b = 0, 0
+    for k, v in pairs(a) do
+        if type(v) == "table" then
+            if not table.isequal(v, b[k]) then
+                return false
+            end
+        else
+            if v ~= b[k] then
+                return false
+            end
+        end
+        _a = _a + 1
+    end
+    for k, v in pairs(b) do
+        _b = _b + 1
+    end
+    return _a == _b
+end
+
 local function RecalculateModifier(inst)
     local m = inst._base
     for source, src_params in pairs(inst._modifiers) do
