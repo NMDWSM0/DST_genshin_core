@@ -304,9 +304,14 @@ local function MakeTraceBomb(name)
 
         if inst.target == nil or (inst.target.components.health and inst.target.components.health:IsDead()) then
             inst:Remove()
+            return
         end
 
         local x1, y1, z1 = inst.target.Transform:GetWorldPosition()
+        if x1 == nil or z1 == nil then
+            inst:Remove()
+            return
+        end
         local dx = x - x1
         local dz = z - z1
         if (dx * dx + dz * dz) < 1.2 then
@@ -333,9 +338,14 @@ local function MakeTraceBomb(name)
         inst:DoTaskInTime(0.2, function(inst)
             if inst.target == nil or (inst.target.components.health and inst.target.components.health:IsDead()) then
                 inst:Remove()
+                return
             end
             local x, y, z = inst.Transform:GetWorldPosition()
             local x1, y1, z1 = inst.target.Transform:GetWorldPosition()
+            if x1 == nil or z1 == nil then
+                inst:Remove()
+                return
+            end
             local vec = Vector3(x1 - x, y1 - y, z1 - z)
             inst.accelration = (vec:GetNormalized()) * 50 
         end)
