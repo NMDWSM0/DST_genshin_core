@@ -174,7 +174,7 @@ function constellation_popup:Refresh()
             self.cannot_unlock_text:SetString("Must activate "..self.decription.titlename[self.current_show-1].." first")
         end
     end
-    self:CheckIngredient(activatedlevel)
+    self:CheckIngredient(self.current_show)
 
     if self.current_show <= activatedlevel then
         self.icon:SetTexture(self.path.."/"..string.format("%d", self.current_show).."_enable.xml", string.format("%d", self.current_show).."_enable.tex")
@@ -209,14 +209,13 @@ function constellation_popup:Refresh()
     end
 end
 
-function constellation_popup:CheckIngredient(activatedlevel)
+function constellation_popup:CheckIngredient(showlevel)
     local Inventory = self.owner.replica.inventory
     local has, star_number
     if type() == "string" then
         has, star_number = Inventory:Has(self.owner.constellation_starname, 1)
     elseif type() == "table" then
-        local next_level = math.max(activatedlevel + 1, 6)
-        has, star_number = Inventory:Has(self.owner.constellation_starname[next_level], 1)
+        has, star_number = Inventory:Has(self.owner.constellation_starname[showlevel], 1)
     else
         star_number = 0
     end
