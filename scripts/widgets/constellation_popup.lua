@@ -212,9 +212,9 @@ end
 function constellation_popup:CheckIngredient(showlevel)
     local Inventory = self.owner.replica.inventory
     local has, star_number
-    if type() == "string" then
+    if type(self.owner.constellation_starname) == "string" then
         has, star_number = Inventory:Has(self.owner.constellation_starname, 1)
-    elseif type() == "table" then
+    elseif type(self.owner.constellation_starname) == "table" then
         has, star_number = Inventory:Has(self.owner.constellation_starname[showlevel], 1)
     else
         star_number = 0
