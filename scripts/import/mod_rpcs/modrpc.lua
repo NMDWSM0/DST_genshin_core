@@ -98,7 +98,19 @@ local function unlockconstellation(inst, level)
 	if inst.components.constellation == nil or inst.constellation_starname == nil then
 		return
 	end
-	local has, num_found = inst.components.inventory:Has(inst.constellation_starname, 1)
+        local name = nil
+        if type(inst.constellation_starname) == "string" then
+            name = inst.constellation_starname
+        elseif type(inst.constellation_starname) == "table" then
+            local level = inst.components.constellation:GetActivated()
+            if level >= 0 and level <= 5 then
+                name = inst.constellation_starname[level + 1]
+            end
+        end
+        if name == nil then
+            return
+        end
+	local has, num_found = inst.components.inventory:Has(name, 1)
 	if has then  --服务器端二次确认
 		inst.components.inventory:ConsumeByName(inst.constellation_starname, 1)
 	    inst.components.constellation:Unlock(level)
