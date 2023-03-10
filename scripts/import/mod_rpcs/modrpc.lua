@@ -102,7 +102,7 @@ local function unlockconstellation(inst, level)
         if type(inst.constellation_starname) == "string" then
             name = inst.constellation_starname
         elseif type(inst.constellation_starname) == "table" then
-            local level = inst.components.constellation:GetActivated()
+            local level = inst.components.constellation:GetActivatedLevel()
             if level >= 0 and level <= 5 then
                 name = inst.constellation_starname[level + 1]
             end
