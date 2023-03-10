@@ -112,7 +112,7 @@ local function unlockconstellation(inst, level)
         end
 	local has, num_found = inst.components.inventory:Has(name, 1)
 	if has then  --服务器端二次确认
-		inst.components.inventory:ConsumeByName(inst.constellation_starname, 1)
+		inst.components.inventory:ConsumeByName(name, 1)
 	    inst.components.constellation:Unlock(level)
 	end
 end
