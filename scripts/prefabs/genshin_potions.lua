@@ -194,7 +194,7 @@ local function MakeBuff(name, typ, element, add_attachfn, add_detachfn)
     return Prefab(name.."_"..typ.."buff", fn)
 end
 
-local function MakeItem(name, typ)
+local function MakeItem(name, typ, ele)
     local complete_name = typ == "oil" and name.."_essential_oil" or name.."_potion"
 
     local assets =
@@ -241,7 +241,8 @@ local function MakeItem(name, typ)
         inst.components.stackable.maxsize = TUNING.STACK_SIZE_SMALLITEM
 
         inst.onuse = function(inst, player)
-            player:AddDebuff(name.."_"..typ.."buff", name.."_"..typ.."buff")  
+            player:AddDebuff(name.."_"..typ.."buff", name.."_"..typ.."buff")
+            play:PushEvent("use_elemental_potion", {element = ele, name = name, type = typ})
         end
 
         return inst
@@ -250,17 +251,17 @@ local function MakeItem(name, typ)
     return Prefab(complete_name, fn, assets)
 end
 
-return MakeItem("flaming", "oil"), MakeBuff("flaming", "oil", "pyro"),
-    MakeItem("frosting", "oil"), MakeBuff("frosting", "oil", "cryo"),
-    MakeItem("streaming", "oil"), MakeBuff("streaming", "oil", "hydro"),
-    MakeItem("shocking", "oil"), MakeBuff("shocking", "oil", "electro"),
-    MakeItem("gushing", "oil"), MakeBuff("gushing", "oil", "anemo"),
-    MakeItem("unmoving", "oil"), MakeBuff("unmoving", "oil", "geo"),
-    MakeItem("forest", "oil"), MakeBuff("forest", "oil", "dendro"),
-    MakeItem("heatshield", "potion"), MakeBuff("heatshield", "potion", "pyro", pyro_potion_attachfn, pyro_potion_detachfn),
-    MakeItem("frostshield", "potion"), MakeBuff("frostshield", "potion", "cryo", cryo_potion_attachfn, cryo_potion_detachfn),
-    MakeItem("desiccant", "potion"), MakeBuff("desiccant", "potion", "hydro", hydro_potion_attachfn, hydro_potion_detachfn),
-    MakeItem("insulation", "potion"), MakeBuff("insulation", "potion", "electro", electro_potion_attachfn, electro_potion_detachfn),
-    MakeItem("windbarrier", "potion"), MakeBuff("windbarrier", "potion", "anemo", anemo_potion_attachfn, anemo_potion_detachfn),
-    MakeItem("dustproof", "potion"), MakeBuff("dustproof", "potion", "geo", geo_potion_attachfn, geo_potion_detachfn),
-    MakeItem("dendrocide", "potion"), MakeBuff("dendrocide", "potion", "dendro", dendro_potion_attachfn, dendro_potion_detachfn)
+return MakeItem("flaming", "oil", "pyro"), MakeBuff("flaming", "oil", "pyro"),
+    MakeItem("frosting", "oil", "cryo"), MakeBuff("frosting", "oil", "cryo"),
+    MakeItem("streaming", "oil", "hydro"), MakeBuff("streaming", "oil", "hydro"),
+    MakeItem("shocking", "oil", "electro"), MakeBuff("shocking", "oil", "electro"),
+    MakeItem("gushing", "oil", "anemo"), MakeBuff("gushing", "oil", "anemo"),
+    MakeItem("unmoving", "oil", "geo"), MakeBuff("unmoving", "oil", "geo"),
+    MakeItem("forest", "oil", "dendro"), MakeBuff("forest", "oil", "dendro"),
+    MakeItem("heatshield", "potion", "pyro"), MakeBuff("heatshield", "potion", "pyro", pyro_potion_attachfn, pyro_potion_detachfn),
+    MakeItem("frostshield", "potion", "cryo"), MakeBuff("frostshield", "potion", "cryo", cryo_potion_attachfn, cryo_potion_detachfn),
+    MakeItem("desiccant", "potion", "hydro"), MakeBuff("desiccant", "potion", "hydro", hydro_potion_attachfn, hydro_potion_detachfn),
+    MakeItem("insulation", "potion", "electro"), MakeBuff("insulation", "potion", "electro", electro_potion_attachfn, electro_potion_detachfn),
+    MakeItem("windbarrier", "potion", "anemo"), MakeBuff("windbarrier", "potion", "anemo", anemo_potion_attachfn, anemo_potion_detachfn),
+    MakeItem("dustproof", "potion", "geo"), MakeBuff("dustproof", "potion", "geo", geo_potion_attachfn, geo_potion_detachfn),
+    MakeItem("dendrocide", "potion", "dendro"), MakeBuff("dendrocide", "potion", "dendro", dendro_potion_attachfn, dendro_potion_detachfn)
