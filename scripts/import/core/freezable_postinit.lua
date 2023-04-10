@@ -65,7 +65,7 @@ AddComponentPostInit("freezable", function(self)
                 end
                 local base_damage = 21.7
                 local bonus = data.attacker and data.attacker.components.elementreactor and (data.attacker.components.elementreactor.attack_shattered_bonus * data.attacker.components.elementreactor.attack_shattered_bonus_modifier:Get()) or 1
-                self.inst.components.combat:GetAttacked(data.attacker, base_damage * (1 + mastery_rate) * bonus, nil, 8, 0)  --碎冰是物理伤害
+                self.inst.components.combat:GetAttacked(data.attacker, base_damage * (1 + mastery_rate) * bonus, nil, 8, nil--[[spdmg]], 0--[[ele_value]], "normal")  --碎冰是物理伤害
             end
         end
     end

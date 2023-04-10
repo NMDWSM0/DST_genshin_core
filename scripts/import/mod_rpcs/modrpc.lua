@@ -72,7 +72,11 @@ local function switchartifacts(inst, type, item)
     if item == nil or type == nil then
 		return
 	end
-	inst.components.inventory:Equip(item)
+	inst.components.inventory:Equip(item, nil, true)
+	if inst.components.artifactscollector ~= nil then
+		inst.components.artifactscollector:RecalculateModifier()
+	end
+	calculatestatus(inst)
 end
 
 local function removeartifacts(inst, type, item)
@@ -81,6 +85,10 @@ local function removeartifacts(inst, type, item)
 	end
 	inst.components.inventory:GiveItem(item)
 	inst.components.inventory:Unequip(EQUIPSLOTS[string.upper(type)])
+	if inst.components.artifactscollector ~= nil then
+		inst.components.artifactscollector:RecalculateModifier()
+	end
+	calculatestatus(inst)
 end
 
 local function lockartifacts(inst, value, item)

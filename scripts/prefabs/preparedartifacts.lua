@@ -1,6 +1,9 @@
 
 local function onequip(inst, owner)
     inst:AddTag("nosteal")
+    if TheNet:IsServerPaused(true) then
+        return
+    end
     inst:DoTaskInTime(FRAMES, function(inst)
         if owner.components.artifactscollector ~= nil then
             owner.components.artifactscollector:RecalculateModifier()
@@ -8,8 +11,11 @@ local function onequip(inst, owner)
     end)
 end
 
-local function onunequip(inst, owner) 
+local function onunequip(inst, owner)
     inst:RemoveTag("nosteal")
+    if TheNet:IsServerPaused(true) then
+        return
+    end
 	inst:DoTaskInTime(FRAMES, function(inst)
         if owner.components.artifactscollector ~= nil then
             owner.components.artifactscollector:RecalculateModifier()

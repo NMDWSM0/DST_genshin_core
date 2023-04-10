@@ -51,7 +51,7 @@ local function Explode(inst, isburgeon)
     local ents = TheSim:FindEntities(x, y, z, isburgeon and 4.5 or 3, {"_combat"}, inst.exclude_tag)
     for k, v in pairs (ents) do
         if v ~= inst.attacker then
-            v.components.combat:GetAttacked(inst.attacker, inst.basedmg * (1 + inst.mastery_rate) * inst.bonus, nil, 7, 0, "elementreaction")  --草伤
+            v.components.combat:GetAttacked(inst.attacker, inst.basedmg * (1 + inst.mastery_rate) * inst.bonus, nil, 7, nil--[[spdmg]], 0, "elementreaction")  --草伤
         end
     end
 end
@@ -293,7 +293,7 @@ local function MakeTraceBomb(name)
 
     local function OnHitTarget(inst)
         if inst.target.components.combat then
-            inst.target.components.combat:GetAttacked(inst.attacker, inst.finaldmg, nil, 7, 0, "elementreaction")  --草伤，但是没有元素附着
+            inst.target.components.combat:GetAttacked(inst.attacker, inst.finaldmg, nil, 7, nil--[[spdmg]], 0, "elementreaction")  --草伤，但是没有元素附着
         end
         inst:Remove()
     end

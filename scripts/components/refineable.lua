@@ -19,7 +19,7 @@ local function onoverrideatlas(self, atlas)
 end
 
 local Refineable = Class(function(self, inst)
-	self.inst = inst 
+	self.inst = inst
 
     self.current_level = 1
     self.max_level = 5
@@ -71,6 +71,7 @@ function Refineable:Refine(level)
     if self.inst.components.equippable ~= nil and self.inst.components.equippable:IsEquipped() then
         local owner = self.inst.components.inventoryitem.owner
         if owner.components.inventory then
+            owner.components.inventory:Unequip(self.inst.components.equippable.equipslot)
             owner.components.inventory:Equip(self.inst)
         end
     end

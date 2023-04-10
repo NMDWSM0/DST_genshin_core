@@ -1,3 +1,4 @@
+---@diagnostic disable: cast-local-type
 local SourceModifierList = require("util/sourcemodifierlist")
 local ExtendedModifierList = require("import/core/extendedmodifierlist")
 
@@ -435,10 +436,25 @@ AddComponentPostInit("combat", function(self)
 
 	----------------------------------------------------
     ------------------ GetAttacked ---------------------
-	
+	-- updated after combat has changed at 2023/4/6 13:47
 	local old_GetAttacked = self.GetAttacked
-	function self:GetAttacked(attacker, damage, weapon, stimuli, ele_value, attackkey)
+	function self:GetAttacked(attacker, damage, weapon, stimuli, ...)
 		local bugtracker_ignore_flag__GetAttacked = true
+		------------------------------------------------------------------
+		-- added after combat has changed at 2023/4/6 13:47
+		local spdamage = nil
+		local ele_value = nil
+		local attackkey = nil
+		if select("#", ...) >= 3 then
+			spdamage = select(1, ...)
+			ele_value = select(2, ...)
+			attackkey = select(3, ...)
+		elseif select("#", ...) >= 2 then
+			ele_value = select(1, ...)
+			attackkey = select(2, ...)
+		end
+		------------------------------------------------------------------
+
 		local ele_value_copied = 1.3
 		local attackkey_copied = "normal"
 		local atk_elements = 8
@@ -468,8 +484,9 @@ AddComponentPostInit("combat", function(self)
 		    critical = 1  --剧变反应不暴击
 		end
 
-		--护盾
-		local defense = self:CalcDefense(attacker, weapon, atk_elements, attackkey_copied)
+		--防御
+		--聚变反应无视防御力
+		local defense = attackkey_copied == "elementreaction" and self:CalcDefense(attacker, weapon, atk_elements, attackkey_copied) or 1
 
 		--元素伤害加成和元素抗性加成
 		local elements = 1
@@ -528,7 +545,7 @@ AddComponentPostInit("combat", function(self)
 		-- 		end
 	    --     end
 		-- end, "r")
-	    local retval = old_GetAttacked(self, attacker, damage, weapon, stimuli, ele_value, attackkey)
+	    local retval = old_GetAttacked(self, attacker, damage, weapon, stimuli, ...)
 		-- debug.sethook()
 		damageresolved = self.damage_stack[self.damage_stack_top] or 0
 		self.damage_stack_top = self.damage_stack_top - 1
@@ -552,52 +569,75 @@ AddComponentPostInit("combat", function(self)
 	
     local old_CalcDamage = self.CalcDamage
 	function self:CalcDamage(target, weapon, multiplier)
-	    local old_damage = old_CalcDamage(self, target, weapon, multiplier)
+	    local old_damage, old_spdamage = old_CalcDamage(self, target, weapon, multiplier)
 
 		local basedamage
     	local basemultiplier = self.damagemultiplier
     	local externaldamagemultipliers = self.externaldamagemultipliers
+		local damagetypemult = 1
     	local bonus = self.damagebonus --not affected by multipliers
     	local playermultiplier = target ~= nil and target:HasTag("player")
     	local pvpmultiplier = playermultiplier and self.inst:HasTag("player") and self.pvp_damagemod or 1
 		local mount = nil
+		local spdamage
 
     	--NOTE: playermultiplier is for damage towards players
     	--      generally only applies for NPCs attacking players
 
     	if weapon ~= nil then
-    	    --No playermultiplier when using weapons
-    	    basedamage = weapon.components.weapon:GetDamage(self.inst, target) or 0
----@diagnostic disable-next-line: cast-local-type
-    	    playermultiplier = 1
+        	--No playermultiplier when using weapons
+			basedamage, spdamage = weapon.components.weapon:GetDamage(self.inst, target)
+        	playermultiplier = 1
+			--#V2C: entity's own damagetypebonus stacks with weapon's damagetypebonus
+			if self.inst.components.damagetypebonus ~= nil then
+				damagetypemult = self.inst.components.damagetypebonus:GetBonus(target)
+			end
     	else
-    	    basedamage = self.defaultdamage
----@diagnostic disable-next-line: cast-local-type
-    	    playermultiplier = playermultiplier and self.playerdamagepercent or 1
-    	    if self.inst.components.rider ~= nil and self.inst.components.rider:IsRiding() then
-    	        mount = self.inst.components.rider:GetMount()
-    	        if mount ~= nil and mount.components.combat ~= nil then
-    	            basedamage = mount.components.combat.defaultdamage
-    	            basemultiplier = mount.components.combat.damagemultiplier
-    	            externaldamagemultipliers = mount.components.combat.externaldamagemultipliers
-    	            bonus = mount.components.combat.damagebonus
-    	        end
+        	basedamage = self.defaultdamage
+        	playermultiplier = playermultiplier and self.playerdamagepercent or 1
 
-    	        local saddle = self.inst.components.rider:GetSaddle()
-    	        if saddle ~= nil and saddle.components.saddler ~= nil then
-    	            basedamage = basedamage + saddle.components.saddler:GetBonusDamage()
-    	        end
-    	    end
+        	if self.inst.components.rider ~= nil and self.inst.components.rider:IsRiding() then
+            	mount = self.inst.components.rider:GetMount()
+            	if mount ~= nil and mount.components.combat ~= nil then
+                	basedamage = mount.components.combat.defaultdamage
+                	basemultiplier = mount.components.combat.damagemultiplier
+                	externaldamagemultipliers = mount.components.combat.externaldamagemultipliers
+                	bonus = mount.components.combat.damagebonus
+					if mount.components.damagetypebonus ~= nil then
+						damagetypemult = mount.components.damagetypebonus:GetBonus(target)
+					end
+				else
+					if self.inst.components.damagetypebonus ~= nil then
+						damagetypemult = self.inst.components.damagetypebonus:GetBonus(target)
+					end
+            	end
+
+            	local saddle = self.inst.components.rider:GetSaddle()
+            	if saddle ~= nil and saddle.components.saddler ~= nil then
+                	basedamage = basedamage + saddle.components.saddler:GetBonusDamage()
+					if saddle.components.damagetypebonus ~= nil then
+						damagetypemult = damagetypemult * saddle.components.damagetypebonus:GetBonus(target)
+					end
+            	end
+			else
+				if self.inst.components.damagetypebonus ~= nil then
+					damagetypemult = self.inst.components.damagetypebonus:GetBonus(target)
+				end
+        	end
     	end
 
-    	return (basedamage * (self.external_atk_multipliers:Get() - 1) + self.atkbonus + self.external_atkbonus_multipliers:Get())
-    	    * (basemultiplier or 1)
-    	    * externaldamagemultipliers:Get()
-    	    * (multiplier or 1)
-    	    * playermultiplier
-    	    * pvpmultiplier
+		local damage = ((basedamage or 0) * (self.external_atk_multipliers:Get() - 1) + self.atkbonus + self.external_atkbonus_multipliers:Get())
+        	* (basemultiplier or 1)
+        	* externaldamagemultipliers:Get()
+			* damagetypemult
+        	* (multiplier or 1)
+        	* playermultiplier
+        	* pvpmultiplier
 			* (self.customdamagemultfn ~= nil and self.customdamagemultfn(self.inst, target, weapon, multiplier, mount) or 1)
-    	    + old_damage  --that's why -1 in line 551
+        	-- + (bonus or 0) this has been added at the original function
+			+ old_damage  --that's why -1 above
+
+    	return damage, old_spdamage
 	end
 	
 	----------------------------------------------------
@@ -606,10 +646,31 @@ AddComponentPostInit("combat", function(self)
 
     ----------------------------------------------------
     -------------------- DoAttack ----------------------
-
+	-- updated after combat has changed at 2023/4/6 13:47
 	local old_DoAttack = self.DoAttack
-	function self:DoAttack(targ, weapon, projectile, stimuli, instancemult, attackkey)
-
+	function self:DoAttack(targ, weapon, projectile, stimuli, instancemult, ...)
+		local instrangeoverride = nil
+		local instpos = nil
+		local attackkey = nil
+		if select("#", ...) >= 3 then
+			instrangeoverride = select(1, ...)
+			instpos = select(2, ...)
+			attackkey = select(3, ...)
+		elseif select("#", ...) >= 2 then
+			instrangeoverride = select(1, ...)
+			instpos = select(2, ...)
+		elseif select("#", ...) >= 1 then
+			attackkey = select(1, ...)
+		end
+		---------------------------------------------------------------------------
+		-- added after combat has changed at 2023/4/6 13:47
+		if instrangeoverride then
+			self.temprange = instrangeoverride
+		end
+		if instpos then
+			self.temppos = instpos
+		end
+		---------------------------------------------------------------------------
 	    if targ == nil then
             targ = self.target
         end
@@ -661,11 +722,14 @@ AddComponentPostInit("combat", function(self)
             end
         end
 
-        if not self:CanHitTarget(targ, weapon) then
+        if not self:CanHitTarget(targ, weapon) or self.AOEarc then
             self.inst:PushEvent("onmissother", { target = targ, weapon = weapon })
             if self.areahitrange ~= nil and not self.areahitdisabled then
                 self:DoAreaAttack(projectile or self.inst, self.areahitrange, weapon, self.areahitcheck, stimuli, AREA_EXCLUDE_TAGS)
             end
+			if self.ClearAttackTemps ~= nil then
+				self:ClearAttackTemps()
+			end
             return
         end
 
@@ -681,6 +745,9 @@ AddComponentPostInit("combat", function(self)
 					projectile.components.projectile.atk_key = attackkey
 					--------------------------------------------------------------
                 end
+				if self.ClearAttackTemps ~= nil then
+					self:ClearAttackTemps()
+				end
                 return
 
             elseif weapon.components.complexprojectile ~= nil then
@@ -688,15 +755,22 @@ AddComponentPostInit("combat", function(self)
                 if projectile ~= nil then
                     projectile.components.complexprojectile:Launch(targ:GetPosition(), self.inst)
                 end
+				if self.ClearAttackTemps ~= nil then
+					self:ClearAttackTemps()
+				end
                 return
 
             elseif weapon.components.weapon:CanRangedAttack() then
                 weapon.components.weapon:LaunchProjectile(self.inst, targ)
+				if self.ClearAttackTemps ~= nil then
+					self:ClearAttackTemps()
+				end
                 return
             end
         end
 
         local reflected_dmg = 0
+		local reflected_spdmg
         local reflect_list = {}
         if targ.components.combat ~= nil then
             local mult =
@@ -708,20 +782,21 @@ AddComponentPostInit("combat", function(self)
                 and TUNING.ELECTRIC_DAMAGE_MULT + TUNING.ELECTRIC_WET_DAMAGE_MULT * (targ.components.moisture ~= nil and targ.components.moisture:GetMoisturePercent() or (targ:GetIsWet() and 1 or 0))
                 or 1
 
-            local dmg = self:CalcDamage(targ, weapon, mult) * (instancemult or 1)  --instancemult倍率
+            local dmg, spdmg = self:CalcDamage(targ, weapon, mult)
+			dmg =  dmg * (instancemult or 1)  --instancemult倍率
 
             --Calculate reflect first, before GetAttacked destroys armor etc.
             if projectile == nil then
-                reflected_dmg = self:CalcReflectedDamage(targ, dmg, weapon, stimuli, reflect_list)
+                reflected_dmg, reflected_spdmg = self:CalcReflectedDamage(targ, dmg, weapon, stimuli, reflect_list, spdmg)
             end
 
 			-------------------------------------------------------------------------
 			--传入攻击种类参数，伤害计算改在这里进行
-            targ.components.combat:GetAttacked(self.inst, dmg, weapon, stimuli, nil, attackkey)
+            targ.components.combat:GetAttacked(self.inst, dmg, weapon, stimuli, spdmg, nil, attackkey)
 			-------------------------------------------------------------------------
 
         elseif projectile == nil then
-            reflected_dmg = self:CalcReflectedDamage(targ, 0, weapon, stimuli, reflect_list)
+            reflected_dmg, reflected_spdmg = self:CalcReflectedDamage(targ, 0, weapon, stimuli, reflect_list)
         end
 
         if weapon ~= nil then
@@ -732,11 +807,14 @@ AddComponentPostInit("combat", function(self)
             self:DoAreaAttack(targ, self.areahitrange, weapon, self.areahitcheck, stimuli, AREA_EXCLUDE_TAGS)
         end
 
+		if self.ClearAttackTemps ~= nil then
+			self:ClearAttackTemps()
+		end
         self.lastdoattacktime = GetTime()
 
         --Apply reflected damage to self after our attack damage is completed
-        if reflected_dmg > 0 and self.inst.components.health ~= nil and not self.inst.components.health:IsDead() then
-            self:GetAttacked(targ, reflected_dmg)
+        if (reflected_dmg > 0 or reflected_spdmg ~= nil) and self.inst.components.health ~= nil and not self.inst.components.health:IsDead() then
+            self:GetAttacked(targ, reflected_dmg, nil, nil, reflected_spdmg)
             for i, v in ipairs(reflect_list) do
                 if v.inst:IsValid() then
                     v.inst:PushEvent("onreflectdamage", v)
@@ -787,7 +865,8 @@ AddComponentPostInit("combat", function(self)
                 self:IsValidTarget(ent) and
                 (validfn == nil or validfn(ent, self.inst)) then
                 self.inst:PushEvent("onareaattackother", { target = ent, weapon = weapon, stimuli = stimuli })
-                ent.components.combat:GetAttacked(self.inst, self:CalcDamage(ent, weapon, self.areahitdamagepercent), weapon, stimuli, nil, attackkey)
+				local dmg, spdmg = self:CalcDamage(ent, weapon, self.areahitdamagepercent)
+                ent.components.combat:GetAttacked(self.inst, dmg, weapon, stimuli, spdmg, nil, attackkey)
                 hitcount = hitcount + 1
             end
         end

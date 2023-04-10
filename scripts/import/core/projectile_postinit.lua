@@ -33,10 +33,10 @@ AddComponentPostInit("projectile", function(self)
         end
         if attacker ~= nil and attacker.components.combat ~= nil then
 		    if attacker.components.combat.ignorehitrange then
-	            attacker.components.combat:DoAttack(target, weapon, self.inst, self.stimuli, 1, self.atk_key)
+	            attacker.components.combat:DoAttack(target, weapon, self.inst, self.stimuli, 1, nil, nil, self.atk_key)
 		    else
 			    attacker.components.combat.ignorehitrange = true
-			    attacker.components.combat:DoAttack(target, weapon, self.inst, self.stimuli, 1, self.atk_key)
+			    attacker.components.combat:DoAttack(target, weapon, self.inst, self.stimuli, 1, nil, nil, self.atk_key)
 			    attacker.components.combat.ignorehitrange = false
 		    end
         end

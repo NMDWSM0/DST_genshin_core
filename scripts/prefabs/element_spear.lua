@@ -287,12 +287,12 @@ local function DoElementAttack(inst, target, pos)
     if attacker ~= nil and attacker.components.combat ~= nil then
 		if attacker.components.combat.ignorehitrange then
             for k, v in pairs(ents) do
-                attacker.components.combat:DoAttack(v, inst, nil, elements, 2.31, "elementalskill")
+                attacker.components.combat:DoAttack(v, inst, nil, elements, 2.31, nil, nil, "elementalskill")
             end
 		else
 			attacker.components.combat.ignorehitrange = true
             for k, v in pairs(ents) do
-                attacker.components.combat:DoAttack(v, inst, nil, elements, 2.31, "elementalskill")
+                attacker.components.combat:DoAttack(v, inst, nil, elements, 2.31, nil, nil, "elementalskill")
             end
 			attacker.components.combat.ignorehitrange = false
 		end

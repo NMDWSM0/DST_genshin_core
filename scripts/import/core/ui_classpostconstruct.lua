@@ -1,5 +1,6 @@
 local PropertyMain = require "widgets/property_main"
 local ImageButton = require "widgets/imagebutton"
+local Draggable_ImageGBtn = require "widgets/draggable_imageGbtn"
 local damageind_screen = require "widgets/damageind_screen"
 local InvSlot = require "widgets/invslot"
 local Widget = require "widgets/widget"
@@ -15,11 +16,11 @@ local writeables = require "writeables"
 --
 AddClassPostConstruct("widgets/controls",function(self)        
 	if self.owner and self.owner:HasTag("player") then
-	    self.openproperty = self:AddChild(ImageButton("images/ui/button_on.xml","button_on.tex"))
+	    self.openproperty = self:AddChild(Draggable_ImageGBtn("images/ui/button_on.xml","button_on.tex"))
 		self.openproperty:SetPosition(100,100,0)
 	    self.openproperty:SetScale(1,1,1)
-		self.openproperty.focus_scale = {1.1,1.1,1.1}
-	    self.openproperty:SetOnClick(function()
+		self.openproperty:SetBTNFocusScale({1.1,1.1,1.1})
+	    self.openproperty:SetBTNOnClick(function()
 			SendModRPCToServer(MOD_RPC["combatdata"]["combat"])
 			if self.property_main.shown then
 				if TUNING.CONTROLWITHUI then
@@ -35,6 +36,26 @@ AddClassPostConstruct("widgets/controls",function(self)
 				end
 			end
 	    end)
+		self.openproperty:SetOnDragFinish(function(oldpos, newpos)
+            TheSim:SetPersistentString("genshincore_openproperty", json.encode({ position = newpos }), false)
+        end)
+		--恢复位置，写法参考了Insight
+        TheSim:GetPersistentString("genshincore_openproperty", function(success, str)
+            if not success then
+                return
+            end
+            local valid, pos = pcall(function() return json.decode(str).position end)
+            print(pos)
+            if not valid then
+                return
+            end
+            local screen_width, screen_height = TheSim:GetScreenSize()
+            if pos.x < 0 or pos.x > screen_width or pos.y < 0 or pos.y > screen_height then
+                self.openproperty:SetPosition(screen_width - 100, TUNING.GENSHINCORE_UISCALE * 80 + 20, pos.z)
+                return
+            end
+            self.openproperty:SetPosition(pos.x, pos.y, pos.z)
+        end)
 
         if TUNING.DMGIND_ENABLE then
 			self.Dmgind_Screen = self:AddChild(damageind_screen(self.owner))
