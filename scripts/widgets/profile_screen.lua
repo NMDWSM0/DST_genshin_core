@@ -56,7 +56,7 @@ local profile_screen = Class(Widget, function(self, owner)
     self.favfood_title:EnableWordWrap(true)
 	self.favfood_title:SetPosition(20, -120, 0)
     local favfood_str = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "未知" or "Unknown"
-    if STRINGS.CHARACTER_BIOS[self.owner.prefab] ~= nil then
+    if STRINGS.CHARACTER_BIOS[self.owner.prefab] ~= nil and STRINGS.CHARACTER_BIOS[self.owner.prefab][2] ~= nil then
         favfood_str = STRINGS.CHARACTER_BIOS[self.owner.prefab][2].desc or (TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "未知" or "Unknown")
     end
     self.favfood_value = Text("genshinfont", 28, favfood_str, {246/255, 242/255, 238/255, 1})
