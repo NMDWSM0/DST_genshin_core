@@ -139,6 +139,7 @@ if TUNING.LANGUAGE_GENSHIN_CORE == "sc" then
 	STRINGS.CHARACTERS.GENERIC.DESCRIBE.TELEPORT_WAYPOINT = "使用后将在当前世界设置传送锚点"
 	STRINGS.RECIPE_DESC.TELEPORT_WAYPOINT = "对神之眼持有者而言，应当是相当便利的小物件"
 	STRINGS.TELEPORT_WAYPOINT_DETAIL = "沿着一定脉络，散落在大地上的奇怪装置。大陆上的人说这是古代的神秘物件，虽然不知道有什么用，但是早就习以为常了；然而对于旅行者来说，因其一定程度上能与地脉相连，所以可以实现传送的功能。"
+	STRINGS.TELEPORT_WAYPOINT_CRASH = "附近20范围之内存在已经建造的传送锚点"
 
 	STRINGS.NAMES.BFMT_FLOWER = "历经风雪的思念"
 	STRINGS.NAMES.BFMT_PLUME = "摧冰而行的执望"
@@ -523,6 +524,7 @@ else
 	STRINGS.CHARACTERS.GENERIC.DESCRIBE.TELEPORT_WAYPOINT = "Use this to create a Teleport Waypoint at your current location"
 	STRINGS.RECIPE_DESC.TELEPORT_WAYPOINT = "It may offsers an incredible convenience to Vision bearers..."
 	STRINGS.TELEPORT_WAYPOINT_DETAIL = "Odd devices that are scattered across this land, seemingly forming a certain order.People on the continent see them as ancient gimmicks —— they are accustomed to their existence despite not knowing their purpose. To the foreign travler, however, their function becomes quiet apparent."
+	STRINGS.TELEPORT_WAYPOINT_CRASH = "There exists already-built Teleport Waypoint in the range of 20"
 
 	STRINGS.NAMES.BFMT_FLOWER = "Snowswept Memory"
 	STRINGS.NAMES.BFMT_PLUME = "Icebreaker's Resolve"

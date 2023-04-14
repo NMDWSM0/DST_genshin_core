@@ -1,9 +1,6 @@
-local containers = require "containers"
-
 local assets =
 {
-    Asset("ANIM", "anim/artifacts_refiner.zip"),
-    -- Asset("ANIM", "anim/ui_artifacts_refiner.zip"),
+    Asset("ANIM", "anim/teleport_waypoint.zip"),
 }
 
 ---------------------------------------------------------------------------------
@@ -30,7 +27,7 @@ end
 
 local function OnBuilt(inst)
     if not CheckPosition(inst) then
-        inst.components.talker:Say("附近20范围之内存在已经建造的传送锚点")
+        inst.components.talker:Say(STRINGS.TELEPORT_WAYPOINT_CRASH)
         inst.components.lootdropper:DropLoot()
         local fx = SpawnPrefab("collapse_small")
         fx.Transform:SetPosition(inst.Transform:GetWorldPosition())
@@ -42,9 +39,8 @@ local function OnBuilt(inst)
         end
         return
     end
-    -- inst.AnimState:PlayAnimation("place")
-    -- inst.AnimState:PushAnimation("idle", false)
-    -- inst.SoundEmitter:PlaySound("dontstarve/common/cook_pot_craft")
+    inst.AnimState:PlayAnimation("place")
+    inst.AnimState:PushAnimation("idle", true)
 end
 
 local function OnPlayerJoined(inst, player)
@@ -84,8 +80,7 @@ local function OnHammered(inst, worker)
 end
 
 local function OnHit(inst, worker)
-    -- inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot_close")
-    -- inst.AnimState:PlayAnimation("hit")
+    inst.SoundEmitter:PlaySound("dontstarve/common/cookingpot_close")
 end
 
 local function fn()
@@ -98,10 +93,11 @@ local function fn()
 
     MakeObstaclePhysics(inst, .5)
 
-    inst.AnimState:SetBank("artifacts_refiner")
-    inst.AnimState:SetBuild("artifacts_refiner")
-    inst.AnimState:PlayAnimation("idle")
-    inst.AnimState:SetMultColour(0, 0, 1, 1)
+    inst.AnimState:SetBank("teleport_waypoint")
+    inst.AnimState:SetBuild("teleport_waypoint")
+    inst.AnimState:PlayAnimation("idle", true)
+
+    inst.Transform:SetScale(1.5, 1.5, 1.5)
 
     inst:AddTag("structure")
     inst:AddTag("teleport_waypoint")
@@ -140,4 +136,4 @@ local function fn()
 end
 
 return Prefab("teleport_waypoint", fn, assets),
-    MakePlacer("teleport_waypoint_placer", "teleport_waypoint", "teleport_waypoint", "idle")
+    MakePlacer("teleport_waypoint_placer", "teleport_waypoint", "teleport_waypoint", "build")

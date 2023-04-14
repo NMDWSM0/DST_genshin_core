@@ -492,6 +492,11 @@ Assets = {
 
     Asset( "IMAGE", "images/ui/talents_traveler/talent_icon_6.tex" ),
     Asset( "ATLAS", "images/ui/talents_traveler/talent_icon_6.xml" ),
+
+	---------------------------------------------------------------
+	--Toast
+	Asset( "IMAGE", "images/ui/genshin_toast_boxes.tex"),
+    Asset( "ATLAS", "images/ui/genshin_toast_boxes.xml"),
 }
 
 ----------------------------------------------------

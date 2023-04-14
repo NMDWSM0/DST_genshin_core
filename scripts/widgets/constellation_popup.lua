@@ -31,7 +31,8 @@ local constellation_popup = Class(Widget, function(self, owner, up1parent, path)
     self.enable_button:SetScale(1, 1, 1)
     self.enable_button:SetOnClick(function()
         if self.can == false then
-            self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
+            --self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
+            self.parent.parent.toast_screen:ShowToast(TUNING.CONSTELLATION_INGREDIENT_LACK)
             return
         end
         self.up1parent:UnlockConstellation(self.current_show or 0)

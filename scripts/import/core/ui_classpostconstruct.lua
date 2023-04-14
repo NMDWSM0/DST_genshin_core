@@ -30,6 +30,7 @@ AddClassPostConstruct("widgets/controls",function(self)
 				end
 			else
 				if TUNING.CONTROLWITHUI then
+					self.property_main:SetElement()
 					self.property_main:Show()
 				else
 				    TheFrontEnd:PushScreen(self.property_main)

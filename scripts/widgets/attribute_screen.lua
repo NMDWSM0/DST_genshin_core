@@ -1,3 +1,4 @@
+---@diagnostic disable: cast-local-type
 local Widget = require "widgets/genshin_widgets/Gwidget"
 local Text = require "widgets/genshin_widgets/Gtext"
 local Image = require "widgets/genshin_widgets/Gimage"

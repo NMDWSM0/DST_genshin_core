@@ -11,6 +11,7 @@ local ArtifactsScreen = require "widgets/artifacts_screen"
 local ConstellationScreen = require "widgets/constellation_screen"
 local TalentsScreen = require "widgets/talents_screen"
 local ProfileScreen = require "widgets/profile_screen"
+local Genshin_Toast = require "widgets/genshin_toast"
 
 local function removeskinstring(str)
     local pos = 0
@@ -58,35 +59,8 @@ local property_main = Class(Screen, function(self, owner)
     Screen._ctor(self, "property_mainscreen")
 	self.owner = owner
 
-	--先搞清人物是什么元素的
-	local element = "no"
-	local elementstr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "无元素" or "No Element"
-	local elements_en = {
-		"Pyro",
-		"Cryo",
-		"Hydro",
-		"Electro",
-		"Anemo",
-		"Geo",
-		"Dendro",
-	}
-	local elements_sc = {
-		"火元素",
-		"冰元素",
-		"水元素",
-		"雷元素",
-		"风元素",
-		"岩元素",
-		"草元素",
-	}
-	for i,v in ipairs (elements_en) do
-	    if self.owner:HasTag(v) or self.owner:HasTag(string.upper(v)) or self.owner:HasTag(string.lower(v)) then
-		    element = string.lower(v)
-		    elementstr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and elements_sc[i] or v
-		end
-	end
-
 	--大背景
+	local element ="no"
     self.background = self:AddChild(Image("images/ui/property_background_"..element..".xml", "property_background_"..element..".tex"))
 	self.background:SetScale(0.8, 0.8, 0.8)
 
@@ -138,7 +112,7 @@ local property_main = Class(Screen, function(self, owner)
 	----------------------------------------------------------------------------------------------
 	--显示神之眼样式和人物名字
 	local name = STRINGS.CHARACTER_NAMES[self.owner.prefab] or self.owner.prefab
-	self.title = self:AddChild(Text("genshinfont", 35, elementstr.." / "..name, {254/255, 235/255, 153/255, 1}))
+	self.title = self:AddChild(Text("genshinfont", 35, "no".." / "..name, {254/255, 235/255, 153/255, 1}))
 	self.title:SetHAlign(ANCHOR_LEFT)
     self.title:SetVAlign(ANCHOR_MIDDLE)
     self.title:SetRegionSize(500, 60)
@@ -147,6 +121,8 @@ local property_main = Class(Screen, function(self, owner)
 
 	self.vision = self:AddChild(Image("images/ui/"..element.."_vision.xml", element.."_vision.tex"))
 	self.vision:SetPosition(-650, 300, 0)
+	--更新
+	self:SetElement()
 
 	----------------------------------------------------------------------------------------------
 	--左边一列选择按钮
@@ -237,6 +213,10 @@ local property_main = Class(Screen, function(self, owner)
 	--Profile界面
 	self.profile_screen = self:AddChild(ProfileScreen(self.owner))
 	self.profile_screen:SetScale(0.9, 0.9, 0.9)
+	----------------------------------------------------------------------------------------------
+	----------------------------------------------------------------------------------------------
+	self.toast_screen = self:AddChild(Genshin_Toast())
+	self.toast_screen:SetScale(0.9, 0.9, 0.9)
 	----------------------------------------------------------------------------------------------
 	----------------------------------------------------------------------------------------------
 
@@ -528,6 +508,41 @@ function property_main:PlayerAnimOnConst(normal)
 	else
 		self.playeranim:TransitPosition(-18, -400, 0, 0.4)
 	end
+end
+
+function property_main:SetElement()
+	--先搞清人物是什么元素的
+	local element = "no"
+	local elementstr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and "无元素" or "No Element"
+	local elements_en = {
+		"Pyro",
+		"Cryo",
+		"Hydro",
+		"Electro",
+		"Anemo",
+		"Geo",
+		"Dendro",
+	}
+	local elements_sc = {
+		"火元素",
+		"冰元素",
+		"水元素",
+		"雷元素",
+		"风元素",
+		"岩元素",
+		"草元素",
+	}
+	for i,v in ipairs (elements_en) do
+	    if self.owner:HasTag(v) or self.owner:HasTag(string.upper(v)) or self.owner:HasTag(string.lower(v)) then
+		    element = string.lower(v)
+		    elementstr = TUNING.LANGUAGE_GENSHIN_CORE == "sc" and elements_sc[i] or v
+		end
+	end
+
+	local name = STRINGS.CHARACTER_NAMES[self.owner.prefab] or self.owner.prefab
+	self.title:SetString(elementstr.." / "..name)
+	self.vision:SetTexture("images/ui/"..element.."_vision.xml", element.."_vision.tex")
+	self.background:SetTexture("images/ui/property_background_"..element..".xml", "property_background_"..element..".tex")
 end
 
 ---------------------------------------------------------------------------------------

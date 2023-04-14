@@ -138,7 +138,8 @@ local Artifacts_SortPanel = Class(Widget, function(self, owner, parent)
         self.btns[k]:SetOnClick(function ()
             if not self.btns[k]._selected then  --原本没有选中
                 if self.select_num >= max_choosenum then
-                    self.owner.components.talker:Say(STRINGS.ARTIFACTS_SORTITEM_LIMIT)
+                    --self.owner.components.talker:Say(STRINGS.ARTIFACTS_SORTITEM_LIMIT)
+                    self.parent.parent.parent.toast_screen:ShowToast(STRINGS.ARTIFACTS_SORTITEM_LIMIT)
                     return
                 end
                 local index = 0

@@ -27,7 +27,7 @@ local teleport_waypoint_button = Class(GWidget, function(self, owner, waypoint_i
         self.ring:Hide()
     end)
 
-    self:SetScale(1.1, 1.1, 1.1)
+    self:SetScale(1, 1, 1)
     self:StartUpdating()
 end)
 

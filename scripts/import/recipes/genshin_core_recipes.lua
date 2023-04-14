@@ -146,9 +146,9 @@ local Recipes = {
         name = "teleport_waypoint",
         ingredients = 
         {
-			Ingredient("fireflies", 1),
-            Ingredient("rocks", 5),
-            Ingredient("twigs", 3)
+			Ingredient("fireflies", 3),
+            Ingredient("cutstone", 5),
+            Ingredient("townportaltalisman", 2)
         },
         level = TECH.SCIENCE_TWO,
         atlas = "images/inventoryimages/teleport_waypoint.xml",

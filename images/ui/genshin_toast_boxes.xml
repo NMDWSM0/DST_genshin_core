@@ -1,0 +1,8 @@
+<Atlas>
+	<Texture filename="genshin_toast_boxes.tex"/>
+	<Elements>
+		<Element name="normal.tex" u1="0.000000" u2="0.833333" v1="0.335616" v2="0.664384"/>
+		<Element name="short.tex" u1="0.000000" u2="0.724044" v1="0.000000" v2="0.328767"/>
+		<Element name="long.tex" u1="0.000000" u2="0.997268" v1="0.671233" v2="1.000000"/>
+	</Elements>
+</Atlas>

@@ -132,7 +132,8 @@ local weapon_refine_screen = Class(Widget, function(self, owner)
     self.refine_button:SetScale(0.85, 0.85, 0.85)
     self.refine_button:SetOnClick(function()
         if self.can == false then
-            self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
+            -- self.owner.components.talker:Say(TUNING.CONSTELLATION_INGREDIENT_LACK)
+            self.parent.parent.toast_screen:ShowToast(TUNING.CONSTELLATION_INGREDIENT_LACK)
             return
         end
         SendModRPCToServer(MOD_RPC["weapon"]["refine"], self.weapon)
