@@ -242,7 +242,7 @@ local function MakeItem(name, typ, ele)
 
         inst.onuse = function(inst, player)
             player:AddDebuff(name.."_"..typ.."buff", name.."_"..typ.."buff")
-            play:PushEvent("use_elemental_potion", {element = ele, name = name, type = typ})
+            player:PushEvent("use_elemental_potion", {element = ele, name = name, type = typ})
         end
 
         return inst
