@@ -431,6 +431,8 @@ Assets = {
 
     Asset( "IMAGE", "images/ui/constellation_traveler/constellation_image.tex" ),
     Asset( "ATLAS", "images/ui/constellation_traveler/constellation_image.xml" ),
+	Asset( "IMAGE", "images/ui/constellation_traveler/constellation_lines.tex" ),
+    Asset( "ATLAS", "images/ui/constellation_traveler/constellation_lines.xml" ),
 
 	---------------------------------------------------------------
 	--Talents界面（第五个界面）

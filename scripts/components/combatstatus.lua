@@ -173,16 +173,17 @@ local function onclothing_feet(self, clothing_feet)
 end
 
 ---------------------------------------------------------
---flt1和flt2是两个小浮点数，需要保留到小数点后三位，那么他们将会乘以1000后取整，然后两个数压缩称一个无符号整型
+-- flt1和flt2是两个小浮点数，需要保留到小数点后三位，那么他们将会乘以1000后取整，然后两个数压缩称一个无符号整型
+-- 加上32768
 local function CompressSmallFloat(flt1, flt2)
-    local uint16_1 = math.floor(flt1 * 1000)
-    local uint16_2 = math.floor(flt2 * 1000)
+    local uint16_1 = math.floor(flt1 * 1000) + 32768
+    local uint16_2 = math.floor(flt2 * 1000) + 32768
     return uint16_1 * 65536 + uint16_2
 end
 
 local function ExtractSmallFloat(uint32)
-    local uint16_1 = uint32 / 65536
-    local uint16_2 = uint32 % 65536
+    local uint16_1 = uint32 / 65536 - 32768
+    local uint16_2 = uint32 % 65536 - 32768
     return { uint16_1 / 1000, uint16_2 / 1000 }
 end
 

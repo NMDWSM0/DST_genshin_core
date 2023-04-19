@@ -31,8 +31,8 @@ local CombatStatus = Class(function(self, inst)
 end)
 
 local function ExtractSmallFloat(uint32)
-    local uint16_1 = uint32 / 65536
-    local uint16_2 = uint32 % 65536
+    local uint16_1 = uint32 / 65536 - 32768
+    local uint16_2 = uint32 % 65536 - 32768
     return { uint16_1 / 1000, uint16_2 / 1000 }
 end
 
