@@ -33,6 +33,7 @@ AddClassPostConstruct("widgets/controls",function(self)
 					self.property_main:SetElement()
 					self.property_main:Show()
 				else
+					self.property_main:SetElement()
 				    TheFrontEnd:PushScreen(self.property_main)
 				end
 			end

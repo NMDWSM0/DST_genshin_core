@@ -211,9 +211,8 @@ Assets = {
 	Asset( "IMAGE", "images/ui/geo_vision.tex"),
     Asset( "ATLAS", "images/ui/geo_vision.xml"),
 
-	--呜呜，草元素神之眼官方都没图
-	--Asset( "IMAGE", "images/ui/dendro_vision.tex"),
-    --Asset( "ATLAS", "images/ui/dendro_vision.xml"),
+	Asset( "IMAGE", "images/ui/dendro_vision.tex"),
+    Asset( "ATLAS", "images/ui/dendro_vision.xml"),
 
 	Asset( "IMAGE", "images/ui/no_vision.tex"),
     Asset( "ATLAS", "images/ui/no_vision.xml"),

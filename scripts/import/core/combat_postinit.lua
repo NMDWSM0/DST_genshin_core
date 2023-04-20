@@ -743,6 +743,7 @@ AddComponentPostInit("combat", function(self)
 					--------------------------------------------------------------
 					--修改
 					projectile.components.projectile.atk_key = attackkey
+					projectile.components.projectile.instancemult = instancemult
 					--------------------------------------------------------------
                 end
 				if self.ClearAttackTemps ~= nil then
