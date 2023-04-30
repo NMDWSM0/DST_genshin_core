@@ -93,14 +93,14 @@ end
 function EnergyRecharge:OnSave()
 	return {
 		current = self.current,
-		max = self.max
+		--max = self.max
 	}
 end
 
 function EnergyRecharge:OnLoad(data)
 	if data then
-		self.current = data.current 
-		self.max = data.max
+		self.current = data.current
+		--self.max = data.max
 	end
 	self:DoDelta(0)
 end

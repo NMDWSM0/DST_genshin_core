@@ -70,7 +70,7 @@ end
 function ElementalCaster:outofcooldown(skill)
     if self.inst.sg:HasStateTag("knockout") or self.inst.sg:HasStateTag("sleeping") or self.inst.sg.currentstate == "death" then
 		return false
-	end 
+	end
 	
 	if GetTime() - self[skill] < self.cd[skill] then
 	    return false
