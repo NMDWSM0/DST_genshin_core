@@ -71,7 +71,7 @@ function SortItem:ChangeToNormal()
     self.nametext:SetColour(236/255, 229/255, 216/255, 1)
 end
 
-local max_choosenum = 2
+local max_choosenum = 3
 local s = {
     "atk",         --小攻击
     "atk_per",     --大攻击

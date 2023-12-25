@@ -2,7 +2,7 @@ local Widget = require "widgets/widget"
 local Button = require "widgets/button"
 
 local Draggable_GenshinBtn = Class(Button, function(self)
-	Widget._ctor(self, "Draggable_GenshinBtn")
+	Button._ctor(self, "Draggable_GenshinBtn")
 
     self.scale_on_focus = false  --禁止缩放
 	self.clickoffset = Vector3(0, 0, 0)   --禁止按下移动

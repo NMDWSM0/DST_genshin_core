@@ -65,7 +65,9 @@ function GButton:OnControl(control, down)
 
 		if down then
 			if not self.down then
-				self.text:TransitColour(self.textdowncolour)
+				if self.text then
+					self.text:TransitColour(self.textdowncolour)
+				end
 				TheFrontEnd:GetSound():PlaySound("dontstarve/HUD/click_move")
 				self.o_pos = self:GetLocalPosition()
 				self:TransitPosition(self.o_pos + self.clickoffset, nil, nil, 0.1)
@@ -79,7 +81,9 @@ function GButton:OnControl(control, down)
 			end
 		else
 			if self.down then
-				self.text:TransitColour(self.textfocuscolour)
+				if self.text then
+					self.text:TransitColour(self.textfocuscolour)
+				end
 				self.down = false
                 self:ResetPreClickPosition()
 				if self.onclick then
@@ -133,10 +137,12 @@ function GButton:OnLoseFocus(noanim)
 	GButton._base.OnLoseFocus(self)
 
 	if self:IsEnabled() and not self.selected then
-		if noanim then
-			self.text:SetColour(self.textcolour)
-		else
-			self.text:TransitColour(self.textcolour)
+		if self.text then
+			if noanim then
+				self.text:SetColour(self.textcolour)
+			else
+				self.text:TransitColour(self.textcolour)
+			end
 		end
 	end
 	self:ResetPreClickPosition()
@@ -150,22 +156,26 @@ end
 
 function GButton:OnEnable(noanim)
 	if not self.focus and not self.selected then --Note(Peter):This causes the disabled font to remain on an enabled text button, if it has focus (EG: When you click on a button and the button is temporarily disabled). Why do we check the focus here?
-		if noanim then
-			self.text:SetColour(self.textcolour)
-		else
-			self.text:TransitColour(self.textcolour)
+		if self.text then
+			if noanim then
+				self.text:SetColour(self.textcolour)
+			else
+				self.text:TransitColour(self.textcolour)
+			end
+			self.text:SetFont(self.font)
 		end
-	    self.text:SetFont(self.font)
 	end
 end
 
 function GButton:OnDisable(noanim)
-	if noanim then
-		self.text:SetColour(self.textdisabledcolour)
-	else
-		self.text:TransitColour(self.textdisabledcolour)
+	if self.text then
+		if noanim then
+			self.text:SetColour(self.textdisabledcolour)
+		else
+			self.text:TransitColour(self.textdisabledcolour)
+		end
+		self.text:SetFont(self.fontdisabled)
 	end
-    self.text:SetFont(self.fontdisabled)
 end
 
 -- Calling "Select" on a button makes it behave as if it were disabled (i.e. won't respond to being clicked), but will still be able
@@ -187,10 +197,12 @@ end
 
 -- This is roughly equivalent to OnDisable
 function GButton:OnSelect(noanim)
-	if noanim then
-		self.text:SetColour(self.textselectedcolour)
-	else
-		self.text:TransitColour(self.textselectedcolour)
+	if self.text then
+		if noanim then
+			self.text:SetColour(self.textselectedcolour)
+		else
+			self.text:TransitColour(self.textselectedcolour)
+		end
 	end
     if self.onselect then
         self.onselect()
